@@ -2,19 +2,50 @@
 
 > **Do not read this before you've attempted the You-do solo.** This block is mostly about doing the review well, not knowing the "right" comments. Read this after you've reviewed your peer's PR.
 
+## Part 1 — the code PR (reference solution)
+
+Participants make `/greet` reject a blank/whitespace name with a 400, plus a test. A clean solution:
+
+```python
+@app.get("/greet")
+def greet():
+    name = request.args.get("name", "world")
+    if not name.strip():
+        return jsonify(error="name must not be blank"), 400
+    count = app.redis.incr(f"greet:{name}")
+    return jsonify(message=f"Hello, {name}!", count=count)
+```
+
+```python
+def test_greet_rejects_blank_name(client):
+    assert client.get("/greet?name=").status_code == 400
+    assert client.get("/greet?name=%20%20").status_code == 400  # whitespace too
+```
+
+What to look for / push on:
+
+- **The default still works.** `request.args.get("name", "world")` means *no* `name` param → `"world"`, which is fine. A naive fix that validates *before* the default — or that uses `if not name:` against the raw arg — can break `test_greet_defaults_to_world`. If their test suite is green but `test_greet_defaults_to_world` was deleted or weakened, that's an `issue:`.
+- **Whitespace, not just empty.** `name.strip()` catches `"   "`; a bare `if name == ""` doesn't. A test covering only `""` is a good `suggestion:` target.
+- **One concern, small diff.** If the PR also renames things or reformats `app.py`, it's no longer the small scoped PR the block is teaching — call it out.
+- **The test would actually catch the bug.** A test that asserts `200` (the old behavior) or that doesn't hit the blank case isn't a regression test.
+
+This is also the cleanest place to demonstrate the PR-template checklist working for real: tests pass, compose still starts, one logical change.
+
 ## What "good" looks like for the peer review
 
-The You-do requires ≥ 4 conventional comments spanning ≥ 3 labels from `praise / suggestion / question / nitpick / issue`. Aim higher: a serious review of a one-page docs PR is usually 5–8 comments.
+The You-do requires ≥ 4 conventional comments spanning ≥ 3 labels from `praise / suggestion / question / nitpick / issue`. Aim higher: a serious review of even a 15-line code PR is usually 4–6 comments.
 
 ### A reference review skeleton
 
-For most branching-agreement PRs from Block C, a strong review will include something like:
+For most blank-name code PRs, a strong review will include something like:
 
-- **One `praise:`** — something genuinely good. The clarity of the Context section, or the specificity of the hotfix rule. Praise is not throwaway — it tells the author what's working.
-- **At least one `question:`** — there's almost always something genuinely unclear. "question: when you say 'we deploy when ready,' how do you decide *who* presses the button?" Questions surface assumptions the author didn't realize they had.
-- **At least one `suggestion:`** — a specific change the author could make. Not a vague "this could be better" — a concrete alternative. "suggestion: rename `feature/*` to `feat/*` to match Conventional Commits."
-- **Optionally `nitpick:`** — for small style things. PEP8, capitalization, ordering. Always non-blocking.
-- **`issue:` only when you mean it.** If the team agreement contradicts itself, or violates something the participant called out as a constraint, that's a real issue. If the strategy doesn't fit the context, that's a real issue. Don't use `issue:` for taste differences.
+- **One `praise:`** — something genuinely good. A focused diff, or a test that also covers whitespace. Praise is not throwaway — it tells the author what's working.
+- **At least one `question:`** — there's almost always something genuinely unclear. "question: should a blank name 400, or fall back to `world` like the no-param case does? Why the difference?" Questions surface assumptions the author didn't realize they had.
+- **At least one `suggestion:`** — a specific change the author could make. Not a vague "this could be better" — a concrete alternative. "suggestion: add a whitespace-only case (`name=%20`) to the test; right now only `\"\"` is covered."
+- **Optionally `nitpick:`** — for small style things. PEP8, the error message wording, `is None` vs `== None`. Always non-blocking.
+- **`issue:` only when you mean it.** If the fix breaks the `world` default, swallows the existing tests, or the "test" doesn't actually exercise the bug, that's a real issue. Don't use `issue:` for taste differences.
+
+> The **We-do** (and each author's tagged peer) handles the *branching-agreement* doc PR from Block C — that's where doc-style comments (Context clarity, hotfix specificity, branch-naming concreteness) belong. Block D's *solo* review is on the code PR, where "is it tested?" and "does it break a call site?" actually have teeth.
 
 ### Tone — what to flag
 
@@ -27,7 +58,7 @@ Watch reviews for:
 
 If you spot any of these, model the rewrite in your own review comment on the same PR (or in the debrief). The label vocabulary is most of the lesson, but tone is where it actually lands.
 
-## What "good" looks like for the response (Part 2)
+## What "good" looks like for the response (Part 3, step 1)
 
 Authors should:
 
@@ -42,9 +73,9 @@ Common author mistakes:
 - **Accepting every suggestion without thinking.** Authors are not obligated to agree. A `decline: I think keeping the longer name is clearer here` is a valid response.
 - **Force-pushing over fix-ups.** A force-push during review nukes the reviewer's context. Prefer additive commits during review; squash on merge if you must.
 
-## Merge style (Part 3)
+## Merge style (Part 3, step 2)
 
-GitHub's merge dropdown gives three options:
+Participants merge **both** PRs — their code PR and their Block C branching-agreement PR — using the style their agreement specified. GitHub's merge dropdown gives three options:
 
 | Option | Effect | Use when |
 |---|---|---|

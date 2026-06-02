@@ -18,10 +18,11 @@ You should leave this block able to:
 
 ## Pre-flight
 
-```bash
-git fetch --tags
-git checkout block-d-start
-```
+Block D happens mostly on GitHub, on top of the work from Block C — there's no
+checkpoint to switch to. Before you start, make sure:
+
+- Your Block C branching-agreement PR is open (and its link is in the cohort chat).
+- Your fork is cloned locally and the tests run: `pytest sample-app/tests -q`.
 
 If you'd like to read ahead: [`docs/pr-review-style.md`](../docs/pr-review-style.md).
 
@@ -31,7 +32,7 @@ Two PRs side by side on the projector:
 
 | Bad PR | Good PR |
 |---|---|
-| Title: "update stuff" | Title: "fix(greet): handle empty-string name without crashing" |
+| Title: "update stuff" | Title: "fix(greet): cap name length at 64 to bound Redis keys" |
 | 800-line diff across 12 files | 12-line diff in one file |
 | No description | Clear What / Why / How to test |
 | Mixes a rename, a bugfix, and a feature | One concern only |
@@ -55,13 +56,33 @@ Together, review one volunteer's branching-agreement PR from Block C using conve
 
 ## You do (40 min)
 
-### Part 1 — Review a peer's PR (20 min)
+In Block C you opened a *docs* PR. The skills in this block — "is it tested?",
+"does it break a call site?", choosing the merge style — only really bite on a
+*code* PR. So you'll ship a tiny one against the sample app, review a peer's, and
+merge both your PRs cleanly.
 
-1. Pick a peer's PR from Block C. (Coordinate with your cohort so no PR has more than one reviewer for this exercise.)
+### Part 1 — Ship a small code PR (10 min)
+
+The sample app's `/greet` accepts *any* `name`, including a blank one:
+`/greet?name=` cheerfully replies `Hello, !` and increments a `greet:` counter for
+the empty string. That's a small bug. Fix it, with a test.
+
+1. From your fork's `main`, branch: `git switch -c fix/greet-blank-name-<your-initials>`
+2. In [`sample-app/app.py`](../sample-app/app.py), make `/greet` return **HTTP 400** with a JSON error when `name` is blank or whitespace-only. Leave the no-`name` default (`"world"`) working.
+3. Add a regression test in [`sample-app/tests/test_app.py`](../sample-app/tests/test_app.py) asserting `400` on `/greet?name=`.
+4. Run `pytest sample-app/tests -q` — all green, including the existing `test_greet_defaults_to_world`.
+5. Commit with a Conventional Commits message: `fix(greet): reject blank name with 400`.
+6. Push to your fork and open a PR (**base = your fork's `main`**) using the [PR template](../.github/pull_request_template.md). Now the checklist is real: tests pass, and "How to test" is concrete (`pytest …` plus a `curl "…/greet?name="`). Drop the link in the cohort chat.
+
+> Keep it under 20 lines of diff. This is the "small, one-concern, tested" PR from the I-do — actually build one.
+
+### Part 2 — Review a peer's code PR (20 min)
+
+1. Pick a peer's code PR from the cohort chat. (Coordinate so no PR has more than one reviewer for this exercise.)
 2. **Read it slowly** — at least 5 minutes before writing anything. Look at:
-   - The diff
-   - The PR description (does it answer *what* and *why*?)
-   - The commit messages
+   - The diff: does the validation also accidentally break the `name`-defaults-to-`world` case?
+   - The test: would it actually have caught the bug? Does it cover whitespace, not just `""`?
+   - The PR description and commit message.
 3. Leave **≥ 4 conventional comments**, spanning at least **3 of**: `praise`, `suggestion`, `question`, `nitpick`, `issue`.
 4. Submit the review:
    - **Request changes** if there's at least one `issue:` comment
@@ -69,17 +90,12 @@ Together, review one volunteer's branching-agreement PR from Block C using conve
 
 > Watch your tone. Conventional comments help, but they're not magic — if you wouldn't say it in person, don't write it in the PR.
 
-### Part 2 — Address feedback on your own PR (15 min)
+### Part 3 — Respond, then merge (10 min)
 
-1. Read every comment on your PR (the one you opened in Block C).
-2. For each: react (`+1` for praise, reply to questions, push a fix-up commit for issues/suggestions you accept, reply with reasoning for ones you decline).
-3. Re-request review when you're ready.
-
-### Part 3 — Merge cleanly (5 min)
-
-1. Once approved, merge using the style your team agreement specified.
-2. If you specified `--no-ff` or rebase + merge: select it from the dropdown on the merge button. GitHub honors three options here — pick deliberately.
-3. Delete the branch after merge (GitHub offers a button; take it).
+1. On your **code** PR: read every comment and react (`+1` for praise, reply to questions, push a fix-up commit for issues/suggestions you accept, reply with reasoning for ones you decline). Re-request review when ready.
+2. Once each PR is approved, **merge both your code PR and your Block C branching-agreement PR** using the merge style your team agreement specified.
+   - If you specified `--no-ff`, squash, or rebase + merge: select it from the dropdown on the merge button. GitHub honors three options here — pick deliberately.
+3. Delete each branch after merge (GitHub offers a button; take it).
 
 ## Stretch challenge `[OPTIONAL]`
 

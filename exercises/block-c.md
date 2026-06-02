@@ -64,9 +64,9 @@ Open a real PR proposing a branching strategy for your own team.
    - **Release process** — how a change goes from `main` to production
    - **Hotfix rules** — what's the procedure when v-current is on fire?
 3. Commit with a message that follows [Conventional Commits](https://www.conventionalcommits.org/) (e.g., `docs: add team branching agreement`).
-4. Push the branch.
-5. Open a PR against `main` of this lab repo using the [PR template](../.github/pull_request_template.md). Fill out **What**, **Why**, **How to test** (yes — for a docs PR, "how to test" is "read the doc").
-6. Tag one of your peers as reviewer. Don't merge yet — Block D will use this PR.
+4. Push the branch to your fork (`git push -u origin feature/branching-agreement-<your-initials>`).
+5. Open a PR with **base = your fork's `main`** using the [PR template](../.github/pull_request_template.md). Fill out **What**, **Why**, **How to test** (yes — for a docs PR, "how to test" is "read the doc"). Drop the PR link in the cohort chat.
+6. Tag one of your peers as reviewer. Don't merge yet — Block D will review and merge this PR.
 
 > Stuck on which strategy to pick? See `docs/branching-strategies.md` for a decision matrix.
 
