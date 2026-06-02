@@ -26,8 +26,8 @@ services:
   redis:
     image: redis:7-alpine
     container_name: lab02-redis
-    ports:
-      - "6379:6379"
+    # No published port: the app reaches redis over the compose network, and
+    # publishing 6379 only invites a clash with a redis already running locally.
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
