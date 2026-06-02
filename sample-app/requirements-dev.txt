@@ -1,0 +1,5 @@
+# Local testing deps. Includes the runtime deps, plus the test toolchain.
+# These deliberately do NOT go into the Docker image (see Dockerfile / .dockerignore).
+-r requirements.txt
+pytest==8.3.3
+fakeredis==2.24.1
