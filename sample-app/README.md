@@ -18,6 +18,6 @@ curl "http://localhost:5050/greet?name=Ada"
 ## Test it
 
 ```bash
-pip install -r sample-app/requirements.txt
+pip install -r sample-app/requirements-dev.txt
 pytest sample-app/tests -q
 ```

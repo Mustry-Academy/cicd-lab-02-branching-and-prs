@@ -11,11 +11,26 @@ This is the second lab in the course. Like Lab 01, it deliberately stays out of 
 - Completed [Lab 01](https://github.com/mustry-academy/cicd-lab-01-git-fundamentals)
 - Pass [`cicd-preflight`](https://github.com/mustry-academy/cicd-preflight)
 
+## Working model: fork and PR
+
+Blocks C and D have you open real PRs, review your peers', and merge your own when
+approved — so everyone needs merge rights on the repo they're PRing into. The clean
+way to get that without handing a whole cohort write access to one repo: **work in
+your own fork, and open PRs inside it.**
+
+1. **Fork + clone** (sets `origin` to your fork, `upstream` to the lab repo):
+   ```bash
+   gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
+   cd cicd-lab-02-branching-and-prs
+   ```
+2. Branch and push to **your** fork (`git push -u origin <branch>`).
+3. Open PRs with **base = your fork's `main`**, compare = your branch.
+4. **Share each PR link in the cohort chat** so peers can find and review it.
+5. You own your fork, so you can merge your own PRs once they're approved.
+
 ## Quick start
 
 ```bash
-gh repo clone mustry-academy/cicd-lab-02-branching-and-prs
-cd cicd-lab-02-branching-and-prs
 cp .env.example .env
 docker compose up -d
 # Then:
@@ -27,11 +42,9 @@ To run the tests locally without Docker:
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
-pip install -r sample-app/requirements.txt
+pip install -r sample-app/requirements-dev.txt
 pytest sample-app/tests -q
 ```
-
-The lab also runs in [GitHub Codespaces](https://github.com/features/codespaces) — see [`.devcontainer/devcontainer.json`](./.devcontainer/devcontainer.json).
 
 ## Lab structure
 
@@ -71,7 +84,9 @@ cicd-lab-02-branching-and-prs/
 └── sample-app/                   ← Flask + redis web app, subject of the exercises
     ├── app.py
     ├── Dockerfile
-    ├── requirements.txt
+    ├── .dockerignore
+    ├── requirements.txt           ← runtime deps (flask, redis)
+    ├── requirements-dev.txt       ← + pytest, fakeredis for local testing
     ├── tests/
     │   └── test_app.py
     └── README.md
@@ -92,8 +107,7 @@ services:
       redis: { condition: service_healthy }
 
   redis:
-    image: redis:7-alpine
-    ports: ["6379:6379"]
+    image: redis:7-alpine   # no published port; reached over the compose network
 ```
 
 > **No CI in this lab.** We deliberately ship no `.github/workflows/`. CI is introduced from scratch in Lab 03 — having pre-built CI here would muddy that narrative.
