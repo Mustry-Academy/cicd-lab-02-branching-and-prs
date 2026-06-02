@@ -55,10 +55,8 @@ git checkout block-d-end
 ```
 cicd-lab-02-branching-and-prs/
 ├── README.md
-├── PLAN.md                       ← design doc for this lab
 ├── docker-compose.yml            ← Flask + redis dev stack
 ├── .env.example                  ← copy to .env before running
-├── .devcontainer/                ← Codespaces fallback config
 ├── .github/
 │   └── pull_request_template.md
 ├── exercises/
@@ -100,6 +98,6 @@ services:
 
 > **No CI in this lab.** We deliberately ship no `.github/workflows/`. CI is introduced from scratch in Lab 03 — having pre-built CI here would muddy that narrative.
 
-## Licence
+## License
 
 Apache 2.0 — see [`LICENSE`](./LICENSE).
