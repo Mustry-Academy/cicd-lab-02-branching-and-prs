@@ -90,34 +90,34 @@ A participant who can write a migration plan probably can run a migration. One w
 
 ## The code PR (reference solution)
 
-The main path has participants fix `lab.greeting.greet()` so a whitespace-only
-name falls back to the default instead of returning `Hello,    !`. A clean
-solution:
+The main path has participants fix `lab.display.format_reading()` so a null reading
+(comms loss / unread tag) shows a placeholder instead of throwing. A clean solution:
 
 ```python
-DEFAULT_NAME = "world"
+PLACEHOLDER = "--"
 
 
-def greet(name=None):
-    if name is not None:
-        name = name.strip()
-    if not name:
-        name = DEFAULT_NAME
-    return "Hello, %s!" % name
+def format_reading(value, units):
+    if value is None:
+        return "%s %s" % (PLACEHOLDER, units)
+    try:
+        return "%.1f %s" % (float(value), units)
+    except (ValueError, TypeError):
+        return "%s %s" % (PLACEHOLDER, units)
 ```
 
 What to look for / push on:
 
-- **The default still works.** `greet()` and `greet("")` must still return `Hello, world!`. A naive fix like `name = name.strip()` *without* the `is not None` guard throws `AttributeError` on `greet()` (None has no `.strip()`). If `validate.sh` is green but the no-arg case now breaks, that's an `issue:` — and a great teaching moment that "parses cleanly" is not "works."
-- **Whitespace, not just empty.** The whole point is `"   "`. A change that only re-handles `""` (already handled) hasn't fixed anything.
+- **Normal readings still format.** `format_reading(-6.5, "°C")` must still return `"-6.5 °C"` (one decimal, units appended). A fix that returns the placeholder for valid numbers — or quietly drops the rounding — has broken the happy path. If `validate.sh` is green but a real value renders wrong, that's an `issue:` — and a great reminder that "parses cleanly" is not "works."
+- **Null, not just zero.** The whole point is `None` (bad quality / comms loss). `0` is a *valid* reading and must still format as `"0.0 °C"` — a fix that treats `0` as missing is wrong.
 - **One concern, small diff.** If the PR also renames things or reformats the module, it's no longer the small scoped PR the block is teaching — call it out.
 
-> **On testing.** This lab's green/red signal is `scripts/validate.sh`, which checks
+> **On testing.** This lab's green/red signal is `ops/validate.sh`, which checks
 > that JSON is valid and Python parses — *not* behavior. That's deliberate: automated
 > behavior tests (and a real "tests pass" gate in CI) arrive in Lab 03. So in the
 > review, "is it tested?" becomes "did they verify it, and is the verification
 > something I could repeat?" If a participant *wants* to prove the behavior, the
-> honest manual check is the gateway's **Script Console** (`lab.greeting.greet("  ")`),
+> honest manual check is the gateway's **Script Console** (`lab.display.format_reading(None, "°C")`),
 > but that's optional and not required to pass the exercise.
 
 **Option B (view edit).** Some participants edit the Overview `view.json` instead.
@@ -131,13 +131,13 @@ The You-do asks for a few genuinely helpful comments — at minimum a `praise:` 
 
 ### A reference review skeleton
 
-For most greeting-fix PRs, a strong review will include something like:
+For most null-reading PRs, a strong review will include something like:
 
 - **One `praise:`** — something genuinely good. A focused diff, or keeping the `None` guard. Praise is not throwaway — it tells the author what's working.
-- **At least one `question:`** — there's almost always something genuinely unclear. "question: should a whitespace name fall back to `world`, or be rejected outright? What does the product want?" Questions surface assumptions the author didn't realize they had.
-- **At least one `suggestion:`** — a specific change the author could make. Not a vague "this could be better" — a concrete alternative. "suggestion: collapse the two ifs — `name = (name or '').strip() or DEFAULT_NAME`."
+- **At least one `question:`** — there's almost always something genuinely unclear. "question: should a null reading show `--`, or hold the last-known value? What do operators expect on comms loss?" Questions surface assumptions the author didn't realize they had.
+- **At least one `suggestion:`** — a specific change the author could make. Not a vague "this could be better" — a concrete alternative. "suggestion: reuse `lab.util.to_float` here instead of a second try/except — it already does the None-and-bad-input dance."
 - **Optionally `nitpick:`** — for small style things. PEP8, the docstring wording, `is None` vs `== None`. Always non-blocking.
-- **`issue:` only when you mean it.** If the fix breaks the no-arg default (`AttributeError` on `greet()`), that's a real issue. Don't use `issue:` for taste differences.
+- **`issue:` only when you mean it.** If the fix breaks valid readings (placeholder for real numbers, or lost rounding), that's a real issue. Don't use `issue:` for taste differences.
 
 > The **We-do** rehearses reviewing on a sample PR, and each author's *tagged peer* handles the **branching-agreement doc PR** — that's where doc-style comments (Context clarity, hotfix specificity, branch-naming concreteness) belong. The you-do's *solo* review (step 3) is on the **code PR**, where "does it break a call site?" actually has teeth.
 
@@ -145,7 +145,7 @@ For most greeting-fix PRs, a strong review will include something like:
 
 Watch reviews for:
 
-- **Sarcasm or condescension.** "Why didn't you just strip it?" reads as judgmental. Better: "question: any reason to keep the two separate ifs over a single `(name or '').strip()`?"
+- **Sarcasm or condescension.** "Why didn't you just guard the None?" reads as judgmental. Better: "question: any reason to keep the explicit `None` check over leaning on `lab.util.to_float`?"
 - **Vague criticism.** "This isn't very specific" is not actionable. Better: "suggestion: 'feature branches' is generic — would you commit to a specific pattern like `feature/<ticket-id>-<slug>`?"
 - **Drive-by comments without context.** A single `?` or `huh?` is unhelpful. Push them to expand.
 - **Blocker comments dressed as nitpicks.** If the comment would prevent merge, it shouldn't be labeled `nitpick:` — that's misleading the author.
@@ -164,7 +164,7 @@ Authors should:
 Common author mistakes:
 
 - **Marking conversations as resolved without responding.** Push back: even a `+1` reply is more communicative than silent resolution.
-- **Accepting every suggestion without thinking.** Authors are not obligated to agree. A `decline: I think the two explicit ifs read clearer here` is a valid response.
+- **Accepting every suggestion without thinking.** Authors are not obligated to agree. A `decline: I think the explicit None check reads clearer than the helper here` is a valid response.
 - **Force-pushing over fix-ups.** A force-push during review nukes the reviewer's context. Prefer additive commits during review; squash on merge if you must.
 
 ## Merge style (you-do step 4)

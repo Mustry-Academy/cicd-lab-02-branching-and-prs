@@ -5,7 +5,7 @@ Day 1 of the [CI/CD for Ignition Masterclass](https://github.com/mustry-academy/
 > Compare branching strategies side by side, and learn to write a pull request a reviewer actually enjoys reading.
 
 This is the second lab in the course. The subject of the exercises is a tiny
-**Ignition project** — one Perspective view and a couple of small Python script
+**Ignition project** — a Perspective HMI screen (a refrigeration-plant overview) and a couple of small Python script
 libraries — running on a single local gateway you spin up yourself. Everything
 that makes Ignition heavy (gateway config, modules, databases, deploys) is
 deliberately **abstracted away** so you can focus on the Git workflow:
@@ -44,7 +44,7 @@ Spin up your gateway (optional, but it makes the project tangible):
 
 ```bash
 cp .env.example .env
-scripts/setup.sh        # boots one Ignition gateway, waits for RUNNING, prints the URL + login
+ops/setup.sh        # boots one Ignition gateway, waits for RUNNING, prints the URL + login
 # open http://localhost:8088  → log in with the .env credentials
 ```
 
@@ -52,15 +52,28 @@ Before opening any PR, run the validator — the green/red signal this lab uses 
 place of a test suite (gateway-free, runs in a second):
 
 ```bash
-scripts/validate.sh     # every project file must be valid JSON / parse as Python
+ops/validate.sh     # every project file must be valid JSON / parse as Python
 ```
 
 Stop the gateway when you're done:
 
 ```bash
-scripts/teardown.sh             # stop (keeps the gateway's data volume)
-scripts/teardown.sh --volumes   # stop and wipe gateway state for a fresh start
+ops/teardown.sh             # stop (keeps the gateway's data volume)
+ops/teardown.sh --volumes   # stop and wipe gateway state for a fresh start
 ```
+
+### Picking up your edits
+
+A running gateway does **not** auto-detect changes to files under `projects/`. After
+editing a view or script, push them to the gateway with a project scan:
+
+```bash
+ops/scan.sh        # triggers a project scan (needs an API key — see .env.example)
+```
+
+`ops/setup.sh` runs this scan for you on boot. The scan API needs a one-time
+Ignition API key (instructions in `.env.example`); if you'd rather not create one,
+`docker compose restart` reloads the project from disk without a key — just slower.
 
 ## Lab structure
 
@@ -88,15 +101,16 @@ cicd-lab-02-branching-and-prs/
 │   └── pr-review-style.md
 ├── instructor-notes/             ← answer key (read after solo work)
 │   └── lab-key.md
-├── scripts/
+├── ops/
 │   ├── setup.sh                  ← boot the gateway and wait for RUNNING
+│   ├── scan.sh                   ← push project-file edits to the running gateway
 │   ├── teardown.sh               ← stop the gateway (--volumes to wipe state)
 │   └── validate.sh               ← the PR green/red check (valid JSON + parseable Python)
 └── projects/                     ← the Ignition project (bind-mounted into the gateway)
     └── lab-project/
         ├── project.json
-        ├── com.inductiveautomation.perspective/   ← one Perspective view + page config
-        └── ignition/script-python/lab/            ← Python scripts (you edit greeting; util is a helper)
+        ├── com.inductiveautomation.perspective/   ← the Perspective HMI dashboard + page config
+        └── ignition/script-python/lab/            ← Python scripts (you edit display; util is a helper)
 ```
 
 ## The Compose stack
@@ -121,7 +135,7 @@ volumes:
 
 > The gateway regenerates a `.resources/` blob store and other operational files inside `projects/` as it runs. Those are gateway-owned churn and are gitignored — if you ever see them in `git status`, your ignore rules are off.
 
-> **No CI in this lab.** We deliberately ship no `.github/workflows/`. `scripts/validate.sh` is something *you* run; Lab 03 turns it into a required status check no one can merge past. Having pre-built CI here would muddy that narrative.
+> **No CI in this lab.** We deliberately ship no `.github/workflows/`. `ops/validate.sh` is something *you* run; Lab 03 turns it into a required status check no one can merge past. Having pre-built CI here would muddy that narrative.
 
 ## License
 
