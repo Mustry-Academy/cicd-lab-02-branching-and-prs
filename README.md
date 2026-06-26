@@ -4,16 +4,15 @@ Day 1 of the [CI/CD for Ignition Masterclass](https://github.com/mustry-academy/
 
 > Compare branching strategies side by side, and learn to write a pull request a reviewer actually enjoys reading.
 
-This is the second lab in the course. The subject of the exercises is a tiny
-**Ignition project** — a Perspective HMI screen (a refrigeration-plant overview) and a couple of small Python script
-libraries — running on a single local gateway you spin up yourself. Everything
-that makes Ignition heavy (gateway config, modules, databases, deploys) is
-deliberately **abstracted away** so you can focus on the Git workflow:
-branching, pull requests, and review. The full Ignition file-based deploy story
-arrives in [Lab 04](https://github.com/mustry-academy/cicd-lab-04-ignition-file-based-deploy).
-
-You don't need to know Ignition to complete this lab. The code you edit is plain
-Python; the gateway is here only to make the project files *real*.
+This is the second lab in the course. The subject of the exercises is a real (if
+small) **Ignition project** — a Perspective HMI screen (a refrigeration-plant
+overview) and a couple of Python script libraries — running on a local gateway you
+spin up yourself. You don't need prior Ignition experience: the gateway's
+*administrative* complexity (config, modules, databases, deploys) is deliberately
+**abstracted away**, and what you actually edit is approachable — a small Python
+function, or a property on a view. The point of the lab is the **Git workflow**
+around those project files: branching, pull requests, and review. The full Ignition
+file-based deploy story arrives in [Lab 04](https://github.com/mustry-academy/cicd-lab-04-ignition-file-based-deploy).
 
 ## Prerequisites
 
@@ -64,16 +63,19 @@ ops/teardown.sh --volumes   # stop and wipe gateway state for a fresh start
 
 ### Picking up your edits
 
-A running gateway does **not** auto-detect changes to files under `projects/`. After
-editing a view or script, push them to the gateway with a project scan:
+A running gateway does **not** auto-detect changes to files under `projects/`. The
+simplest way to load your edits is to reload the gateway — no API key needed:
 
 ```bash
-ops/scan.sh        # triggers a project scan (needs an API key — see .env.example)
+docker compose restart      # reload the project from disk
 ```
 
-`ops/setup.sh` runs this scan for you on boot. The scan API needs a one-time
-Ignition API key (instructions in `.env.example`); if you'd rather not create one,
-`docker compose restart` reloads the project from disk without a key — just slower.
+If you'd rather hot-reload without a full restart, set up a one-time Ignition API
+key (optional — instructions in `.env.example`) and trigger a project scan instead:
+
+```bash
+ops/scan.sh                 # faster reload via the gateway's scan API
+```
 
 ## Lab structure
 
