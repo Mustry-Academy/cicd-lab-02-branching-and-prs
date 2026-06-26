@@ -7,7 +7,11 @@
 #
 # Checks:
 #   1. every *.json under projects/ is valid JSON
-#   2. every code.py under projects/ parses as Python
+#   2. every code.py under projects/ parses as Python 3
+#
+# Note: Ignition runs Jython 2.7, but this is a fast syntax sanity check, not a
+# Jython validator. Write Python-3-parseable syntax (the lab's scripts already
+# are); Jython-2-only constructs like `print "x"` would report a false failure.
 #
 # Exit code is 0 when everything is valid, 1 otherwise.
 
@@ -34,7 +38,7 @@ done < <(find projects -name '*.json')
 echo "→ Validating Python scripts under projects/ ..."
 while IFS= read -r f; do
   if ! python3 -c "import ast,sys; ast.parse(open(sys.argv[1]).read())" "$f" 2>/dev/null; then
-    echo "  ✗ syntax error: $f"
+    echo "  ✗ syntax error (must be Python 3-parseable): $f"
     fail=1
   fi
 done < <(find projects -name 'code.py')
