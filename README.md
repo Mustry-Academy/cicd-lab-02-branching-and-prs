@@ -1,19 +1,29 @@
 # Lab 02 — Branching and Pull Requests
 
-Day 1, Blocks C and D of the [CI/CD for Ignition Masterclass](https://github.com/mustry-academy/cicd-masterclass).
+Day 1 of the [CI/CD for Ignition Masterclass](https://github.com/mustry-academy/cicd-masterclass).
 
 > Compare branching strategies side by side, and learn to write a pull request a reviewer actually enjoys reading.
 
-This is the second lab in the course. Like Lab 01, it deliberately stays out of Ignition territory — the demo stack is a tiny Flask + Redis web app, used as the subject of our branching and PR exercises. Ignition-specific deployments arrive in Lab 04.
+This is the second lab in the course. The subject of the exercises is a tiny
+**Ignition project** — one Perspective view and a couple of small Python script
+libraries — running on a single local gateway you spin up yourself. Everything
+that makes Ignition heavy (gateway config, modules, databases, deploys) is
+deliberately **abstracted away** so you can focus on the Git workflow:
+branching, pull requests, and review. The full Ignition file-based deploy story
+arrives in [Lab 04](https://github.com/mustry-academy/cicd-lab-04-ignition-file-based-deploy).
+
+You don't need to know Ignition to complete this lab. The code you edit is plain
+Python; the gateway is here only to make the project files *real*.
 
 ## Prerequisites
 
 - Completed [Lab 01](https://github.com/mustry-academy/cicd-lab-01-git-fundamentals)
 - Pass [`cicd-preflight`](https://github.com/mustry-academy/cicd-preflight)
+- Docker (with the Compose V2 plugin) for the optional gateway — ~1.5 GB RAM is plenty for the single gateway
 
 ## Working model: fork and PR
 
-Blocks C and D have you open real PRs, review your peers', and merge your own when
+This lab has you open real PRs, review your peers', and merge your own when
 approved — so everyone needs merge rights on the repo they're PRing into. The clean
 way to get that without handing a whole cohort write access to one repo: **work in
 your own fork, and open PRs inside it.**
@@ -30,87 +40,88 @@ your own fork, and open PRs inside it.**
 
 ## Quick start
 
+Spin up your gateway (optional, but it makes the project tangible):
+
 ```bash
 cp .env.example .env
-docker compose up -d
-# Then:
-curl http://localhost:5050/health         # → {"status":"ok"}
-curl "http://localhost:5050/greet?name=Ada"
+scripts/setup.sh        # boots one Ignition gateway, waits for RUNNING, prints the URL + login
+# open http://localhost:8088  → log in with the .env credentials
 ```
 
-To run the tests locally without Docker:
+Before opening any PR, run the validator — the green/red signal this lab uses in
+place of a test suite (gateway-free, runs in a second):
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
-pip install -r sample-app/requirements-dev.txt
-pytest sample-app/tests -q
+scripts/validate.sh     # every project file must be valid JSON / parse as Python
+```
+
+Stop the gateway when you're done:
+
+```bash
+scripts/teardown.sh             # stop (keeps the gateway's data volume)
+scripts/teardown.sh --volumes   # stop and wipe gateway state for a fresh start
 ```
 
 ## Lab structure
 
-| Block | Topic | Exercise |
-|---|---|---|
-| C | Branching strategies compared: Git Flow vs GitHub Flow vs trunk-based | [`exercises/block-c.md`](./exercises/block-c.md) |
-| D | Pull requests done right: scope, review, and merge hygiene | [`exercises/block-d.md`](./exercises/block-d.md) |
+The whole lab lives in one file, [`exercises/lab.md`](./exercises/lab.md): a single
+**I do / we do / you do** flow covering two linked topics —
 
-## Checkpoints
+- **Branching strategies** — Git Flow vs GitHub Flow vs trunk-based, captured in a one-page team agreement
+- **Pull requests** — scope, review, and merge hygiene
 
-```bash
-git fetch --tags
-git checkout block-c-start
-git checkout block-c-end
-git checkout block-d-start
-git checkout block-d-end
-```
+The you-do ties them together: you write your team's branching rules, then open, review, and merge real PRs that follow them.
 
 ## Repo layout
 
 ```
 cicd-lab-02-branching-and-prs/
 ├── README.md
-├── docker-compose.yml            ← Flask + redis dev stack
+├── docker-compose.yml            ← one Ignition gateway (named volume + bind-mounted projects/)
 ├── .env.example                  ← copy to .env before running
 ├── .github/
 │   └── pull_request_template.md
 ├── exercises/
-│   ├── block-c.md
-│   └── block-d.md
+│   └── lab.md                    ← the lab (Parts 1 and 2)
 ├── docs/                         ← reference reading
 │   ├── branching-strategies.md
 │   └── pr-review-style.md
-├── instructor-notes/             ← answer keys (read after solo work)
-│   ├── block-c-key.md
-│   └── block-d-key.md
-└── sample-app/                   ← Flask + redis web app, subject of the exercises
-    ├── app.py
-    ├── Dockerfile
-    ├── .dockerignore
-    ├── requirements.txt           ← runtime deps (flask, redis)
-    ├── requirements-dev.txt       ← + pytest, fakeredis for local testing
-    ├── tests/
-    │   └── test_app.py
-    └── README.md
+├── instructor-notes/             ← answer key (read after solo work)
+│   └── lab-key.md
+├── scripts/
+│   ├── setup.sh                  ← boot the gateway and wait for RUNNING
+│   ├── teardown.sh               ← stop the gateway (--volumes to wipe state)
+│   └── validate.sh               ← the PR green/red check (valid JSON + parseable Python)
+└── projects/                     ← the Ignition project (bind-mounted into the gateway)
+    └── lab-project/
+        ├── project.json
+        ├── com.inductiveautomation.perspective/   ← one Perspective view + page config
+        └── ignition/script-python/lab/            ← Python scripts (you edit greeting; util is a helper)
 ```
 
 ## The Compose stack
 
-A two-service development stack: a tiny Flask app and a Redis sidecar. The app exposes `/health` and `/greet?name=<name>`; `/greet` increments a per-name counter in Redis so the redis service has something to do.
+A single Ignition 8.3 gateway. Two things to understand about how it's wired:
+
+- **The gateway's own config and runtime state live in a named volume** (`ignition-data`) that the gateway generates itself on first boot. It never lands in the repo — which is exactly why you never see or touch gateway config in this lab. (That's Lab 04's subject.)
+- **Only `./projects` is bind-mounted** from the repo into the gateway. So the project files you edit on your laptop *are* the project files the gateway runs.
 
 ```yaml
 services:
-  app:
-    build: ./sample-app
-    ports: ["5050:5050"]
-    environment:
-      REDIS_URL: "redis://redis:6379/0"
-    depends_on:
-      redis: { condition: service_healthy }
+  ignition:
+    image: inductiveautomation/ignition:8.3.6
+    ports: ["8088:8088"]
+    volumes:
+      - ignition-data:/usr/local/bin/ignition/data        # gateway-owned, self-generated, not in git
+      - ./projects:/usr/local/bin/ignition/data/projects   # the one thing you edit
 
-  redis:
-    image: redis:7-alpine   # no published port; reached over the compose network
+volumes:
+  ignition-data:
 ```
 
-> **No CI in this lab.** We deliberately ship no `.github/workflows/`. CI is introduced from scratch in Lab 03 — having pre-built CI here would muddy that narrative.
+> The gateway regenerates a `.resources/` blob store and other operational files inside `projects/` as it runs. Those are gateway-owned churn and are gitignored — if you ever see them in `git status`, your ignore rules are off.
+
+> **No CI in this lab.** We deliberately ship no `.github/workflows/`. `scripts/validate.sh` is something *you* run; Lab 03 turns it into a required status check no one can merge past. Having pre-built CI here would muddy that narrative.
 
 ## License
 
