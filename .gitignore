@@ -19,4 +19,10 @@ __pycache__/
 *.pyo
 .venv/
 venv/
-.pytest_cache/
+
+# Ignition gateway-generated artifacts (regenerated on boot/scan — never commit).
+# The gateway writes these into the bind-mounted projects/ directory.
+**/.resources/
+**/.metadata/
+**/*.digest.json
+migration-log-*.md

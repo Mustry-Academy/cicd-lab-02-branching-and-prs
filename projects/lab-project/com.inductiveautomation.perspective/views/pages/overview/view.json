@@ -1,0 +1,993 @@
+{
+  "custom": {},
+  "params": {},
+  "props": {
+    "defaultSize": {
+      "height": 800,
+      "width": 1280
+    }
+  },
+  "root": {
+    "type": "ia.container.flex",
+    "meta": {
+      "name": "root"
+    },
+    "props": {
+      "direction": "column",
+      "style": {
+        "backgroundColor": "#0f172a",
+        "gap": "20px",
+        "padding": "24px"
+      }
+    },
+    "children": [
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Header"
+        },
+        "position": {
+          "basis": "60px",
+          "shrink": 0
+        },
+        "props": {
+          "alignItems": "center",
+          "justify": "space-between",
+          "style": {
+            "gap": "12px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Brand"
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "gap": "2px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Title"
+                },
+                "props": {
+                  "text": "Mustry Academy",
+                  "style": {
+                    "color": "#f8fafc",
+                    "fontSize": "24px",
+                    "fontWeight": 700,
+                    "letterSpacing": "0.5px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Subtitle"
+                },
+                "props": {
+                  "text": "Lab 02 — Branching & Pull Requests",
+                  "style": {
+                    "color": "#94a3b8",
+                    "fontSize": "12px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.8px",
+                    "textTransform": "uppercase"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Status"
+            },
+            "props": {
+              "alignItems": "center",
+              "justify": "flex-end",
+              "style": {
+                "gap": "12px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Live"
+                },
+                "props": {
+                  "text": "● LIVE",
+                  "style": {
+                    "color": "#22c55e",
+                    "fontSize": "12px",
+                    "fontWeight": 700,
+                    "letterSpacing": "1px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Clock"
+                },
+                "propConfig": {
+                  "props.text": {
+                    "binding": {
+                      "type": "expr",
+                      "config": {
+                        "expression": "dateFormat(now(1000), 'EEE HH:mm:ss')"
+                      }
+                    }
+                  }
+                },
+                "props": {
+                  "text": "—",
+                  "style": {
+                    "color": "#e2e8f0",
+                    "fontFamily": "monospace",
+                    "fontSize": "14px",
+                    "fontWeight": 500
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "GreetingCard"
+        },
+        "position": {
+          "basis": "128px",
+          "shrink": 0
+        },
+        "props": {
+          "direction": "column",
+          "justify": "center",
+          "style": {
+            "background": "linear-gradient(135deg, #1e293b 0%, #0b3a53 100%)",
+            "border": "1px solid #334155",
+            "borderRadius": "12px",
+            "gap": "6px",
+            "padding": "20px 28px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Caption"
+            },
+            "props": {
+              "text": "FROM lab.greeting.greet()",
+              "style": {
+                "color": "#7dd3fc",
+                "fontSize": "11px",
+                "fontWeight": 600,
+                "letterSpacing": "2px"
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Message"
+            },
+            "propConfig": {
+              "props.text": {
+                "binding": {
+                  "type": "expr",
+                  "config": {
+                    "expression": "runScript('lab.greeting.greet', 0, 'Ada')"
+                  }
+                }
+              }
+            },
+            "props": {
+              "text": "Hello, Ada!",
+              "style": {
+                "color": "#f8fafc",
+                "fontSize": "40px",
+                "fontWeight": 700
+              }
+            }
+          },
+          {
+            "type": "ia.display.label",
+            "meta": {
+              "name": "Hint"
+            },
+            "props": {
+              "text": "This banner is bound to the greeting script — edit it, restart the gateway, and watch it change.",
+              "style": {
+                "color": "#94a3b8",
+                "fontSize": "12px"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "KPIs"
+        },
+        "position": {
+          "basis": "112px",
+          "shrink": 0
+        },
+        "props": {
+          "style": {
+            "gap": "16px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "OpenPRs"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "backgroundColor": "#1e293b",
+                "border": "1px solid #334155",
+                "borderRadius": "12px",
+                "gap": "6px",
+                "padding": "18px 20px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "OPEN PRs",
+                  "style": {
+                    "color": "#94a3b8",
+                    "fontSize": "11px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.5px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "props": {
+                  "text": "3",
+                  "style": {
+                    "color": "#f8fafc",
+                    "fontSize": "32px",
+                    "fontWeight": 700,
+                    "lineHeight": "1.0"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Delta"
+                },
+                "props": {
+                  "text": "▲ 2 since yesterday",
+                  "style": {
+                    "color": "#22c55e",
+                    "fontSize": "11px"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Merged"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "backgroundColor": "#1e293b",
+                "border": "1px solid #334155",
+                "borderRadius": "12px",
+                "gap": "6px",
+                "padding": "18px 20px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "MERGED THIS WEEK",
+                  "style": {
+                    "color": "#94a3b8",
+                    "fontSize": "11px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.5px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "props": {
+                  "text": "12",
+                  "style": {
+                    "color": "#f8fafc",
+                    "fontSize": "32px",
+                    "fontWeight": 700,
+                    "lineHeight": "1.0"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Delta"
+                },
+                "props": {
+                  "text": "▲ on track for the sprint",
+                  "style": {
+                    "color": "#22c55e",
+                    "fontSize": "11px"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Branches"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "backgroundColor": "#1e293b",
+                "border": "1px solid #334155",
+                "borderRadius": "12px",
+                "gap": "6px",
+                "padding": "18px 20px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "ACTIVE BRANCHES",
+                  "style": {
+                    "color": "#94a3b8",
+                    "fontSize": "11px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.5px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "props": {
+                  "text": "5",
+                  "style": {
+                    "color": "#f8fafc",
+                    "fontSize": "32px",
+                    "fontWeight": 700,
+                    "lineHeight": "1.0"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Delta"
+                },
+                "props": {
+                  "text": "2 stale — prune them",
+                  "style": {
+                    "color": "#94a3b8",
+                    "fontSize": "11px"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "ReviewTime"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "backgroundColor": "#1e293b",
+                "border": "1px solid #334155",
+                "borderRadius": "12px",
+                "gap": "6px",
+                "padding": "18px 20px"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Label"
+                },
+                "props": {
+                  "text": "AVG REVIEW TIME",
+                  "style": {
+                    "color": "#94a3b8",
+                    "fontSize": "11px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.5px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Value"
+                },
+                "props": {
+                  "text": "4h",
+                  "style": {
+                    "color": "#f8fafc",
+                    "fontSize": "32px",
+                    "fontWeight": 700,
+                    "lineHeight": "1.0"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Delta"
+                },
+                "props": {
+                  "text": "▼ down from 9h",
+                  "style": {
+                    "color": "#f59e0b",
+                    "fontSize": "11px"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "ia.container.flex",
+        "meta": {
+          "name": "Panels"
+        },
+        "position": {
+          "grow": 1
+        },
+        "props": {
+          "style": {
+            "gap": "16px"
+          }
+        },
+        "children": [
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "RecentPRs"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 2
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "backgroundColor": "#1e293b",
+                "border": "1px solid #334155",
+                "borderRadius": "12px",
+                "overflow": "hidden",
+                "padding": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "PanelTitle"
+                },
+                "position": {
+                  "basis": "44px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "RECENT PULL REQUESTS",
+                  "style": {
+                    "alignItems": "center",
+                    "backgroundColor": "#172033",
+                    "borderBottom": "1px solid #334155",
+                    "color": "#cbd5e1",
+                    "display": "flex",
+                    "fontSize": "11px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.5px",
+                    "padding": "0 20px"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row1"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "borderBottom": "1px solid #273349",
+                    "gap": "12px",
+                    "padding": "0 20px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "props": {
+                      "text": "●",
+                      "style": {
+                        "color": "#22c55e",
+                        "fontSize": "12px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "PRTitle"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "fix(greeting): ignore whitespace-only names",
+                      "style": {
+                        "color": "#e2e8f0",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Author"
+                    },
+                    "props": {
+                      "text": "@ada",
+                      "style": {
+                        "color": "#94a3b8",
+                        "fontSize": "12px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Badge"
+                    },
+                    "props": {
+                      "text": "APPROVED",
+                      "style": {
+                        "backgroundColor": "#14532d",
+                        "borderRadius": "4px",
+                        "color": "#4ade80",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "3px 8px"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row2"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "borderBottom": "1px solid #273349",
+                    "gap": "12px",
+                    "padding": "0 20px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "props": {
+                      "text": "●",
+                      "style": {
+                        "color": "#f59e0b",
+                        "fontSize": "12px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "PRTitle"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "docs: add team branching agreement",
+                      "style": {
+                        "color": "#e2e8f0",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Author"
+                    },
+                    "props": {
+                      "text": "@grace",
+                      "style": {
+                        "color": "#94a3b8",
+                        "fontSize": "12px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Badge"
+                    },
+                    "props": {
+                      "text": "IN REVIEW",
+                      "style": {
+                        "backgroundColor": "#422006",
+                        "borderRadius": "4px",
+                        "color": "#fbbf24",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "3px 8px"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Row3"
+                },
+                "position": {
+                  "basis": "52px",
+                  "shrink": 0
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "gap": "12px",
+                    "padding": "0 20px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Dot"
+                    },
+                    "props": {
+                      "text": "●",
+                      "style": {
+                        "color": "#64748b",
+                        "fontSize": "12px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "PRTitle"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "feat(overview): add KPI cards to the dashboard",
+                      "style": {
+                        "color": "#e2e8f0",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Author"
+                    },
+                    "props": {
+                      "text": "@linus",
+                      "style": {
+                        "color": "#94a3b8",
+                        "fontSize": "12px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Badge"
+                    },
+                    "props": {
+                      "text": "DRAFT",
+                      "style": {
+                        "backgroundColor": "#1e293b",
+                        "border": "1px solid #475569",
+                        "borderRadius": "4px",
+                        "color": "#94a3b8",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "3px 8px"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ia.container.flex",
+            "meta": {
+              "name": "Pipeline"
+            },
+            "position": {
+              "basis": "0",
+              "grow": 1
+            },
+            "props": {
+              "direction": "column",
+              "style": {
+                "backgroundColor": "#1e293b",
+                "border": "1px solid #334155",
+                "borderRadius": "12px",
+                "overflow": "hidden",
+                "padding": "0"
+              }
+            },
+            "children": [
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "PanelTitle"
+                },
+                "position": {
+                  "basis": "44px",
+                  "shrink": 0
+                },
+                "props": {
+                  "text": "REVIEW PIPELINE",
+                  "style": {
+                    "alignItems": "center",
+                    "backgroundColor": "#172033",
+                    "borderBottom": "1px solid #334155",
+                    "color": "#cbd5e1",
+                    "display": "flex",
+                    "fontSize": "11px",
+                    "fontWeight": 600,
+                    "letterSpacing": "1.5px",
+                    "padding": "0 20px"
+                  }
+                }
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "Bars"
+                },
+                "position": {
+                  "grow": 1
+                },
+                "props": {
+                  "direction": "column",
+                  "justify": "center",
+                  "style": {
+                    "gap": "18px",
+                    "padding": "20px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Stage1"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "L"
+                        },
+                        "props": {
+                          "text": "Opened → Reviewed   75%",
+                          "style": {
+                            "color": "#cbd5e1",
+                            "fontSize": "12px"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.progress",
+                        "meta": {
+                          "name": "Bar"
+                        },
+                        "props": {
+                          "value": 75,
+                          "maximum": 100,
+                          "color": "#38bdf8",
+                          "bgColor": "#0f172a",
+                          "style": {
+                            "borderRadius": "6px",
+                            "height": "8px"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Stage2"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "L"
+                        },
+                        "props": {
+                          "text": "Reviewed → Merged   50%",
+                          "style": {
+                            "color": "#cbd5e1",
+                            "fontSize": "12px"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.progress",
+                        "meta": {
+                          "name": "Bar"
+                        },
+                        "props": {
+                          "value": 50,
+                          "maximum": 100,
+                          "color": "#22c55e",
+                          "bgColor": "#0f172a",
+                          "style": {
+                            "borderRadius": "6px",
+                            "height": "8px"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "ia.container.flex",
+                    "meta": {
+                      "name": "Stage3"
+                    },
+                    "props": {
+                      "direction": "column",
+                      "style": {
+                        "gap": "6px"
+                      }
+                    },
+                    "children": [
+                      {
+                        "type": "ia.display.label",
+                        "meta": {
+                          "name": "L"
+                        },
+                        "props": {
+                          "text": "validate.sh green   88%",
+                          "style": {
+                            "color": "#cbd5e1",
+                            "fontSize": "12px"
+                          }
+                        }
+                      },
+                      {
+                        "type": "ia.display.progress",
+                        "meta": {
+                          "name": "Bar"
+                        },
+                        "props": {
+                          "value": 88,
+                          "maximum": 100,
+                          "color": "#a78bfa",
+                          "bgColor": "#0f172a",
+                          "style": {
+                            "borderRadius": "6px",
+                            "height": "8px"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
