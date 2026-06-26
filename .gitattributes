@@ -16,3 +16,4 @@
 *.modl     binary
 *.zip      binary
 *.idb      binary
+*.bin      binary
