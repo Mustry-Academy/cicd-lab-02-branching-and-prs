@@ -64,6 +64,14 @@ if [ $attempts -ge $max_attempts ]; then
   exit 1
 fi
 
+# ---- initial project scan -------------------------------------------------
+# Ask the gateway to pick up the bind-mounted project files. Needs an API key
+# (see .env / ops/scan.sh); harmlessly skipped with a hint if none is set yet.
+if [ -x "$PROJECT_ROOT/ops/scan.sh" ]; then
+  echo ""
+  "$PROJECT_ROOT/ops/scan.sh" || true
+fi
+
 # ---- done -----------------------------------------------------------------
 USER_VAL="$(grep -E '^GATEWAY_ADMIN_USERNAME=' .env | cut -d= -f2-)"
 PASS_VAL="$(grep -E '^GATEWAY_ADMIN_PASSWORD=' .env | cut -d= -f2-)"
@@ -76,6 +84,7 @@ echo ""
 echo "Useful commands:"
 echo "  docker compose ps                 # container state"
 echo "  docker logs -f lab02-ignition     # tail gateway logs"
-echo "  scripts/validate.sh               # validate project files (the PR check)"
-echo "  scripts/teardown.sh               # stop the gateway"
-echo "  scripts/teardown.sh --volumes     # stop and wipe gateway state"
+echo "  ops/validate.sh               # validate project files (the PR check)"
+echo "  ops/scan.sh                   # tell the gateway to pick up project-file edits"
+echo "  ops/teardown.sh               # stop the gateway"
+echo "  ops/teardown.sh --volumes     # stop and wipe gateway state"
