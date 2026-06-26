@@ -17,7 +17,7 @@ Keep it short; the goal is to make the reviewer's job easy.
 
 ## Checklist
 
-- [ ] Tests pass locally (`pytest sample-app/tests -q`)
-- [ ] Compose stack still starts cleanly (`docker compose up -d` → `/health` returns ok)
+- [ ] Validation passes locally (`scripts/validate.sh`)
+- [ ] Gateway still starts cleanly (`scripts/setup.sh` → gateway reaches RUNNING) — for project changes
 - [ ] No secrets committed
 - [ ] Changes are scoped to one logical thing
