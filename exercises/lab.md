@@ -9,14 +9,14 @@ piece of work.
 
 ## What you're working on
 
-The subject of this lab is a tiny **Ignition project** (`projects/lab-project/`):
-a Perspective HMI screen (a refrigeration-plant overview) and two small Python
-script libraries. You don't need to
-know Ignition to do the exercises — the code you touch is plain Python, and the
-gateway is here only so the project files are *real*. The lab is about the **Git
-workflow** around those files: how you branch, how you open and review a PR, how
-you merge. The Ignition machinery (gateway config, modules, deploys) is
-deliberately abstracted away — it arrives in Lab 04.
+The subject of this lab is a small but **real Ignition project**
+(`projects/lab-project/`): a Perspective HMI screen (a refrigeration-plant overview)
+and two Python script libraries. You don't need prior Ignition experience — the
+gateway's admin complexity is abstracted away, and what you edit is approachable (a
+small Python function, or a property on a view). The lab is about the **Git
+workflow** around those files: how you branch, how you open and review a PR, how you
+merge. Gateway config, modules, and deploys are deliberately out of scope — they
+arrive in Lab 04.
 
 ## Setup (optional but recommended)
 
@@ -160,9 +160,9 @@ keeping the normal numeric formatting.
 **Option B — the Overview view (stretch / visual).** Edit
 [`projects/lab-project/com.inductiveautomation.perspective/views/pages/overview/view.json`](../projects/lab-project/com.inductiveautomation.perspective/views/pages/overview/view.json):
 change a label's text, or add one. Keep the diff small and the JSON valid. If your
-gateway is up, run `ops/scan.sh` (or `docker compose restart`) and reopen the
-project to see your change — the Discharge Temp tile is bound to that script via
-runScript, too.
+gateway is up, reload it with `docker compose restart` (or, faster, `ops/scan.sh`
+if you've set up an API key) and reopen the project to see your change — the
+Discharge Temp tile is bound to that script via runScript, too.
 
 Then, whichever you picked:
 
