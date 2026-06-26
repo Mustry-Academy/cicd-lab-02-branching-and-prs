@@ -1,6 +1,6 @@
 # Branching strategies — cheat sheet
 
-Reference reading for Block C. Three strategies, the same release scenario applied to each, and a decision matrix at the end.
+Reference reading for the branching part of the lab. Three strategies, the same release scenario applied to each, and a decision matrix at the end.
 
 ## The scenario
 
@@ -11,6 +11,36 @@ We'll see how each strategy handles this.
 ## Git Flow
 
 Two long-lived branches (`main` and `develop`) plus three types of short-lived branches (`feature/*`, `release/*`, `hotfix/*`).
+
+```mermaid
+gitGraph
+   commit tag: "v1.2"
+   branch develop
+   commit
+   branch feature/new-orders
+   commit
+   commit
+   checkout develop
+   merge feature/new-orders
+   branch release/v2.0
+   commit id: "stabilize"
+   checkout main
+   branch hotfix/v1.2.1
+   commit id: "P1 fix"
+   checkout main
+   merge hotfix/v1.2.1 tag: "v1.2.1"
+   checkout develop
+   merge hotfix/v1.2.1
+   checkout main
+   merge release/v2.0 tag: "v2.0"
+   checkout develop
+   merge release/v2.0
+```
+
+Notice how the hotfix and the release move in parallel: `hotfix/v1.2.1` ships from
+`main` while `release/v2.0` stabilizes off `develop`, and each merges back into
+*both* long-lived branches. That double-merge is the price of admission for
+maintaining multiple versions at once.
 
 **Branches in flight at scenario time:**
 - `develop` — where v2.0 work happens
@@ -26,6 +56,24 @@ Two long-lived branches (`main` and `develop`) plus three types of short-lived b
 ## GitHub Flow
 
 One long-lived branch: `main`. Everything else is a short-lived `feature/*` branch that gets merged via PR.
+
+```mermaid
+gitGraph
+   commit id: "production"
+   branch feature/v2.0-orders
+   commit
+   commit
+   checkout main
+   merge feature/v2.0-orders tag: "deploy"
+   branch fix/cart-total
+   commit id: "P1 fix"
+   checkout main
+   merge fix/cart-total tag: "deploy"
+```
+
+One line, always deployable. Every change is a short branch that comes back
+through a PR, and merging *is* the release (`deploy`). Clean — until you need to
+keep an old version alive, which is the next question.
 
 **Branches in flight at scenario time:**
 - `main` — *is* what's in production
@@ -43,6 +91,23 @@ One long-lived branch: `main`. Everything else is a short-lived `feature/*` bran
 ## Trunk-based development
 
 Everyone commits directly to `main` (the "trunk"). Branches are short — hours, not days. Feature flags hide in-progress work in production until it's ready.
+
+```mermaid
+gitGraph
+   commit id: "prod"
+   branch fix-cart-total
+   commit id: "tiny fix"
+   checkout main
+   merge fix-cart-total
+   commit id: "v2.0 wip · flag off"
+   commit id: "v2.0 done · flag off"
+   commit id: "flip flag on" tag: "v2.0"
+```
+
+There's almost no branching to see — that's the point. The v1.2 fix is a branch
+that lives for an hour; the v2.0 work lands directly on `main` behind a flag
+that's off in production, and the "release" is just flipping that flag on. No
+long-lived branches, no double-merges.
 
 **Branches in flight at scenario time:**
 - `main` — production. Always.

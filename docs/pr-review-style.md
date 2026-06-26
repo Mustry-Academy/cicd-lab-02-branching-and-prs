@@ -1,6 +1,10 @@
 # PR review style — the Mustry Academy take
 
-Reference reading for Block D. Two ideas: what makes a PR easy to review, and how to leave feedback that actually helps.
+**Optional deep-dive.** The lab teaches the essentials of reviewing inline in
+[`exercises/lab.md`](../exercises/lab.md) — small/scoped PRs and three core
+comment labels are all you need for the review work. This doc is the fuller toolkit for
+when you want to go further. Two ideas: what makes a PR easy to review, and how to
+leave feedback that actually helps.
 
 ## What makes a PR easy to review
 
