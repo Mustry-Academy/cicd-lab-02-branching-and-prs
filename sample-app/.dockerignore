@@ -1,8 +1,0 @@
-# Keep dev-only files out of the build context and the image.
-tests/
-requirements-dev.txt
-README.md
-__pycache__/
-*.pyc
-*.pyo
-.pytest_cache/
