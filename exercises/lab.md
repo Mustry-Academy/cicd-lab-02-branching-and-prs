@@ -1,6 +1,6 @@
 # Lab 02 — Branching and Pull Requests
 
-One **I do / we do / you do** covering two linked topics:
+One **We-do / we do / you do** covering two linked topics:
 how a team *branches*, and how changes flow through *pull requests*. They're one
 story. A branching strategy is the plan; a pull request is where the plan meets
 reality — it's where your branch naming, your review habits, and your merge-style
@@ -50,7 +50,7 @@ Read-ahead: [`docs/branching-strategies.md`](../docs/branching-strategies.md) �
 
 ---
 
-## I do
+## We-do
 
 ### Part A — Branching strategies, side by side
 
@@ -110,7 +110,7 @@ Pair up.
 
 ### Part B — Review a sample PR together (class)
 
-Back as a class, put the **"bad PR"** from the I-do on the projector. Together:
+Back as a class, put the **"bad PR"** from the We-do on the projector. Together:
 
 1. Rewrite its title and description so it's self-describing (What / Why / How to test).
 2. Leave a few conventional comments aloud — at least a `praise:`, a `suggestion:`, and an `issue:` — and the instructor types them in.
@@ -171,7 +171,7 @@ Then, whichever you picked:
 3. Commit with a Conventional Commits message (e.g. `fix(display): show placeholder for null readings`).
 4. Push and open a PR (**base = your fork's `main`**) using the [PR template](../.github/pull_request_template.md). "How to test" is concrete now: `ops/validate.sh`, plus the behavior you changed. Drop the link in the cohort chat.
 
-> Keep it under ~15 lines of diff. This is the "small, one-concern" PR from the I-do — actually build one.
+> Keep it under ~15 lines of diff. This is the "small, one-concern" PR from the We-do — actually build one.
 
 ### 3. Review a peer's code PR
 

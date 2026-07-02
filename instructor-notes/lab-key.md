@@ -4,7 +4,7 @@
 > lab is the *process* — writing the team agreement, and reviewing well — not
 > getting the "right" strategy or the "right" comments.
 
-The lab is one I-do / we-do / you-do flow covering two topics. This key is grouped
+The lab is one We-do / we-do / you-do flow covering two topics. This key is grouped
 by topic to match — [`exercises/lab.md`](../exercises/lab.md) for the flow itself.
 
 ---

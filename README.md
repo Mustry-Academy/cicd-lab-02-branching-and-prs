@@ -80,7 +80,7 @@ ops/scan.sh                 # faster reload via the gateway's scan API
 ## Lab structure
 
 The whole lab lives in one file, [`exercises/lab.md`](./exercises/lab.md): a single
-**I do / we do / you do** flow covering two linked topics —
+**We-do / we do / you do** flow covering two linked topics —
 
 - **Branching strategies** — Git Flow vs GitHub Flow vs trunk-based, captured in a one-page team agreement
 - **Pull requests** — scope, review, and merge hygiene
