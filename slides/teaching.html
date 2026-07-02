@@ -451,11 +451,10 @@ body{
       <tr><td>Strict regulatory environment, lengthy validation per release</td><td class="strat">Git Flow <span style="font-weight:500;color:var(--txt-dim)">(release branches make audit easy)</span></td></tr>
       <tr><td>Feature flags <b>and</b> fast, trusted CI already in place, and you want to integrate continuously to <span class="mono">main</span></td><td class="strat">Trunk-based <span style="font-weight:500;color:var(--txt-dim)">(needs both — it's GitHub Flow with the branch life cut to hours)</span></td></tr>
       <tr><td>Brand-new team, learning Git for the first time</td><td class="strat">GitHub Flow <span style="font-weight:500;color:var(--txt-dim)">(lowest cognitive overhead)</span></td></tr>
-      <tr><td><b>Ignition team deploying one project to many gateways</b> (sites, lines, or client installs)</td><td class="strat">GitHub Flow — <b>one</b> tag per release</td></tr>
     </table>
     <div class="callout">
       <div class="lab" style="color:var(--blue)">The real question is just one</div>
-      <p>Six rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality — <b>not the one that sounds most sophisticated</b>. You'll write that choice down in the you-do.</p>
+      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality — <b>not the one that sounds most sophisticated</b>. You'll write that choice down in the you-do.</p>
     </div>
   </div>
 
@@ -505,7 +504,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">05</span>
+      <span class="num">04</span>
       <div>
         <div class="title">Two PRs, side by side</div>
         <div class="lead">Same repo, same week, two very different review experiences. The good column is the whole lesson.</div>
@@ -551,7 +550,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">06</span>
+      <span class="num">05</span>
       <div>
         <div class="title">What makes a PR easy to review</div>
         <div class="lead">Four properties, in order of importance. The template enforces three of them by structure — <b>smallness is on you</b>.</div>
@@ -608,7 +607,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">07</span>
+      <span class="num">06</span>
       <div>
         <div class="title">Leaving feedback that helps</div>
         <div class="lead">Prefix every comment with <b>what kind it is</b>, so the author knows how to react. Three labels cover almost everything today.</div>
@@ -654,7 +653,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">08</span>
+      <span class="num">07</span>
       <div>
         <div class="title">The verdict — and the merge button</div>
         <div class="lead">A review ends in one of three verdicts; an approved PR ends in one of three merges. <b>Both are choices your team agreement should make for you.</b></div>
@@ -712,7 +711,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">09</span>
+      <span class="num">08</span>
       <div>
         <div class="title">An Ignition 8.3 project is a folder of small text files</div>
         <div class="lead">This is the real project from this lab's repo (<span class="mono">projects/lab-project/</span>) — a Perspective HMI screen and two script libraries. <b>What the Designer edits is what Git tracks.</b></div>
@@ -755,7 +754,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">10</span>
+      <span class="num">09</span>
       <div>
         <div class="title">What to commit vs what to <span class="mono" style="font-size:34px">.gitignore</span></div>
         <div class="lead">Rule of thumb: <b>if a human authored it, commit it. If the gateway (re)generates it, ignore it.</b></div>
@@ -799,7 +798,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">11</span>
+      <span class="num">10</span>
       <div>
         <div class="title">A Designer save is a file write — so it's a diff</div>
         <div class="lead">Save a view in the Designer → the gateway writes these JSON files. Change one label → <b>a one-line diff a reviewer reads in ten seconds</b>. That's what makes PR-sized Ignition changes possible.</div>
@@ -847,7 +846,7 @@ body{
 
   <div class="body">
     <div class="sechead">
-      <span class="num">12</span>
+      <span class="num">11</span>
       <div>
         <div class="title">You can also edit straight in VS Code</div>
         <div class="lead">The project is just text on disk, so your editor is a first-class way in — <b>but the gateway won't notice your edits until you tell it to scan.</b></div>
@@ -894,53 +893,7 @@ $ ops/scan.sh
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Edit in VS Code → scan → the gateway catches up</span></div>
 </section>
 
-<!-- 20 · IGNITION MERGE CONFLICTS -->
-<section class="slide">
-  <div class="topbar">
-    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
-    <div class="stage">Ignition · when branches collide</div>
-  </div>
-
-  <div class="body">
-    <div class="sechead">
-      <span class="num">13</span>
-      <div>
-        <div class="title">Why Ignition merge conflicts are special</div>
-        <div class="lead">Git merges <b>lines</b>. Ignition resources are <b>structures</b>. That mismatch is where teams get burned.</div>
-      </div>
-    </div>
-    <div class="cols2">
-      <div>
-        <ul class="checks">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>One view = one JSON document.</b> Two people editing the <i>same view</i> — even different components — often touch neighbouring lines of the same file. Conflicts happen far more easily than in code split across many files.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Conflict markers break the JSON.</b> A half-resolved <span class="mono">view.json</span> is invalid — the gateway can't load it. <b>Run <span class="mono">ops/validate.sh</span> after every resolve</b>; red output is your safety net.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>A "clean" auto-merge can still be wrong.</b> Git happily merges two edits to the same <span class="mono">children</span> array into JSON that parses but renders nonsense. Valid ≠ correct — open the view after merging.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Binary resources don't merge at all.</b> Images, <span class="mono">.gwbk</span> backups, <span class="mono">.modl</span> files — it's one side or the other. Coordinate, don't merge.</span></li>
-        </ul>
-      </div>
-      <div>
-        <div class="code">
-          <pre><span class="cm"># mid-merge view.json — this is NOT valid JSON</span>
-      "props": {
-<span class="mark">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
-        "text": "Discharge Temp",
-<span class="mark">=======</span>
-        "text": "Discharge Temperature",
-<span class="mark">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/rename-tiles</span>
-        "style": { … }</pre>
-        </div>
-        <div class="callout" style="margin-top:18px">
-          <div class="lab" style="color:var(--good)">The defence is chapter 1 + 2</div>
-          <p><b>Short-lived branches</b> and <b>small PRs</b> shrink the collision window; <b>one owner per view at a time</b> removes it. The strategy you write in the you-do is your team's conflict insurance — and hotfixing live in the Designer <b>bypasses Git entirely</b>, which is how "who changed the plant overview?" mysteries are born.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Git merges lines; Ignition ships structures</span></div>
-</section>
-
-<!-- 21 · IN THE LAB (closing) -->
+<!-- 20 · IN THE LAB (closing) -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -1293,13 +1246,12 @@ function bindControls(slideEl,ctrl){
 
 /* ---------- slide 10: PR LIFECYCLE — the life of a feature branch ---------- */
 (function(){
-  const svg=el('svg',{viewBox:'-360 0 2060 520',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-prlife'));
+  const svg=el('svg',{viewBox:'0 0 2060 520',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-prlife'));
   defsArrow(svg);
   const R=36,O={r:R};
   const yM=230,yB=410;
-  laneHeader(svg,yM-92);
-  const laneM=laneLabel(svg,yM,'main',false,'Base');
-  const laneB=laneLabel(svg,yB,'feature/*',true,'Compare');
+  const laneM=laneLabel(svg,yM,'main',false);
+  const laneB=laneLabel(svg,yB,'feature/*',true);
   // left→right = time
   const node={};
   node.A=commitNode(svg,220,yM,'A','main',O);
