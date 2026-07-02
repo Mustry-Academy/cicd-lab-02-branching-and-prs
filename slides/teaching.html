@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 02 — Teaching: Branching strategies, pull requests &amp; Ignition in Git</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0e1b2e;
+  --navy2:#15233a;
+  --blue:#2563eb;
+  --blue-d:#1d4ed8;
+  --peri:#93a9f0;
+  --peri2:#a8bef7;
+  --peri-soft:#e8eefc;
+  --bg:#eef1f6;
+  --panel:#ffffff;
+  --panel2:#f5f8fc;
+  --line:#e3e9f1;
+  --line2:#d3dcea;
+  --txt:#15233a;
+  --txt-dim:#5a6a7e;
+  --txt-faint:#94a2b4;
+  --good:#16a34a; --good-soft:#e3f6ea;
+  --warn:#d97706; --warn-soft:#fbf0db;
+  --bad:#b91c1c; --bad-soft:#fdeaea;
+  --teal:#3bbdb4;            /* node outline on dark, like the reference images */
+  --teal-l:#5fd6cd;
+  --shadow:0 1px 2px rgba(14,27,46,.05),0 10px 30px -16px rgba(14,27,46,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--navy);
+  color:var(--txt);
+  font-family:'Libre Franklin',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+
+/* ---- deck mechanics ---- */
+.deck{height:100vh;width:100vw;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.deck::-webkit-scrollbar{display:none}
+.slide{
+  height:100vh;width:100vw;scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;flex-direction:column;position:relative;
+  padding:64px 64px 40px;background:var(--bg);
+}
+.slide.dark{background:radial-gradient(120% 120% at 80% -10%,#1c3358 0%,#0e1b2e 55%)}
+
+/* progress + nav */
+.hud{position:fixed;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.08);z-index:50}
+.hud .bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--peri));width:0;transition:width .3s}
+.pager{position:fixed;right:22px;bottom:18px;z-index:50;font-size:11px;color:var(--txt-faint);font-family:'IBM Plex Mono'}
+.pager.on-dark{color:rgba(255,255,255,.55)}
+.hint{position:fixed;left:22px;bottom:16px;z-index:50;font-size:10.5px;color:var(--txt-faint);letter-spacing:.3px}
+.hint.on-dark{color:rgba(255,255,255,.4)}
+
+/* ---- logo ---- */
+.brandrow{display:flex;align-items:center;gap:13px}
+.logo-img{height:30px;width:auto;display:block}
+.logo-img.logo-lg{height:44px}
+
+/* slide chrome */
+.eyebrow{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+.dark .eyebrow{color:var(--peri2)}
+.title{font-weight:800;font-size:40px;line-height:1.04;letter-spacing:-1px;color:var(--navy)}
+.dark .title{color:#fff}
+.lead{font-size:16px;color:var(--txt-dim);line-height:1.5;max-width:760px;margin-top:14px}
+.dark .lead{color:#c4cfde}
+.sechead{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+.sechead .num{font-family:'IBM Plex Mono';font-size:13px;font-weight:600;color:#fff;background:var(--blue);padding:5px 11px;border-radius:8px;letter-spacing:.5px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
+.topbar .stage{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-faint);font-weight:600}
+.topbar .stage.on-dark{color:rgba(255,255,255,.5)}
+
+/* ---- cover ---- */
+.cover{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.cover .big{font-weight:800;font-size:58px;line-height:1.02;letter-spacing:-1.6px;color:#fff;max-width:17ch}
+.cover .big em{font-style:normal;color:var(--peri2)}
+.cover .sub{font-size:17px;color:#aebbcd;max-width:64ch;line-height:1.55;margin-top:18px}
+
+/* ---- generic layout ---- */
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+.cols{display:grid;gap:22px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+
+/* bullets */
+.checks{display:flex;flex-direction:column;gap:13px;margin-top:6px}
+.checks li{list-style:none;display:flex;gap:13px;align-items:flex-start;font-size:14.5px;color:var(--txt-dim);line-height:1.5}
+.checks li b{color:var(--txt);font-weight:700}
+.ck{flex:none;width:22px;height:22px;border-radius:7px;background:var(--peri-soft);display:grid;place-items:center;margin-top:1px}
+.ck svg{width:12px;height:12px;color:var(--blue)}
+.dark .checks li{color:#c4cfde}
+.dark .checks li b{color:#fff}
+.dark .ck{background:rgba(147,169,240,.18)}
+.dark .ck svg{color:var(--peri2)}
+
+/* command vocabulary table */
+.cmds{display:grid;grid-template-columns:1fr 1fr;gap:10px 34px;margin-top:8px}
+.cmd{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line2)}
+.cmd code{font-family:'IBM Plex Mono';font-size:13.5px;font-weight:600;color:var(--blue);white-space:nowrap}
+.cmd span{font-size:13px;color:var(--txt-dim);line-height:1.4}
+.cmd span b{color:var(--txt);font-weight:600}
+
+.callout{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow);margin-top:22px}
+.callout .lab{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--warn);font-weight:700;margin-bottom:9px}
+.callout p{font-size:14.5px;color:var(--txt-dim);line-height:1.55}
+.callout p b{color:var(--txt);font-weight:700}
+.callout code{font-family:'IBM Plex Mono';font-size:13px;color:var(--blue-d)}
+
+/* what is / what does */
+.split{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:start}
+.quote{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-top:14px}
+.quote p{font-size:14px;color:var(--txt);line-height:1.55;font-style:italic}
+.quote .src{font-family:'IBM Plex Mono';font-size:11px;color:var(--txt-faint);margin-top:8px;font-style:normal}
+.does{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.does .hd{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:12px}
+.does ul{display:flex;flex-direction:column;gap:9px}
+.does li{list-style:none;display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--txt);line-height:1.4}
+.does li .d{flex:none;width:7px;height:7px;border-radius:50%;background:var(--blue);margin-top:7px}
+
+.refs{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;padding-top:18px}
+.refs .ref{font-family:'IBM Plex Mono';font-size:11.5px;color:var(--txt-dim);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 11px}
+.refs .ref b{color:var(--blue);font-weight:600}
+
+.foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--txt-faint);padding-top:24px}
+.dark .foot{color:rgba(255,255,255,.45)}
+
+/* ====== LAB-02 ADDITIONS ====== */
+
+/* comparison / decision-matrix table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-top:10px}
+.tbl th{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--txt-faint);font-weight:700;text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.tbl td{font-size:13.5px;color:var(--txt-dim);line-height:1.45;padding:10px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl td b{color:var(--txt)}
+.tbl td.strat{font-weight:700;color:var(--txt);white-space:nowrap}
+.tbl code{font-family:'IBM Plex Mono';font-size:12px;color:var(--blue-d)}
+
+/* bad-vs-good PR cards */
+.bg-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:14px}
+.prcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.prcard .ph{padding:12px 18px;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+.prcard.bad .ph{background:var(--bad-soft);color:var(--bad)}
+.prcard.good .ph{background:var(--good-soft);color:var(--good)}
+.prcard ul{padding:2px 0}
+.prcard li{list-style:none;display:flex;gap:10px;align-items:flex-start;padding:10px 18px;font-size:13.5px;color:var(--txt-dim);line-height:1.45;border-bottom:1px solid var(--line)}
+.prcard li:last-child{border-bottom:none}
+.prcard li .x{color:var(--bad);font-weight:800;flex:none}
+.prcard li .v{color:var(--good);font-weight:800;flex:none}
+.prcard li b{color:var(--txt)}
+.prcard li code{font-family:'IBM Plex Mono';font-size:12.5px;color:var(--blue-d)}
+
+/* dark code / diff / tree block */
+.code{background:var(--navy);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);overflow:auto}
+.code pre{font-family:'IBM Plex Mono';font-size:13px;color:#dbe6f5;line-height:1.65}
+.code .cm{color:#7d93ad}
+.code .add{color:#7ee2a8}
+.code .del{color:#f29d9d}
+.code .mark{color:#f0b765;font-weight:600}
+.code .dir{color:#f2c14e;font-weight:600}
+.code .ign{color:#5a6a7e;font-style:italic}
+.code .hot{color:#5fd6cd}
+
+/* conventional-comment chips */
+.chip{display:inline-block;font-family:'IBM Plex Mono';font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:7px;white-space:nowrap}
+.chip.praise{background:var(--good-soft);color:var(--good)}
+.chip.sugg{background:var(--peri-soft);color:var(--blue-d)}
+.chip.issue{background:var(--bad-soft);color:var(--bad)}
+.chip.dim{background:var(--panel2);color:var(--txt-faint);border:1px solid var(--line)}
+
+/* pr lifecycle flow */
+.flow{display:flex;align-items:stretch;gap:0;margin-top:18px;flex-wrap:wrap}
+.flow .fbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:12px 16px;min-width:120px}
+.flow .fbox .fh{font-size:12.5px;font-weight:800;color:var(--txt)}
+.flow .fbox .fs{font-size:11.5px;color:var(--txt-dim);margin-top:3px;line-height:1.4}
+.flow .farr{align-self:center;padding:0 10px;color:var(--txt-faint);font-family:'IBM Plex Mono';font-size:16px}
+
+/* ====== GRAPH VISUALS (same look as lab 1) ====== */
+
+/* section divider */
+.divider{flex:1;display:flex;flex-direction:column;justify-content:center}
+.divider .q{font-weight:800;font-size:52px;line-height:1.05;letter-spacing:-1.4px;color:#fff;max-width:20ch}
+.divider .q em{font-style:normal;color:var(--peri2)}
+.divider .sub2{font-size:18px;color:#aebbcd;margin-top:18px;max-width:60ch;line-height:1.5}
+
+/* generic reveal — elements fade/rise in when .show is added */
+.reveal{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+.reveal.show{opacity:1;transform:none}
+
+/* ---- graph canvas, reference-image look ---- */
+.stage-wrap{flex:1;display:flex;flex-direction:column}
+.viz{position:relative;flex:1;min-height:0}
+.viz svg{position:absolute;inset:0;width:100%;height:100%}
+.gnode{fill:transparent;stroke:var(--teal);stroke-width:2.5}
+.gnode.dim{opacity:.25}
+.gedge{stroke:#fff;stroke-width:2.4;fill:none}
+.gedge.branchline{stroke:var(--teal)}
+.glabel{fill:#fff;font-family:'Libre Franklin';font-weight:700;font-size:30px;text-anchor:middle;dominant-baseline:central}
+.small .glabel{font-size:20px}
+.small .gnode{stroke-width:2.2}
+.gsha{fill:#9fb6cf;font-family:'IBM Plex Mono';font-size:13px;text-anchor:middle;dominant-baseline:central}
+.gbranch{fill:var(--teal-l);font-family:'Libre Franklin';font-weight:600;font-size:22px;text-anchor:middle}
+.gtype{fill:#cdd9e8;font-family:'Libre Franklin';font-weight:600;font-size:22px;text-anchor:middle}
+.glane{fill:#8fa5c0;font-family:'IBM Plex Mono';font-weight:600;font-size:17px}
+.glane.hotlane{fill:#f0a85a}
+.gtag rect{fill:rgba(242,193,78,.12);stroke:#f2c14e;stroke-width:1.6}
+.gtag text{fill:#f2c14e;font-family:'IBM Plex Mono';font-size:15px;font-weight:600;text-anchor:middle;dominant-baseline:central}
+.gflag{fill:#9fb6cf;font-family:'IBM Plex Mono';font-size:14px;text-anchor:middle}
+.note-red{fill:#ef6f6f;font-family:'Libre Franklin';font-weight:700;font-size:20px;text-anchor:middle}
+
+/* svg fade-in helpers */
+.vshow{opacity:0;transition:opacity .55s ease}
+.vshow.on{opacity:1}
+.vpop{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.5);transition:opacity .45s ease,transform .45s cubic-bezier(.2,1.3,.4,1)}
+.vpop.on{opacity:1;transform:scale(1)}
+.vdraw{opacity:0;transition:opacity .5s ease}
+.vdraw.on{opacity:1}
+
+/* control bar for interactive slides */
+.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:14px;margin-top:auto;border-top:1px solid rgba(255,255,255,.08)}
+.controls .lead-step{font-size:13.5px;color:#c4cfde;margin-right:auto;max-width:66ch;line-height:1.45}
+.controls .lead-step b{color:#fff}
+.btn{font-family:'IBM Plex Mono';font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#dbe4f0;padding:9px 16px;border-radius:10px;cursor:pointer;transition:.15s}
+.btn:hover:not(:disabled){background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.4)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover:not(:disabled){background:var(--blue-d)}
+.btn:disabled{opacity:.32;cursor:default}
+
+.vtitle{position:absolute;top:18px;left:0;right:0;text-align:center;font-weight:800;font-size:34px;letter-spacing:-.5px;color:#fff}
+
+@media print{
+  body{overflow:visible}
+  .deck{height:auto;overflow:visible}
+  .slide{height:100vh;page-break-after:always;break-after:page}
+  .hud,.pager,.hint,.controls{display:none}
+  .reveal,.vshow,.vpop,.vdraw{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- 1 · COVER -->
+<!-- TODO(instructors): verify session times — welcome package says Day-1 afternoon = 13:00 teaching / 14:00 we-do / 15:00 you-do -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow">
+      <img class="logo-img logo-lg" src="logos/OriginalLight.png" alt="Mustry Solutions">
+    </div>
+    <div class="stage on-dark">Lab 02 · 13:00 – 14:00</div>
+  </div>
+
+  <div class="cover">
+    <div class="eyebrow">Teaching · 60 min</div>
+    <div class="big">Branching &amp; pull requests, <em>applied to Ignition</em>.</div>
+    <div class="sub">This morning you learned how Git works. This afternoon: how a <em style="color:#fff;font-style:normal">team</em> uses it. Three strategies for branching, what a pull request looks like when it's done right — and what an Ignition project actually is once it lives in a repo.</div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Lab 02 — Branching &amp; Pull Requests</span></div>
+</section>
+
+<!-- 2 · WHY THIS MATTERS / AGENDA -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Teaching</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">01</span>
+      <div>
+        <div class="title">From solo Git to a team workflow</div>
+        <div class="lead">Branch, merge, rebase — you have the <b>mechanics</b>. But mechanics don't tell a team of five <b>where to branch from</b>, <b>when to merge</b>, or <b>who reviews what</b>. That's an agreement. Today you'll learn the standard ones — and write your own.</div>
+      </div>
+    </div>
+    <div class="cols" style="grid-template-columns:repeat(3,1fr)">
+      <div class="does">
+        <div class="hd">Chapter 1 · Branching strategies</div>
+        <ul>
+          <li><span class="d"></span>Git Flow, GitHub Flow, trunk-based — side by side</li>
+          <li><span class="d"></span>One release scenario, three answers</li>
+          <li><span class="d"></span>How to pick for <b>your</b> team</li>
+        </ul>
+      </div>
+      <div class="does">
+        <div class="hd">Chapter 2 · Pull requests done right</div>
+        <ul>
+          <li><span class="d"></span>The PR lifecycle: branch → review → merge</li>
+          <li><span class="d"></span>What makes a PR easy to review</li>
+          <li><span class="d"></span>Leaving feedback that actually helps</li>
+        </ul>
+      </div>
+      <div class="does">
+        <div class="hd">Chapter 3 · The Ignition angle</div>
+        <ul>
+          <li><span class="d"></span>An Ignition 8.3 project as files in Git</li>
+          <li><span class="d"></span>What to commit vs what to ignore</li>
+          <li><span class="d"></span>Why Ignition merge conflicts are special</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="lab" style="color:var(--blue)">The thread</div>
+      <p>A branching strategy is the <b>plan</b>; a pull request is where the plan <b>meets reality</b>. And an Ignition project is just files — which means everything in chapters 1 and 2 applies to your gateways, today.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Three chapters, one thread</span></div>
+</section>
+
+<!-- 3 · DIVIDER — CHAPTER 1 -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Chapter 1 · Branching strategies</div>
+  </div>
+  <div class="divider">
+    <div class="eyebrow">Chapter 1</div>
+    <div class="q">How should a team <em>branch</em>?</div>
+    <div class="sub2">Branches are free — agreements are not. Three well-known strategies answer the same questions differently: where does work start, how long do branches live, and what does "release" mean?</div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Git Flow → GitHub Flow → trunk-based</span></div>
+</section>
+
+<!-- 4 · THE SCENARIO -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Branching strategies · the test case</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">02</span>
+      <div>
+        <div class="title">One scenario, three strategies</div>
+        <div class="lead">We'll run the <b>same release week</b> through each strategy and watch what it does to the graph.</div>
+      </div>
+    </div>
+    <div class="split">
+      <div>
+        <div class="quote">
+          <p>"Your team is shipping <b>v2.0</b> of the product next week. Mid-week, a customer reports a <b>P1 bug in v1.2</b> that's already in production. You need to ship the v1.2 hotfix <b>today</b> AND keep v2.0 on track."</p>
+          <div class="src">— the scenario, docs/branching-strategies.md</div>
+        </div>
+        <div class="callout" style="margin-top:16px">
+          <div class="lab" style="color:var(--blue)">Sounds familiar?</div>
+          <p>Swap "product" for "gateway" and this is every integrator's week: <b>SAT next Friday, and Line 3 is down today.</b> The strategy you pick decides how painful that Wednesday is.</p>
+        </div>
+      </div>
+      <div class="does">
+        <div class="hd">Watch for, in each strategy</div>
+        <ul>
+          <li><span class="d"></span><b>Branch lifetime</b> — hours, days, or months?</li>
+          <li><span class="d"></span><b>Who owns the release</b> — a branch, a tag, or a flag?</li>
+          <li><span class="d"></span><b>How the hotfix ships</b> — and where the fix has to land <i>twice</i></li>
+          <li><span class="d"></span><b>The graph at the end of the week</b> — could you still read it?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="refs">
+      <span class="ref"><b>read-ahead</b> docs/branching-strategies.md — same three diagrams, with a decision matrix</span>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>The scenario every strategy must survive</span></div>
+</section>
+
+<!-- 5 · GIT FLOW (interactive) -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Branching strategies · 1 of 3</div>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="vtitle">Git Flow</div>
+    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">Two long-lived branches (<b style="color:#fff">main</b> + <b style="color:#fff">develop</b>) and three kinds of short-lived ones (<span class="mono" style="color:#dbe4f0">feature/*</span>, <span class="mono" style="color:#dbe4f0">release/*</span>, <span class="mono" style="color:#dbe4f0">hotfix/*</span>).</p>
+    <div class="viz" id="viz-gitflow"></div>
+  </div>
+
+  <div class="controls">
+    <span class="lead-step" id="gitflow-step">Run the scenario: v2.0 next week, P1 bug in v1.2 today.</span>
+    <button class="btn" data-act="back">◀ Back</button>
+    <button class="btn primary" data-act="next">Next step ▶</button>
+  </div>
+</section>
+
+<!-- 6 · GITHUB FLOW (interactive) -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Branching strategies · 2 of 3</div>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="vtitle">GitHub Flow</div>
+    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">One long-lived branch: <b style="color:#fff">main</b>. Everything else is a short-lived branch that comes back through a <b style="color:#fff">pull request</b>.</p>
+    <div class="viz" id="viz-ghflow"></div>
+  </div>
+
+  <div class="controls">
+    <span class="lead-step" id="ghflow-step">Same scenario, one line of history.</span>
+    <button class="btn" data-act="back">◀ Back</button>
+    <button class="btn primary" data-act="next">Next step ▶</button>
+  </div>
+</section>
+
+<!-- 7 · TRUNK-BASED (interactive) -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Branching strategies · 3 of 3</div>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="vtitle">Trunk-based development</div>
+    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">Everyone commits to <b style="color:#fff">main</b> (the trunk). Branches live <b style="color:#fff">hours, not days</b> — and <b style="color:#fff">feature flags</b> hide unfinished work in production.</p>
+    <div class="viz" id="viz-trunk"></div>
+  </div>
+
+  <div class="controls">
+    <span class="lead-step" id="trunk-step">Same scenario, almost no branching to see — that's the point.</span>
+    <button class="btn" data-act="back">◀ Back</button>
+    <button class="btn primary" data-act="next">Next step ▶</button>
+  </div>
+</section>
+
+<!-- 8 · DECISION MATRIX -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Branching strategies · choosing</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">03</span>
+      <div>
+        <div class="title">Picking one — the decision matrix</div>
+        <div class="lead">There is no "best" strategy. There's the one that fits <b>your team's reality</b> — release cadence, versions in production, and discipline level.</div>
+      </div>
+    </div>
+    <table class="tbl">
+      <tr><th>Your situation</th><th>Best fit</th></tr>
+      <tr><td>Single SaaS product, continuous deploy, 2–10 engineers</td><td class="strat">GitHub Flow</td></tr>
+      <tr><td>Multiple supported versions in production at the same time</td><td class="strat">Git Flow <span style="font-weight:500;color:var(--txt-dim)">(or GitHub Flow + tags)</span></td></tr>
+      <tr><td>Strict regulatory environment, lengthy validation per release</td><td class="strat">Git Flow <span style="font-weight:500;color:var(--txt-dim)">(release branches make audit easy)</span></td></tr>
+      <tr><td>Mature team with feature flags and full CI</td><td class="strat">Trunk-based</td></tr>
+      <tr><td>Brand-new team, learning Git for the first time</td><td class="strat">GitHub Flow <span style="font-weight:500;color:var(--txt-dim)">(lowest cognitive overhead)</span></td></tr>
+      <tr><td><b>Ignition team shipping to multiple customer gateways</b></td><td class="strat">GitHub Flow + tags per customer <span style="font-weight:500;color:var(--txt-dim)">(→ later this week)</span></td></tr>
+    </table>
+    <div class="callout">
+      <div class="lab" style="color:var(--blue)">What this course uses</div>
+      <p><b>GitHub Flow</b>, for the labs — simple to teach, fits a single-environment dev stack. For <b>your team</b>, pick the one that fits your reality — <b>not the one that sounds most sophisticated</b>. You'll write that choice down in the you-do.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>docs/branching-strategies.md — the full matrix</span></div>
+</section>
+
+<!-- 9 · DIVIDER — CHAPTER 2 -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Chapter 2 · Pull requests</div>
+  </div>
+  <div class="divider">
+    <div class="eyebrow">Chapter 2</div>
+    <div class="q">Pull requests, <em>done right</em>.</div>
+    <div class="sub2">A branching strategy only comes to life through pull requests. The PR is where your branch naming, your review habits, and your merge-style rules actually get used.</div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>scope → review → merge</span></div>
+</section>
+
+<!-- 10 · PR ANATOMY / LIFECYCLE -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Pull requests · anatomy</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">04</span>
+      <div>
+        <div class="title">What a pull request actually is</div>
+        <div class="lead">Not a Git command — a <b>platform workflow</b> (GitHub, GitLab, Gitea…) wrapped around a branch: <i>"please merge my branch into yours — but look at it first."</i></div>
+      </div>
+    </div>
+    <div class="flow">
+      <div class="fbox"><div class="fh">1 · Branch</div><div class="fs">short-lived, named per your agreement</div></div>
+      <span class="farr">→</span>
+      <div class="fbox"><div class="fh">2 · Open PR</div><div class="fs"><b>base</b> ← <b>compare</b><br>what / why / how to test</div></div>
+      <span class="farr">→</span>
+      <div class="fbox"><div class="fh">3 · Review</div><div class="fs">comments, verdicts,<br>fix-up commits</div></div>
+      <span class="farr">→</span>
+      <div class="fbox"><div class="fh">4 · Merge</div><div class="fs">the style your team agreed on</div></div>
+      <span class="farr">→</span>
+      <div class="fbox"><div class="fh">5 · Delete branch</div><div class="fs">it did its job</div></div>
+    </div>
+    <ul class="checks" style="max-width:960px;margin-top:22px">
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Base ← compare.</b> The PR asks to merge <i>compare</i> (your branch) into <i>base</i>. In this lab you work in <b>your own fork</b>, so base = <b>your fork's <span class="mono">main</span></b> — you get real merge rights without everyone pushing to one repo.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>The description is half the work.</b> This repo ships a template (<span class="mono">.github/pull_request_template.md</span>): <b>What · Why · How to test</b> + a checklist. GitHub pre-fills it into every PR you open.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>A PR is a conversation with a merge button at the end.</b> The review happens <i>before</i> the code lands — that's the entire point.</span></li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>branch → PR → review → merge → delete</span></div>
+</section>
+
+<!-- 11 · BAD PR vs GOOD PR -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Pull requests · scope</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">05</span>
+      <div>
+        <div class="title">Two PRs, side by side</div>
+        <div class="lead">Same repo, same week, two very different review experiences. The good column is the whole lesson.</div>
+      </div>
+    </div>
+    <div class="bg-grid">
+      <div class="prcard bad">
+        <div class="ph">✗ The bad PR</div>
+        <ul>
+          <li><span class="x">✗</span><span>Title: <b>"update stuff"</b></span></li>
+          <li><span class="x">✗</span><span><b>800-line diff</b> across 12 files</span></li>
+          <li><span class="x">✗</span><span>No description</span></li>
+          <li><span class="x">✗</span><span>Mixes a <b>rename</b>, a <b>bugfix</b>, and a <b>feature</b></span></li>
+          <li><span class="x">✗</span><span>Leaves <code>validate.sh</code> red</span></li>
+        </ul>
+      </div>
+      <div class="prcard good">
+        <div class="ph">✓ The good PR</div>
+        <ul>
+          <li><span class="v">✓</span><span>Title: <code>fix(display): handle null readings without crashing</code></span></li>
+          <li><span class="v">✓</span><span><b>6-line diff</b> in one file</span></li>
+          <li><span class="v">✓</span><span>Clear <b>What / Why / How to test</b></span></li>
+          <li><span class="v">✓</span><span><b>One concern</b> only</span></li>
+          <li><span class="v">✓</span><span><code>validate.sh</code> green</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="lab">The rule of thumb</div>
+      <p>If you catch yourself writing <b>"and"</b> in the PR title — <b>split the PR.</b></p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>You'll build the good one yourself in the you-do</span></div>
+</section>
+
+<!-- 12 · FOUR PROPERTIES -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Pull requests · reviewability</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">06</span>
+      <div>
+        <div class="title">What makes a PR easy to review</div>
+        <div class="lead">Four properties, in order of importance. The template enforces three of them by structure — <b>smallness is on you</b>.</div>
+      </div>
+    </div>
+    <div class="cols" style="grid-template-columns:1fr 1fr">
+      <div class="does">
+        <div class="hd">1 · Small</div>
+        <ul>
+          <li><span class="d"></span>Under 200 lines of diff, ideally under 50</li>
+          <li><span class="d"></span>Reviewers find <b>more bugs in small PRs</b> — they actually read them</li>
+          <li><span class="d"></span>A 1,000-line PR gets rubber-stamped, no matter how rigorous the reviewer feels</li>
+        </ul>
+      </div>
+      <div class="does">
+        <div class="hd">2 · One concern</div>
+        <ul>
+          <li><span class="d"></span>A bugfix is not a refactor</li>
+          <li><span class="d"></span>A rename is not a feature</li>
+          <li><span class="d"></span>A formatting pass is not a code change</li>
+        </ul>
+      </div>
+      <div class="does">
+        <div class="hd">3 · Self-describing</div>
+        <ul>
+          <li><span class="d"></span><b>What</b> does this change? (one sentence)</li>
+          <li><span class="d"></span><b>Why</b> now? (the bug, ticket, or request)</li>
+          <li><span class="d"></span><b>How</b> does a reviewer verify it? (commands to run)</li>
+        </ul>
+      </div>
+      <div class="does">
+        <div class="hd">4 · Tested</div>
+        <ul>
+          <li><span class="d"></span>A test that would have caught the bug, or…</li>
+          <li><span class="d"></span>…an explicit manual test plan in "How to test"</li>
+          <li><span class="d"></span>In this lab: <span class="mono">ops/validate.sh</span> + the behavior you changed</li>
+        </ul>
+      </div>
+    </div>
+    <div class="refs">
+      <span class="ref"><b>deep-dive</b> docs/pr-review-style.md — the fuller toolkit (optional)</span>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Small · one concern · self-describing · tested</span></div>
+</section>
+
+<!-- 13 · CONVENTIONAL COMMENTS -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Pull requests · review feedback</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">07</span>
+      <div>
+        <div class="title">Leaving feedback that helps</div>
+        <div class="lead">Prefix every comment with <b>what kind it is</b>, so the author knows how to react. Three labels cover almost everything today.</div>
+      </div>
+    </div>
+    <table class="tbl">
+      <tr><th style="width:150px">Label</th><th>Meaning</th><th>Example</th></tr>
+      <tr>
+        <td><span class="chip praise">praise:</span></td>
+        <td>Something <b>genuinely good</b> — tells the author what's working</td>
+        <td>"praise: nicely focused diff, easy to review."</td>
+      </tr>
+      <tr>
+        <td><span class="chip sugg">suggestion:</span></td>
+        <td>A specific, <b>optional</b> improvement — accept, decline with reasoning, or discuss</td>
+        <td>"suggestion: collapse these two ifs into one."</td>
+      </tr>
+      <tr>
+        <td><span class="chip issue">issue:</span></td>
+        <td>Something that <b>should change before merge</b></td>
+        <td>"issue: this still throws on a null reading; <code>format_reading(None, '°C')</code> errors instead of showing a placeholder."</td>
+      </tr>
+      <tr>
+        <td><span class="chip dim">nitpick: question: thought: chore:</span></td>
+        <td colspan="2">The fuller set, when you want it — see <span class="mono" style="font-size:12px">docs/pr-review-style.md</span> · conventionalcomments.org</td>
+      </tr>
+    </table>
+    <div class="callout">
+      <div class="lab">Tone</div>
+      <p>Labels don't make rude feedback polite. <b>If you wouldn't say it in person, don't write it in the PR.</b> Async amplifies tone — neutral in your head reads cold on screen. "?" is not a review comment.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>praise · suggestion · issue — enough to review well today</span></div>
+</section>
+
+<!-- 14 · VERDICTS + MERGE STYLES -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Pull requests · verdict &amp; merge</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">08</span>
+      <div>
+        <div class="title">The verdict — and the merge button</div>
+        <div class="lead">A review ends in one of three verdicts; an approved PR ends in one of three merges. <b>Both are choices your team agreement should make for you.</b></div>
+      </div>
+    </div>
+    <div class="cols2">
+      <div class="does">
+        <div class="hd">Three verdicts</div>
+        <ul>
+          <li><span class="d" style="background:var(--good)"></span><b>Approve</b> — happy to merge as-is; trivial nitpicks are fine inside an approve</li>
+          <li><span class="d" style="background:var(--bad)"></span><b>Request changes</b> — there's at least one <span class="chip issue" style="font-size:11.5px">issue:</span> the author must address</li>
+          <li><span class="d" style="background:var(--txt-faint)"></span><b>Comment-only</b> — you read it but aren't voting (not your area, or someone already approved)</li>
+          <li><span class="d" style="background:var(--warn)"></span><b>Common mistake:</b> request-changes for nitpicks — friction without value</li>
+        </ul>
+      </div>
+      <div class="does">
+        <div class="hd">Three merges (GitHub's dropdown)</div>
+        <ul>
+          <li><span class="d"></span><b>Merge commit</b> (<span class="mono">--no-ff</span>) — preserves the branch shape in the graph</li>
+          <li><span class="d"></span><b>Squash &amp; merge</b> — the whole PR becomes one commit on <span class="mono">main</span></li>
+          <li><span class="d"></span><b>Rebase &amp; merge</b> — replays commits linearly, no merge commit</li>
+          <li><span class="d"></span>Pick the one <b>your agreement specified</b> — that's the whole point of writing it</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="lab" style="color:var(--blue)">Authors have rights too</div>
+      <p>Review is a <b>negotiation</b>. Respond to every comment (<b>+1</b>, a reply, or a fix-up commit) — but declining a suggestion <b>with reasoning</b> is a valid response. And <b>don't force-push during review</b>: it nukes the reviewer's context. Additive commits now, squash on merge if you must.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>approve · request-changes · comment — then merge deliberately</span></div>
+</section>
+
+<!-- 15 · DIVIDER — CHAPTER 3 -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Chapter 3 · The Ignition angle</div>
+  </div>
+  <div class="divider">
+    <div class="eyebrow">Chapter 3</div>
+    <div class="q">Now do it to an <em>Ignition project</em>.</div>
+    <div class="sub2">Everything so far was generic. Here's the part your team actually came for: what an Ignition 8.3 project looks like once it's files in a repo — and where Git's assumptions get tested.</div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>files → ignore rules → diffs → conflicts</span></div>
+</section>
+
+<!-- 16 · IGNITION PROJECT AS FILES -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Ignition · the project on disk</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">09</span>
+      <div>
+        <div class="title">An Ignition 8.3 project is a folder of small text files</div>
+        <div class="lead">This is the real project from this lab's repo (<span class="mono">projects/lab-project/</span>) — a Perspective HMI screen and two script libraries. <b>What the Designer edits is what Git tracks.</b></div>
+      </div>
+    </div>
+    <div class="cols2">
+      <div class="code">
+        <pre><span class="dir">projects/lab-project/</span>
+├── project.json                     <span class="cm">← project manifest: title, enabled, parent</span>
+├── <span class="dir">com.inductiveautomation.perspective/</span>   <span class="cm">← one folder per module</span>
+│   ├── <span class="dir">views/pages/overview/</span>        <span class="cm">← one folder per resource</span>
+│   │   ├── <span class="hot">view.json</span>                <span class="cm">← the payload: the whole view</span>
+│   │   └── resource.json            <span class="cm">← the manifest: scope, files list</span>
+│   ├── <span class="dir">page-config/</span>  config.json + resource.json
+│   └── <span class="dir">session-props/</span>  props.json + resource.json
+└── <span class="dir">ignition/script-python/lab/</span>
+    ├── <span class="dir">display/</span>  <span class="hot">code.py</span> + resource.json  <span class="cm">← lab.display script library</span>
+    └── <span class="dir">util/</span>     <span class="hot">code.py</span> + resource.json  <span class="cm">← lab.util helpers</span></pre>
+      </div>
+      <div>
+        <ul class="checks">
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Resources are folders.</b> Each one is a <span class="mono">resource.json</span> manifest plus its payload file(s): <span class="mono">view.json</span> for a Perspective view, <span class="mono">code.py</span> for a script library.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Namespaced by module.</b> <span class="mono">com.inductiveautomation.perspective</span>, <span class="mono">ignition/script-python</span> — each module owns its subtree.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>It's all JSON and Python.</b> Which means: diffable, blame-able, branchable, reviewable — everything from this morning applies.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab</b> the compose stack bind-mounts only <span class="mono">./projects</span> into the gateway — the file you edit on your laptop <i>is</i> the file the gateway runs. Gateway config stays in a named volume, out of the repo (that story is Lab 04's).</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>projects/lab-project/ — open it in your editor</span></div>
+</section>
+
+<!-- 17 · COMMIT vs IGNORE -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Ignition · what belongs in the repo</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">10</span>
+      <div>
+        <div class="title">What to commit vs what to <span class="mono" style="font-size:34px">.gitignore</span></div>
+        <div class="lead">Rule of thumb: <b>if a human authored it, commit it. If the gateway (re)generates it, ignore it.</b></div>
+      </div>
+    </div>
+    <div class="cols2">
+      <div class="does" style="border-left:5px solid var(--good)">
+        <div class="hd" style="color:var(--good)">Commit — human-authored</div>
+        <ul>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">project.json</span> — the project manifest</li>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">resource.json</span> + payloads (<span class="mono">view.json</span>, <span class="mono">code.py</span>, <span class="mono">config.json</span>)</li>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">.gitignore</span> / <span class="mono">.gitattributes</span> / PR template — the repo's own rules</li>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">docker-compose.yml</span>, <span class="mono">ops/</span> scripts, docs</li>
+        </ul>
+      </div>
+      <div class="does" style="border-left:5px solid var(--bad)">
+        <div class="hd" style="color:var(--bad)">Ignore — generated or secret</div>
+        <ul>
+          <li><span class="d" style="background:var(--bad)"></span><span class="mono">**/.resources/</span> — the gateway's blob store, regenerated on boot/scan</li>
+          <li><span class="d" style="background:var(--bad)"></span><span class="mono">**/*.digest.json</span>, <span class="mono">**/.metadata/</span>, <span class="mono">migration-log-*.md</span> — gateway churn</li>
+          <li><span class="d" style="background:var(--bad)"></span><span class="mono">.env</span> — credentials never enter history (commit <span class="mono">.env.example</span> instead)</li>
+          <li><span class="d" style="background:var(--bad)"></span>OS/editor junk — <span class="mono">.DS_Store</span>, <span class="mono">.idea/</span>, <span class="mono">__pycache__/</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="lab">The line-ending trap</div>
+      <p>This repo's <span class="mono">.gitattributes</span> forces <b>LF</b> on all text files. Without it, Windows clones sprinkle CRLF into Ignition's JSON — <b>noisy diffs on every file you never touched</b>, and it can confuse the gateway's project-scan heuristics. If gateway-generated files ever show up in <span class="mono">git status</span>, your ignore rules are off — fix that before committing.</p>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Open this repo's .gitignore and .gitattributes</span></div>
+</section>
+
+<!-- 18 · DESIGNER SAVES → DIFFS -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Ignition · saves become diffs</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">11</span>
+      <div>
+        <div class="title">A Designer save is a file write — so it's a diff</div>
+        <div class="lead">Save a view in the Designer → the gateway writes these JSON files. Change one label → <b>a one-line diff a reviewer reads in ten seconds</b>. That's what makes PR-sized Ignition changes possible.</div>
+      </div>
+    </div>
+    <div class="cols2">
+      <div>
+        <ul class="checks">
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>The chain:</b> Designer save → project files on the gateway → <span class="mono">git status</span> shows exactly what changed → <span class="mono">git add -p</span> → a scoped commit → a small PR.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab your editor plays the Designer</b> — same files, same diffs, no designer license needed. The bind mount means an edit + <span class="mono">docker compose restart</span> (or <span class="mono">ops/scan.sh</span>) is live on the gateway.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Read your own diff before you commit.</b> It's the cheapest review you'll ever get — and the habit that keeps Ignition PRs small.</span></li>
+        </ul>
+        <div class="callout" style="margin-top:18px">
+          <div class="lab">Not every save diffs this small</div>
+          <p>Drag a component and coordinates reshuffle; paste a container and a whole subtree rewrites. <b>Noisy diffs are an Ignition reality</b> — the answer is the same as chapter 2's: <b>small, scoped changes, committed often</b>.</p>
+          <!-- [VERIFY] exact 8.3 Designer save/serialization behavior (stable key ordering, what resource.json fields churn on save) — demo this live on the lab gateway before asserting details -->
+        </div>
+      </div>
+      <div class="code">
+        <pre><span class="cm"># git diff after changing one label text</span>
+<span class="cm">--- a/…/views/pages/overview/view.json</span>
+<span class="cm">+++ b/…/views/pages/overview/view.json</span>
+   "meta": { "name": "Subtitle" },
+   "props": {
+<span class="del">-    "text": "Plant 4 — Refrigeration Overview",</span>
+<span class="add">+    "text": "Plant 4 — Refrigeration Overview (night shift)",</span>
+     "style": {
+       "color": "#6b7f9c",
+
+<span class="cm"># and for a script change — plain Python diffs</span>
+<span class="cm">--- a/…/script-python/lab/display/code.py</span>
+<span class="cm">+++ b/…/script-python/lab/display/code.py</span>
+ def format_reading(value, units):
+<span class="add">+    if value is None:</span>
+<span class="add">+        return "%s %s" % (PLACEHOLDER, units)</span>
+     return "%.1f %s" % (value, units)</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Small saves → small diffs → reviewable PRs</span></div>
+</section>
+
+<!-- 19 · IGNITION MERGE CONFLICTS -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Ignition · when branches collide</div>
+  </div>
+
+  <div class="body">
+    <div class="sechead">
+      <span class="num">12</span>
+      <div>
+        <div class="title">Why Ignition merge conflicts are special</div>
+        <div class="lead">Git merges <b>lines</b>. Ignition resources are <b>structures</b>. That mismatch is where teams get burned.</div>
+      </div>
+    </div>
+    <div class="cols2">
+      <div>
+        <ul class="checks">
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>One view = one JSON document.</b> Two people editing the <i>same view</i> — even different components — often touch neighbouring lines of the same file. Conflicts happen far more easily than in code split across many files.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Conflict markers break the JSON.</b> A half-resolved <span class="mono">view.json</span> is invalid — the gateway can't load it. <b>Run <span class="mono">ops/validate.sh</span> after every resolve</b>; red output is your safety net.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>A "clean" auto-merge can still be wrong.</b> Git happily merges two edits to the same <span class="mono">children</span> array into JSON that parses but renders nonsense. Valid ≠ correct — open the view after merging.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Binary resources don't merge at all.</b> Images, <span class="mono">.gwbk</span> backups, <span class="mono">.modl</span> files — it's one side or the other. Coordinate, don't merge.</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="code">
+          <pre><span class="cm"># mid-merge view.json — this is NOT valid JSON</span>
+      "props": {
+<span class="mark">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+        "text": "Discharge Temp",
+<span class="mark">=======</span>
+        "text": "Discharge Temperature",
+<span class="mark">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/rename-tiles</span>
+        "style": { … }</pre>
+        </div>
+        <div class="callout" style="margin-top:18px">
+          <div class="lab" style="color:var(--good)">The defence is chapter 1 + 2</div>
+          <p><b>Short-lived branches</b> and <b>small PRs</b> shrink the collision window; <b>one owner per view at a time</b> removes it. The strategy you write in the you-do is your team's conflict insurance — and hotfixing live in the Designer <b>bypasses Git entirely</b>, which is how "who changed the plant overview?" mysteries are born.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Git merges lines; Ignition ships structures</span></div>
+</section>
+
+<!-- 20 · IN THE LAB (closing) -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Teaching → We-do → You-do</div>
+  </div>
+
+  <div class="body">
+    <div class="eyebrow">Now we make it real</div>
+    <div class="title" style="max-width:24ch;color:#fff">This afternoon you'll run the whole loop — on a real Ignition project.</div>
+    <ul class="checks" style="max-width:960px;margin-top:22px">
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>We-do.</b> In pairs, you pick a strategy for a <i>real</i> team and defend it. Then, together, we take the "update stuff" PR and rewrite it into one a reviewer enjoys.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>You-do (breakout rooms).</b> Write your team's <b>branching agreement</b> and PR it. Fix a real null-reading bug in <span class="mono">lab.display</span> and PR that too. Review a peer's PR with <span class="mono">praise:</span> / <span class="mono">suggestion:</span> / <span class="mono">issue:</span>. Merge both — <b>with the style your own agreement demands</b>.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>The payoff.</b> By 16:00 your agreement isn't a document — it's something you <b>used twice</b>. And tomorrow we make it enforceable: <span class="mono">validate.sh</span> becomes a CI gate no one can merge past.</span></li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Next → We do (14:00)</span></div>
+</section>
+
+</div>
+
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="pager" id="pager">01 / 20</div>
+<div class="hint" id="hint">↑ ↓ slides · ← → step the animation</div>
+
+<script>
+/* ============ deck navigation ============ */
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+const bar=document.getElementById('bar');
+const pager=document.getElementById('pager');
+const hint=document.getElementById('hint');
+function pad(n){return String(n).padStart(2,'0')}
+function curIndex(){return Math.round(deck.scrollTop/window.innerHeight)}
+function update(){
+  const i=curIndex();
+  bar.style.width=((i)/(slides.length-1)*100)+'%';
+  pager.textContent=pad(i+1)+' / '+pad(slides.length);
+  const dark=slides[i]&&slides[i].classList.contains('dark');
+  pager.classList.toggle('on-dark',dark);
+  hint.classList.toggle('on-dark',dark);
+}
+deck.addEventListener('scroll',()=>{requestAnimationFrame(update)});
+window.addEventListener('keydown',e=>{
+  if(e.target.tagName==='BUTTON')return;
+  const i=curIndex();
+  // Up/Down (and PageUp/Down) always move between slides
+  if(e.key==='ArrowDown'||e.key==='PageDown'){e.preventDefault();deck.scrollTo({top:(i+1)*window.innerHeight})}
+  if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();deck.scrollTo({top:(i-1)*window.innerHeight})}
+  if(e.key==='Home'){deck.scrollTo({top:0})}
+  if(e.key==='End'){deck.scrollTo({top:slides.length*window.innerHeight})}
+  // Left/Right ONLY step the current slide's animation — they never change slides.
+  if(e.key==='ArrowRight'){e.preventDefault(); if(bound[i])bound[i].go(1);}
+  if(e.key==='ArrowLeft'){e.preventDefault(); if(bound[i])bound[i].go(-1);}
+});
+update();
+setTimeout(()=>{hint.style.transition='opacity .6s';hint.style.opacity='0'},5000);
+
+/* ============ tiny SVG helpers (same as lab 1) ============ */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs={},parent){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);if(parent)parent.appendChild(n);return n;}
+function commitNode(svg,x,y,label,sha,opts={}){
+  const g=el('g',{class:'vpop '+(opts.cls||'')},svg);
+  el('circle',{class:'gnode',cx:x,cy:y,r:opts.r||40},g);
+  el('text',{class:'glabel',x,y},g).textContent=label;
+  if(sha)el('text',{class:'gsha',x,y:y+(opts.r||40)+20},g).textContent=sha;
+  return g;
+}
+function edge(svg,x1,y1,x2,y2,opts={}){
+  // shorten to circle edges
+  const r=opts.r||40,dx=x2-x1,dy=y2-y1,len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len;
+  const sx=x1+ux*r,sy=y1+uy*r,ex=x2-ux*(r+(opts.arrow?10:0)),ey=y2-uy*(r+(opts.arrow?10:0));
+  const g=el('g',{class:'vdraw '+(opts.cls||'')},svg);
+  el('line',{class:'gedge'+(opts.branch?' branchline':''),x1:sx,y1:sy,x2:ex,y2:ey,'marker-end':opts.arrow?'url(#arrow)':''},g);
+  return g;
+}
+function defsArrow(svg){
+  const d=el('defs',{},svg);
+  const m=el('marker',{id:'arrow',viewBox:'0 0 10 10',refX:'8',refY:'5',markerWidth:'7',markerHeight:'7',orient:'auto-start-reverse'},d);
+  el('path',{d:'M0,0 L10,5 L0,10 z',fill:'#fff'},m);
+}
+/* lane label at the left edge of a swim-lane */
+function laneLabel(svg,y,name,hot){
+  const g=el('g',{class:'vshow'},svg);
+  el('text',{class:'glane'+(hot?' hotlane':''),x:40,y:y+6},g).textContent=name;
+  return g;
+}
+/* small amber tag badge (v1.2, deploy, …) */
+function tagBadge(svg,x,y,label){
+  const w=label.length*9.5+22,h=28;
+  const g=el('g',{class:'vshow gtag'},svg);
+  el('rect',{x:x-w/2,y:y-h/2,width:w,height:h,rx:8},g);
+  el('text',{x,y:y+1},g).textContent=label;
+  return g;
+}
+function reveal(elm,on){if(!elm)return;elm.classList.toggle('on',on!==false);}
+
+/* ============ per-slide step controllers ============ */
+const controllers={};
+function bindControls(slideEl,ctrl){
+  let step=0;
+  const next=slideEl.querySelector('[data-act="next"]');
+  const back=slideEl.querySelector('[data-act="back"]');
+  function sync(){ if(back)back.disabled=step<=0; if(next)next.disabled=step>=ctrl.max; ctrl.render(step); }
+  function go(d){ const prev=step; step=Math.max(0,Math.min(ctrl.max,step+d)); if(step!==prev){sync();return true;} return false; }
+  if(next)next.addEventListener('click',()=>go(1));
+  if(back)back.addEventListener('click',()=>go(-1));
+  ctrl.reset=()=>{step=0;sync();};
+  sync();
+  return {go,reset:ctrl.reset};
+}
+
+/* ---------- slide 5: GIT FLOW ---------- */
+(function(){
+  const svg=el('svg',{viewBox:'0 0 1700 780',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-gitflow'));
+  defsArrow(svg);
+  const R=32,O={r:R,cls:'small'};
+  const yM=110,yH=255,yR=400,yD=545,yF=690;
+  // lanes
+  const lane={
+    M:laneLabel(svg,yM,'main'),
+    H:laneLabel(svg,yH,'hotfix/*',true),
+    R:laneLabel(svg,yR,'release/*'),
+    D:laneLabel(svg,yD,'develop'),
+    F:laneLabel(svg,yF,'feature/*')
+  };
+  // nodes
+  const node={};
+  node.A=commitNode(svg,200,yM,'A','v1.2',O);
+  node.B=commitNode(svg,340,yD,'B',null,O);
+  node.C=commitNode(svg,480,yF,'C',null,O);
+  node.D=commitNode(svg,620,yF,'D',null,O);
+  node.E=commitNode(svg,760,yD,'E','merge',O);
+  node.F=commitNode(svg,900,yR,'F','stabilize',O);
+  node.G=commitNode(svg,980,yH,'G','P1 fix',O);
+  node.H=commitNode(svg,1120,yM,'H','v1.2.1',O);
+  node.I=commitNode(svg,1260,yD,'I','merge',O);
+  node.J=commitNode(svg,1400,yM,'J','v2.0',O);
+  node.K=commitNode(svg,1560,yD,'K','merge',O);
+  // edges
+  const E={};
+  E.AB=edge(svg,200,yM,340,yD,{r:R,arrow:true,branch:true});   // branch develop
+  E.BC=edge(svg,340,yD,480,yF,{r:R,arrow:true,branch:true});   // branch feature
+  E.CD=edge(svg,480,yF,620,yF,{r:R,arrow:true});
+  E.DE=edge(svg,620,yF,760,yD,{r:R,arrow:true,branch:true});   // merge feature→develop
+  E.BE=edge(svg,340,yD,760,yD,{r:R,arrow:true});
+  E.EF=edge(svg,760,yD,900,yR,{r:R,arrow:true,branch:true});   // branch release
+  E.AG=edge(svg,200,yM,980,yH,{r:R,arrow:true,branch:true});   // branch hotfix off main
+  E.AH=edge(svg,200,yM,1120,yM,{r:R,arrow:true});
+  E.GH=edge(svg,980,yH,1120,yM,{r:R,arrow:true,branch:true});  // hotfix→main
+  E.EI=edge(svg,760,yD,1260,yD,{r:R,arrow:true});
+  E.GI=edge(svg,980,yH,1260,yD,{r:R,arrow:true,branch:true});  // hotfix→develop
+  E.HJ=edge(svg,1120,yM,1400,yM,{r:R,arrow:true});
+  E.FJ=edge(svg,900,yR,1400,yM,{r:R,arrow:true,branch:true});  // release→main
+  E.IK=edge(svg,1260,yD,1560,yD,{r:R,arrow:true});
+  E.FK=edge(svg,900,yR,1560,yD,{r:R,arrow:true,branch:true});  // release→develop
+  const lead=slides[4].querySelector('#gitflow-step');
+  const steps=[
+    {on:[lane.M,lane.D,node.A,node.B,E.AB],t:'Two long-lived branches: <b>main</b> is production (v1.2); <b>develop</b> is where v2.0 integrates.'},
+    {on:[lane.F,node.C,node.D,node.E,E.BC,E.CD,E.DE,E.BE],t:'v2.0 features branch off <b>develop</b> and merge back. main has not moved.'},
+    {on:[lane.R,node.F,E.EF],t:'Release week: <b>release/v2.0</b> branches off develop and stabilizes — no new features allowed on it.'},
+    {on:[lane.H,node.G,E.AG],t:'⚠ P1 bug in production. <b>hotfix/v1.2.1</b> branches off <b>main</b> — the code customers run, not develop.'},
+    {on:[node.H,E.AH,E.GH],t:'The hotfix merges into <b>main</b> → ship <b>v1.2.1</b> today. First goal met.'},
+    {on:[node.I,E.EI,E.GI],t:'…and into <b>develop</b>, so v2.0 keeps the fix. Every hotfix merges <b>twice</b> — forget the second merge and v2.0 re-introduces the bug.'},
+    {on:[node.J,E.HJ,E.FJ,node.K,E.IK,E.FK],t:'Next week the release also merges twice: into main (tag <b>v2.0</b>) and back into develop. Second goal met.'},
+    {on:[],t:'Both goals met — but count the lanes and double-merges. <b>That is the price of parallel versions.</b> Overkill for most teams; right when you truly maintain v1.x and v2.x at once.'}
+  ];
+  const all=[...Object.values(lane),...Object.values(node),...Object.values(E)];
+  controllers.gitflow={max:steps.length-1,render(s){
+    const onset=new Set(); for(let i=0;i<=s;i++)steps[i].on.forEach(g=>onset.add(g));
+    all.forEach(g=>reveal(g,onset.has(g)));
+    lead.innerHTML=steps[s].t;
+  }};
+})();
+
+/* ---------- slide 6: GITHUB FLOW ---------- */
+(function(){
+  const svg=el('svg',{viewBox:'0 0 1700 640',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-ghflow'));
+  defsArrow(svg);
+  const R=36,O={r:R};
+  const yM=230,yB=470;
+  const laneM=laneLabel(svg,yM,'main');
+  const node={};
+  node.A=commitNode(svg,220,yM,'A','production',O);
+  node.B=commitNode(svg,440,yB,'B',null,O);
+  node.C=commitNode(svg,600,yB,'C',null,O);
+  node.D=commitNode(svg,800,yM,'D','merge PR',O);
+  node.E=commitNode(svg,1020,yB,'E','P1 fix',O);
+  node.F=commitNode(svg,1240,yM,'F','merge PR',O);
+  const E={};
+  E.AB=edge(svg,220,yM,440,yB,{r:R,arrow:true,branch:true});
+  E.BC=edge(svg,440,yB,600,yB,{r:R,arrow:true});
+  E.CD=edge(svg,600,yB,800,yM,{r:R,arrow:true,branch:true});
+  E.AD=edge(svg,220,yM,800,yM,{r:R,arrow:true});
+  E.DE=edge(svg,800,yM,1020,yB,{r:R,arrow:true,branch:true});
+  E.EF=edge(svg,1020,yB,1240,yM,{r:R,arrow:true,branch:true});
+  E.DF=edge(svg,800,yM,1240,yM,{r:R,arrow:true});
+  // branch name labels under the dips
+  const lblFeat=el('g',{class:'vshow'},svg);
+  el('text',{class:'gbranch',x:520,y:yB+80},lblFeat).textContent='feature/v2-orders';
+  const lblFix=el('g',{class:'vshow'},svg);
+  el('text',{class:'gbranch',x:1020,y:yB+80},lblFix).textContent='fix/cart-total';
+  // deploy tags above the merge nodes
+  const tag1=tagBadge(svg,800,yM-78,'deploy');
+  const tag2=tagBadge(svg,1240,yM-78,'deploy');
+  // the v1.2 question
+  const noteQ=el('g',{class:'vshow'},svg);
+  el('text',{class:'note-red',x:1480,y:yM-16},noteQ).textContent='main is v2.0 now —';
+  el('text',{class:'note-red',x:1480,y:yM+14},noteQ).textContent='where does v1.2 live?';
+  el('text',{class:'gsha',x:1480,y:yM+48},noteQ).textContent='answer: deploy tags (production-v1.2)';
+  const lead=slides[5].querySelector('#ghflow-step');
+  const steps=[
+    {on:[laneM,node.A],t:'One long-lived branch. <b>What is on main is what is in production.</b>'},
+    {on:[node.B,node.C,E.AB,E.BC,lblFeat],t:'All work — features and fixes alike — happens on <b>short-lived branches</b>.'},
+    {on:[node.D,E.CD,E.AD,tag1],t:'The branch comes back through a <b>pull request</b>. Merging <b>is</b> releasing.'},
+    {on:[node.E,E.DE,lblFix,node.F,E.EF,E.DF,tag2],t:'The P1 fix is nothing special: branch → PR → merge → deploy. <b>Same moves, smaller diff.</b>'},
+    {on:[noteQ],t:'The catch: main <b>is</b> v2.0 now. Where does v1.2 live? GitHub Flow alone has no answer — teams pair it with <b>deploy tags</b> and cut over deliberately.'}
+  ];
+  const all=[laneM,...Object.values(node),...Object.values(E),lblFeat,lblFix,tag1,tag2,noteQ];
+  controllers.ghflow={max:steps.length-1,render(s){
+    const onset=new Set(); for(let i=0;i<=s;i++)steps[i].on.forEach(g=>onset.add(g));
+    all.forEach(g=>reveal(g,onset.has(g)));
+    lead.innerHTML=steps[s].t;
+  }};
+})();
+
+/* ---------- slide 7: TRUNK-BASED ---------- */
+(function(){
+  const svg=el('svg',{viewBox:'0 0 1700 560',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-trunk'));
+  defsArrow(svg);
+  const R=36,O={r:R};
+  const yM=220,yB=420;
+  const laneM=laneLabel(svg,yM,'main');
+  const node={};
+  node.A=commitNode(svg,200,yM,'A','prod',O);
+  node.B=commitNode(svg,420,yB,'B','tiny fix',O);
+  node.C=commitNode(svg,620,yM,'C','merge',O);
+  node.D=commitNode(svg,860,yM,'D','v2.0 wip · flag off',O);
+  node.E=commitNode(svg,1100,yM,'E','v2.0 done · flag off',O);
+  node.F=commitNode(svg,1340,yM,'F','flip flag on',O);
+  const E={};
+  E.AB=edge(svg,200,yM,420,yB,{r:R,arrow:true,branch:true});
+  E.BC=edge(svg,420,yB,620,yM,{r:R,arrow:true,branch:true});
+  E.AC=edge(svg,200,yM,620,yM,{r:R,arrow:true});
+  E.CD=edge(svg,620,yM,860,yM,{r:R,arrow:true});
+  E.DE=edge(svg,860,yM,1100,yM,{r:R,arrow:true});
+  E.EF=edge(svg,1100,yM,1340,yM,{r:R,arrow:true});
+  const lblFix=el('g',{class:'vshow'},svg);
+  el('text',{class:'gbranch',x:420,y:yB+82},lblFix).textContent='fix-cart-total · lives ~2 hours';
+  const tagV2=tagBadge(svg,1340,yM-78,'v2.0');
+  const lead=slides[6].querySelector('#trunk-step');
+  const steps=[
+    {on:[laneM,node.A],t:'Everyone commits to <b>main</b> — the trunk. It is production, always.'},
+    {on:[node.B,E.AB,lblFix],t:'The v1.2 fix: a branch born this morning…'},
+    {on:[node.C,E.BC,E.AC],t:'…and merged before lunch. Branch lifetime: <b>hours, not days</b>.'},
+    {on:[node.D,E.CD,node.E,E.DE],t:'v2.0 lands <b>directly on main</b> — behind a feature flag that is OFF in production. Unfinished work ships dark.'},
+    {on:[node.F,E.EF,tagV2],t:'The release is a <b>flag flip</b>, not a merge. No long-lived branches, no double-merges, nothing to forget.'},
+    {on:[],t:'The price: a feature-flag system + serious CI/test discipline — every commit to main must be safe. <b>That safety net is exactly what we start building tomorrow.</b>'}
+  ];
+  const all=[laneM,...Object.values(node),...Object.values(E),lblFix,tagV2];
+  controllers.trunk={max:steps.length-1,render(s){
+    const onset=new Set(); for(let i=0;i<=s;i++)steps[i].on.forEach(g=>onset.add(g));
+    all.forEach(g=>reveal(g,onset.has(g)));
+    lead.innerHTML=steps[s].t;
+  }};
+})();
+
+/* ============ wire controllers to their slides + reset on entry ============ */
+const ctrlBySlide={4:'gitflow',5:'ghflow',6:'trunk'};
+const bound={};
+for(const idx in ctrlBySlide){const name=ctrlBySlide[idx];bound[idx]=bindControls(slides[idx],controllers[name]);}
+// reset a slide's animation when you scroll onto it
+let lastIdx=-1;
+function onView(){const i=curIndex();if(i!==lastIdx){lastIdx=i;if(bound[i])bound[i].reset();}}
+deck.addEventListener('scroll',()=>requestAnimationFrame(onView));
+onView();
+</script>
+</body>
+</html>

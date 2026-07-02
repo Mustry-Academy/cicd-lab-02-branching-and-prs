@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lab 02 — Assignment: Branching &amp; pull requests, applied to Ignition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0e1b2e;
+  --navy2:#15233a;
+  --blue:#2563eb;
+  --blue-d:#1d4ed8;
+  --peri:#93a9f0;
+  --peri2:#a8bef7;
+  --peri-soft:#e8eefc;
+  --bg:#eef1f6;
+  --panel:#ffffff;
+  --panel2:#f5f8fc;
+  --line:#e3e9f1;
+  --line2:#d3dcea;
+  --txt:#15233a;
+  --txt-dim:#5a6a7e;
+  --txt-faint:#94a2b4;
+  --good:#16a34a; --good-soft:#e3f6ea;
+  --warn:#d97706; --warn-soft:#fbf0db;
+  --teal:#3bbdb4; --teal-l:#5fd6cd;
+  --shadow:0 1px 2px rgba(14,27,46,.05),0 10px 30px -16px rgba(14,27,46,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--navy);
+  color:var(--txt);
+  font-family:'Libre Franklin',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+
+/* ---- deck mechanics ---- */
+.deck{height:100vh;width:100vw;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth}
+.deck::-webkit-scrollbar{display:none}
+.slide{
+  height:100vh;width:100vw;scroll-snap-align:start;scroll-snap-stop:always;
+  display:flex;flex-direction:column;position:relative;
+  padding:64px 64px 40px;background:var(--bg);
+}
+.slide.dark{background:radial-gradient(120% 120% at 80% -10%,#1c3358 0%,#0e1b2e 55%)}
+
+/* progress + nav */
+.hud{position:fixed;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.08);z-index:50}
+.hud .bar{height:100%;background:linear-gradient(90deg,var(--blue),var(--peri));width:0;transition:width .3s}
+.pager{position:fixed;right:22px;bottom:18px;z-index:50;font-size:11px;color:var(--txt-faint);font-family:'IBM Plex Mono'}
+.pager.on-dark{color:rgba(255,255,255,.55)}
+.hint{position:fixed;left:22px;bottom:16px;z-index:50;font-size:10.5px;color:var(--txt-faint);letter-spacing:.3px}
+.hint.on-dark{color:rgba(255,255,255,.4)}
+
+/* ---- logo ---- */
+.brandrow{display:flex;align-items:center;gap:13px}
+.logo-img{height:30px;width:auto;display:block}
+.logo-img.logo-lg{height:44px}
+
+/* slide chrome */
+.eyebrow{font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:14px}
+.dark .eyebrow{color:var(--peri2)}
+.title{font-weight:800;font-size:38px;line-height:1.05;letter-spacing:-1px;color:var(--navy)}
+.dark .title{color:#fff}
+.lead{font-size:16px;color:var(--txt-dim);line-height:1.5;max-width:820px;margin-top:14px}
+.dark .lead{color:#c4cfde}
+.sechead{display:flex;align-items:baseline;gap:14px;margin-bottom:22px}
+.sechead .num{font-family:'IBM Plex Mono';font-size:12px;font-weight:600;color:#fff;background:var(--blue);padding:5px 11px;border-radius:8px;letter-spacing:.5px;white-space:nowrap}
+.sechead .num.phase2{background:var(--peri)}
+.sechead .num.warm{background:var(--teal)}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.topbar .stage{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--txt-faint);font-weight:600}
+.topbar .stage.on-dark{color:rgba(255,255,255,.5)}
+
+/* ---- cover ---- */
+.cover{flex:1;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.cover .big{font-weight:800;font-size:58px;line-height:1.02;letter-spacing:-1.6px;color:#fff;max-width:18ch}
+.cover .big em{font-style:normal;color:var(--peri2)}
+.cover .sub{font-size:17px;color:#aebbcd;max-width:64ch;line-height:1.55;margin-top:18px}
+.cover .for{margin-top:30px;display:flex;align-items:center;gap:14px;font-size:13px;color:#8fa0b6;flex-wrap:wrap}
+.cover .for .pill{border:1px solid rgba(255,255,255,.16);border-radius:30px;padding:7px 15px;color:#dbe4f0}
+.cover .for .pill b{color:#fff;font-weight:700}
+
+/* ---- generic layout ---- */
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+
+/* ---- numbered task steps ---- */
+.steps{display:flex;flex-direction:column;gap:13px;margin-top:4px}
+.step{display:grid;grid-template-columns:34px 1fr;gap:15px;align-items:start}
+.step .ix{width:34px;height:34px;border-radius:10px;background:var(--peri-soft);color:var(--blue);font-weight:800;font-size:14px;display:grid;place-items:center;font-family:'IBM Plex Mono'}
+.step .ix.t{background:rgba(59,189,180,.16);color:var(--teal)}
+.step .ix.p{background:rgba(147,169,240,.22);color:var(--blue-d)}
+.step .tx{font-size:15px;color:var(--txt-dim);line-height:1.5;padding-top:5px}
+.step .tx b{color:var(--txt);font-weight:700}
+.step .tx code,.inlinecode{font-family:'IBM Plex Mono';font-size:13.5px;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:2px 7px;color:var(--blue-d)}
+
+/* code block */
+.code{background:var(--navy);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-top:6px;overflow:auto}
+.code pre{font-family:'IBM Plex Mono';font-size:14px;color:#dbe6f5;line-height:1.7}
+.code .cm{color:#7d93ad}
+.code .cmd2{color:var(--peri2)}
+
+/* goal / objective banner */
+.goal{display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:14px;padding:16px 20px;box-shadow:var(--shadow);margin-top:auto}
+.goal .badge{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#fff;background:var(--blue);padding:5px 10px;border-radius:7px;white-space:nowrap}
+.goal p{font-size:14px;color:var(--txt-dim);line-height:1.5}
+.goal p b{color:var(--txt);font-weight:700}
+.goal.warn-g{border-left-color:var(--warn)}
+.goal.warn-g .badge{background:var(--warn)}
+.goal.good-g{border-left-color:var(--good)}
+.goal.good-g .badge{background:var(--good)}
+
+/* checklist (dark) */
+.checks{display:flex;flex-direction:column;gap:13px;margin-top:6px}
+.checks li{list-style:none;display:flex;gap:13px;align-items:flex-start;font-size:15.5px;color:var(--txt-dim);line-height:1.5}
+.checks li b{color:var(--txt);font-weight:700}
+.ck{flex:none;width:23px;height:23px;border-radius:7px;background:var(--peri-soft);display:grid;place-items:center;margin-top:1px}
+.ck svg{width:12px;height:12px;color:var(--blue)}
+.dark .checks li{color:#c4cfde}
+.dark .checks li b{color:#fff}
+.dark .ck{background:rgba(147,169,240,.18)}
+.dark .ck svg{color:var(--peri2)}
+
+/* phase map (cover-ish overview) */
+.pmap{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:10px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.pcard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--teal)}
+.pcard.p1:before{background:var(--blue)}
+.pcard.p2:before{background:var(--peri)}
+.pcard .pn{font-family:'IBM Plex Mono';font-size:11px;color:var(--txt-faint);font-weight:600;letter-spacing:1px}
+.pcard h4{font-size:18px;font-weight:800;letter-spacing:-.3px;margin:8px 0 4px}
+.pcard p{font-size:13px;color:var(--txt-dim);line-height:1.5;margin-top:8px}
+.pcard .gate{font-family:'IBM Plex Mono';font-size:11px;color:var(--blue);font-weight:600;margin-top:12px}
+
+/* two-column for parts */
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+
+.foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--txt-faint);padding-top:22px}
+.dark .foot{color:rgba(255,255,255,.45)}
+
+@media print{
+  body{overflow:visible}
+  .deck{height:auto;overflow:visible}
+  .slide{height:100vh;page-break-after:always;break-after:page}
+  .hud,.pager,.hint{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- 1 · COVER -->
+<!-- [VERIFY] session times — teaching.html carries a TODO: welcome package says Day-1 afternoon = 13:00 teaching / 14:00 we-do / 15:00 you-do; this deck assumes we-do+you-do = 14:00–16:00 -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img logo-lg" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Lab 02 · The assignment · 14:00 – 16:00</div>
+  </div>
+  <div class="cover">
+    <div class="eyebrow">The assignment · we-do, then breakout rooms</div>
+    <div class="big">Write the rules, then <em>ship by them</em>.</div>
+    <div class="sub">A warm-up together, then a solo loop on your own fork of a real Ignition project: write your team's branching agreement, fix a real null-reading bug, open two PRs, review a peer's — and merge both with the merge style your own agreement demands.</div>
+    <div class="for">
+      <span>Floating to help</span>
+      <span class="pill"><b>Sam</b></span>
+      <span class="pill"><b>Jasper</b></span>
+      <span>·</span>
+      <span class="pill">share your screen</span>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Lab 02 — Branching &amp; Pull Requests</span></div>
+</section>
+
+<!-- 2 · HOW THIS WORKS / RULES -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">The assignment · ground rules</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">READ FIRST</span><div><div class="title">How this works</div></div></div>
+    <ul class="checks" style="max-width:940px">
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Share your screen</b> in your breakout room — this is a "look over your shoulder" class. We'll drop in where it's useful.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Every PR you open has <b>base = your fork's <span class="inlinecode">main</span></b> — that's how everyone gets real merge rights without pushing to one shared repo.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">ops/validate.sh</span> before every PR.</b> It's this lab's green/red signal — every project file valid JSON, every script parseable — and the PR template's first checkbox.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open PRs early, share every link</b> in the cohort chat and tag a peer as reviewer. Part 3 needs a peer's PR to exist — and Part 4 needs a peer to have reviewed <i>yours</i>.</span></li>
+    </ul>
+    <div class="goal good-g">
+      <span class="badge">Ask early</span>
+      <p>Stuck for more than a couple of minutes? <b>Say so in the room.</b> Don't sit blocked in silence — that's exactly what we're here for.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Warm-up → Parts 1–4</span></div>
+</section>
+
+<!-- 3 · THE MAP -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">The assignment · the plan</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">THE PLAN</span><div><div class="title">One loop: rules → PRs → review → merge</div></div></div>
+    <div class="pmap">
+      <div class="pcard">
+        <div class="pn">WARM-UP · TOGETHER</div>
+        <h4>Strategy &amp; review rehearsal</h4>
+        <p>In pairs, pick a branching strategy for a <b>real</b> team and defend it. Then, as a class, rewrite the "update stuff" PR into one a reviewer enjoys.</p>
+        <div class="gate">leads into the solo loop</div>
+      </div>
+      <div class="pcard p1">
+        <div class="pn">PARTS 1–2 · SOLO</div>
+        <h4>The agreement + two PRs</h4>
+        <p>Write <span class="inlinecode">docs/branching-strategy.md</span> → docs PR. Fix the null-reading bug in <span class="inlinecode">lab.display</span> → code PR.</p>
+        <div class="gate">gate → ops/validate.sh ✅ · links in chat</div>
+      </div>
+      <div class="pcard p2">
+        <div class="pn">PARTS 3–4 · SOLO</div>
+        <h4>Review · respond · merge</h4>
+        <p>Review a peer's code PR with <span class="inlinecode">praise:</span> / <span class="inlinecode">suggestion:</span> / <span class="inlinecode">issue:</span>, then merge both of yours.</p>
+        <div class="gate">merge style = your agreement</div>
+      </div>
+    </div>
+    <div class="goal">
+      <span class="badge">Why this order</span>
+      <p>Your agreement's <b>branch naming</b> bites in Part 2 and its <b>merge style</b> bites in Part 4 — and the review loop only works if everyone's PR links are <b>in the cohort chat early</b>. Open PRs first, review while you wait.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Agreement → PRs → review → merge</span></div>
+</section>
+
+<!-- 4 · SETUP -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Before you start · setup</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num warm">SETUP</span><div><div class="title">Fork, clone &amp; (optionally) boot the gateway</div><div class="lead">Five minutes now saves twenty later. The gateway is optional — every exercise works from the files alone.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Fork + clone</b> with <span class="inlinecode">gh</span> — it sets <span class="inlinecode">origin</span> to <b>your fork</b> and <span class="inlinecode">upstream</span> to the lab repo.</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>Optional: boot the gateway.</b> <span class="inlinecode">cp .env.example .env</span>, then <span class="inlinecode">ops/setup.sh</span> — it waits for RUNNING and prints the URL + login.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx">A running gateway <b>doesn't auto-detect your edits</b>: reload with <span class="inlinecode">docker compose restart</span> — or <span class="inlinecode">ops/scan.sh</span> after a one-time API key (<span class="inlinecode">.env.example</span> explains).</div></div>
+        <div class="step"><div class="ix t">4</div><div class="tx">Run <span class="inlinecode">ops/validate.sh</span> once <b>now</b>, before you've changed anything — know what green looks like.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># once — your own fork, with merge rights</span>
+gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
+cd cicd-lab-02-branching-and-prs
+
+<span class="cm"># optional — see the project run</span>
+cp .env.example .env
+ops/setup.sh          <span class="cm"># boots the gateway → RUNNING</span>
+<span class="cm"># open http://localhost:8088</span>
+
+<span class="cm"># the PR gate — run before every PR</span>
+ops/validate.sh       <span class="cm"># → ✓ all project files valid</span></pre></div>
+        <div class="goal" style="margin-top:18px">
+          <span class="badge">What you're editing</span>
+          <p><span class="inlinecode">projects/lab-project/</span> — a Perspective refrigeration-plant overview + two script libraries. Done for the day? <span class="inlinecode">ops/teardown.sh</span> stops the gateway.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Setup → warm-ups</span></div>
+</section>
+
+<!-- 5 · WARM-UP / WE-DO A -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Warm-up · we do · pairs</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num warm">WE DO · A</span><div><div class="title">Pick a strategy for a real team</div><div class="lead">Pairs. The three strategies from the teaching deck meet an actual team's reality.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Pair up.</b> Interview each other, then play your partner's team back to them: <b>release cadence · regulatory constraints · team size · how often production ships</b>.</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>Together, sketch which strategy fits their team</b> best and why — <b>one paragraph</b>, written down.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx"><b>Swap.</b> Now it's your team on the table — defend your pick.</div></div>
+      </div>
+      <div>
+        <ul class="checks">
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Git Flow</b> — parallel supported versions, release + hotfix branches, every hotfix merges <i>twice</i>.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>GitHub Flow</b> — one <span class="inlinecode">main</span>, everything returns through a PR, merging is releasing.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Trunk-based</b> — branches live hours, feature flags hide unfinished work, needs serious CI discipline.</span></li>
+        </ul>
+        <div class="goal" style="margin-top:18px">
+          <span class="badge">No team?</span>
+          <p>Never worked on a multi-engineer team? Sketch it for an <b>Ignition team you've consulted with</b> — or use the scenario in <span class="inlinecode">docs/branching-strategies.md</span> as a stand-in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>We-do A of B — this paragraph seeds Part 1</span></div>
+</section>
+
+<!-- 6 · WARM-UP / WE-DO B -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Warm-up · we do · class</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num warm">WE DO · B</span><div><div class="title">Rehearse the review — fix the bad PR</div><div class="lead">Back as a class: the <b>"update stuff"</b> PR from the teaching deck goes on the projector.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Rewrite its title and description</b> together so it's self-describing — <b>What / Why / How to test</b>.</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>Call out review comments aloud</b> — at least one <span class="inlinecode">praise:</span>, one <span class="inlinecode">suggestion:</span>, and one <span class="inlinecode">issue:</span> — and the instructor types them in.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx">This is the <b>dry run</b>: Part 3 is the same move, solo, on a peer's real PR.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># before</span>
+<span class="cmd2">"update stuff"</span>            <span class="cm"># 800 lines, 12 files, no description</span>
+
+<span class="cm"># after</span>
+fix(display): handle null readings without crashing
+<span class="cm">What:</span>  guard format_reading() against None
+<span class="cm">Why:</span>   comms loss showed an error, not a value
+<span class="cm">Test:</span>  ops/validate.sh + format_reading(None, "°C")</pre></div>
+        <div class="goal warn-g" style="margin-top:18px">
+          <span class="badge">Three labels</span>
+          <p><span class="inlinecode">praise:</span> genuinely good · <span class="inlinecode">suggestion:</span> specific and optional · <span class="inlinecode">issue:</span> must change before merge. That's enough to review well today.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>We-do B of B → now go solo</span></div>
+</section>
+
+<!-- 7 · YOU-DO DIVIDER -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">Solo · you do</div>
+  </div>
+  <div class="body">
+    <div class="eyebrow">You do · solo · breakout rooms</div>
+    <div class="title" style="color:#fff;max-width:22ch">Your agreement, used for real — twice</div>
+    <p class="lead">Four parts, in order. By the end, the document you write in Part 1 is something you <b style="color:#fff">used</b> in Parts 2 and 4 — not just a page of good intentions.</p>
+    <ul class="checks" style="margin-top:22px;max-width:920px">
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Part 1</b> — write your branching agreement → open a <b>docs PR</b>.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Part 2</b> — ship a small code change → open a <b>code PR</b>.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Part 3</b> — review a peer's code PR with <span class="mono" style="color:#dbe4f0">praise: / suggestion: / issue:</span>.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Part 4</b> — respond to your review, then <b>merge both PRs</b> — your agreement's way.</span></li>
+    </ul>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>You-do · Parts 1 → 4</span></div>
+</section>
+
+<!-- 8 · PART 1A — WRITE THE AGREEMENT -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Solo · Part 1 · the agreement</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">PART 1 · A</span><div><div class="title">Write your branching agreement</div><div class="lead">One page in <span class="inlinecode">docs/branching-strategy.md</span> that a new hire could follow. Start from your we-do paragraph.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">1</div><div class="tx">From your fork's <span class="inlinecode">main</span>, branch: <span class="inlinecode">feature/branching-agreement-&lt;your-initials&gt;</span>.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx">Create <span class="inlinecode">docs/branching-strategy.md</span> — a <b>new file</b> in <span class="inlinecode">docs/</span>.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx">Write the <b>six sections</b> (right). Concrete beats correct: <span class="inlinecode">fix/&lt;short-slug&gt;</span> is a rule, "use descriptive names" is a hope.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># docs/branching-strategy.md — the skeleton</span>
+## Context           <span class="cm">2–3 sentences: product, team size, cadence</span>
+## Chosen strategy   <span class="cm">Git Flow / GitHub Flow / trunk-based — and why</span>
+## Branch naming     <span class="cm">feature/… fix/… release/… — concrete patterns</span>
+## Merge style       <span class="cm">ff / --no-ff / rebase + merge — justify it</span>
+## Release process   <span class="cm">how a change goes from main to production</span>
+## Hotfix rules      <span class="cm">the procedure when v-current is on fire</span></pre></div>
+        <div class="goal" style="margin-top:18px">
+          <span class="badge">Two sections bite today</span>
+          <p><b>Branch naming</b> decides your Part 2 branch name; <b>Merge style</b> decides which button you press in Part 4. Write those two like you mean them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 1 · write → PR next</span></div>
+</section>
+
+<!-- 9 · PART 1B — OPEN THE DOCS PR -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Solo · Part 1 · the docs PR</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">PART 1 · B</span><div><div class="title">Open the docs PR</div><div class="lead">Your first PR of the day — the template does half the work for you.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">4</div><div class="tx"><b>Commit</b> with a <a href="https://www.conventionalcommits.org/" style="color:var(--blue-d)">Conventional Commits</a> message, then <b>push</b> the branch to your fork.</div></div>
+        <div class="step"><div class="ix p">5</div><div class="tx"><b>Open the PR — base = your fork's <span class="inlinecode">main</span></b>. The template (<span class="inlinecode">.github/pull_request_template.md</span>) pre-fills <b>What / Why / How to test</b> — for a docs PR, "how to test" is <i>"read the doc"</i>.</div></div>
+        <div class="step"><div class="ix p">6</div><div class="tx"><b>Drop the link in the cohort chat</b> and tag a peer as reviewer. <b>Don't merge yet</b> — that's Part 4.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre>git add docs/branching-strategy.md
+git commit -m <span class="cmd2">"docs: add team branching agreement"</span>
+git push -u origin feature/branching-agreement-&lt;ini&gt;
+
+<span class="cm"># open the PR in the browser — and CHECK the base:</span>
+<span class="cm"># base = YOUR fork's main, not mustry-academy's</span></pre></div>
+        <!-- [VERIFY] `gh pr create` defaults the base repo to upstream on a fork — the browser flow avoids teaching a footgun; if you want a CLI line, it needs `--repo <you>/cicd-lab-02-branching-and-prs` -->
+        <div class="goal warn-g" style="margin-top:18px">
+          <span class="badge">Template checklist</span>
+          <p>The template also ships a checklist: <b>validation passes</b> · gateway still starts (project changes) · <b>no secrets</b> · <b>scoped to one thing</b>. Tick them honestly — your reviewer will read them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Docs PR open → now the code PR</span></div>
+</section>
+
+<!-- 10 · PART 2A — PICK YOUR TARGET -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Solo · Part 2 · the bug</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">PART 2 · A</span><div><div class="title">Pick your target — one small fix</div><div class="lead">A <b>code</b> PR now, where "is it scoped?" and "does it break a call site?" actually bite. Pick <b>one</b>.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">A</div><div class="tx"><b>The display script (recommended).</b> <span class="inlinecode">lab.display.format_reading()</span> formats a tag reading for the HMI — the Discharge Temp tile calls it via a runScript binding.</div></div>
+        <div class="step"><div class="ix p">!</div><div class="tx"><b>The bug:</b> on a <b>null reading</b> (tag not yet read, comms loss) <span class="inlinecode">value</span> is <span class="inlinecode">None</span> and <span class="inlinecode">"%.1f" % None</span> throws — the label shows an error instead of a value.</div></div>
+        <div class="step"><div class="ix p">✓</div><div class="tx"><b>The fix:</b> return a clean placeholder like <span class="inlinecode">"-- °C"</span> for <span class="inlinecode">None</span> (and other bad input) — and <b>keep the normal numeric formatting</b>.</div></div>
+        <div class="step"><div class="ix p">B</div><div class="tx"><b>The Overview view (visual alternative).</b> Change or add a label's text in <span class="inlinecode">views/pages/overview/view.json</span>. Small diff, valid JSON — see it live with <span class="inlinecode">docker compose restart</span> or <span class="inlinecode">ops/scan.sh</span>.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># projects/lab-project/ignition/script-python/</span>
+<span class="cm">#   lab/display/code.py — as shipped</span>
+def format_reading(value, units):
+    return <span class="cmd2">"%.1f %s"</span> % (value, units)
+
+format_reading(-6.5, <span class="cmd2">"°C"</span>)   <span class="cm"># → "-6.5 °C"  ✓</span>
+format_reading(None, <span class="cmd2">"°C"</span>)   <span class="cm"># → TypeError ✗</span></pre></div>
+        <div class="goal" style="margin-top:18px">
+          <span class="badge">Zero is a reading</span>
+          <p><span class="inlinecode">0</span> is a <b>valid</b> value and must still format as <span class="inlinecode">"0.0 °C"</span> — only <span class="inlinecode">None</span> (and junk) gets the placeholder. Reviewers: this is the classic <span class="inlinecode">issue:</span> to catch.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 2 · the target → ship it next</span></div>
+</section>
+
+<!-- 11 · PART 2B — SHIP IT -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Solo · Part 2 · the code PR</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">PART 2 · B</span><div><div class="title">Ship it — branch, validate, PR</div><div class="lead">This is where your agreement bites for the first time: the branch is named <b>your</b> way.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">1</div><div class="tx">Branch off your fork's <span class="inlinecode">main</span>, <b>named the way your agreement says</b> — e.g. <span class="inlinecode">fix/null-reading-&lt;your-initials&gt;</span>.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx">Make the change. Run <span class="inlinecode">ops/validate.sh</span> — <b>green before you commit</b>.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx">Commit with a Conventional Commits message, push, and open the PR — <b>base = your fork's <span class="inlinecode">main</span></b>, template filled in.</div></div>
+        <div class="step"><div class="ix p">4</div><div class="tx">"How to test" is <b>concrete</b> now: <span class="inlinecode">ops/validate.sh</span> <b>plus the behavior you changed</b>. Drop the link in the cohort chat.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre>git switch main
+git switch -c fix/null-reading-&lt;ini&gt;  <span class="cm"># per YOUR agreement</span>
+
+<span class="cm"># edit code.py (or view.json), then:</span>
+ops/validate.sh                       <span class="cm"># → green</span>
+git add -p
+git commit -m <span class="cmd2">"fix(display): show placeholder for null readings"</span>
+git push -u origin fix/null-reading-&lt;ini&gt;
+<span class="cm"># PR: base = your fork's main → link in chat</span></pre></div>
+        <div class="goal warn-g" style="margin-top:18px">
+          <span class="badge">≤ 15 lines</span>
+          <p>Keep it under <b>~15 lines of diff</b>, one concern. This is the good-PR column from the teaching deck — <b>actually build one</b>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Two PRs open → now review a peer's</span></div>
+</section>
+
+<!-- 12 · PART 3 — REVIEW A PEER'S PR -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Solo · Part 3 · the review</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">PART 3</span><div><div class="title">Review a peer's code PR</div><div class="lead">The we-do rehearsal, for real. Coordinate in chat so <b>each PR gets one reviewer</b>.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">1</div><div class="tx"><b>Pick a peer's code PR</b> from the cohort chat.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Read slowly — at least 5 minutes</b> before writing anything. Script fix: do valid readings still format (<span class="inlinecode">-6.5</span> → <span class="inlinecode">"-6.5 °C"</span>, and <span class="inlinecode">0</span> → <span class="inlinecode">"0.0 °C"</span>)? View edit: JSON well-formed, change scoped?</div></div>
+        <!-- [VERIFY] exercises/lab.md step 3 says "does it accidentally break the `name`-defaults-to-default case" — format_reading() has no `name` param; phrased here as the happy-path check per instructor-notes/lab-key.md -->
+        <div class="step"><div class="ix p">3</div><div class="tx"><b>Check their verification:</b> did they run <span class="inlinecode">validate.sh</span>? Could you actually follow their "How to test"? Read the description and commit message too.</div></div>
+        <div class="step"><div class="ix p">4</div><div class="tx"><b>Comment:</b> at minimum a <span class="inlinecode">praise:</span> and a <span class="inlinecode">suggestion:</span> — an <span class="inlinecode">issue:</span> only if something is actually wrong. No quota; quality over quantity.</div></div>
+        <div class="step"><div class="ix p">5</div><div class="tx"><b>Verdict:</b> <b>Request changes</b> if you left at least one <span class="inlinecode">issue:</span> — <b>Approve</b> otherwise.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># a review that helps — three real comments</span>
+praise: tight diff — one function, easy to review
+
+suggestion: lab.util.to_float already swallows
+  None and junk input — reuse it here?
+
+issue: format_reading(0, "°C") now returns
+  "-- °C" — zero is a valid reading.</pre></div>
+        <div class="goal warn-g" style="margin-top:18px">
+          <span class="badge">Tone</span>
+          <p>Labels don't make rude feedback polite. <b>If you wouldn't say it in person, don't write it in the PR.</b> "?" is not a review comment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Review submitted → respond &amp; merge next</span></div>
+</section>
+
+<!-- 13 · PART 4 — RESPOND & MERGE -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Solo · Part 4 · respond &amp; merge</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num">PART 4</span><div><div class="title">Respond — then merge both, your agreement's way</div><div class="lead">The second place the agreement bites: <b>the merge button is a choice you already made in Part 1.</b></div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">1</div><div class="tx">On <b>your code PR</b>, react to <b>every</b> comment: <span class="inlinecode">+1</span> the praise, answer questions, push a <b>fix-up commit</b> for what you accept — and <b>decline with reasoning</b> what you don't.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Additive commits, no force-push</b> during review. Re-request review when you're ready.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx">Once approved, <b>merge both PRs</b> — the docs PR and the code PR — using the <b>merge style your agreement specified</b>. Pick it deliberately from GitHub's dropdown.</div></div>
+        <div class="step"><div class="ix p">4</div><div class="tx"><b>Delete each branch</b> after merge — GitHub offers the button; take it.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># a fix-up during review — additive, never force-push</span>
+git add -p
+git commit -m <span class="cmd2">"fix(display): reuse lab.util.to_float"</span>
+git push
+
+<span class="cm"># GitHub's merge dropdown → your agreement</span>
+<span class="cm">#  Create a merge commit → --no-ff, keeps branch shape</span>
+<span class="cm">#  Squash &amp; merge        → one commit on main</span>
+<span class="cm">#  Rebase &amp; merge        → linear replay, no merge commit</span></pre></div>
+        <div class="goal good-g" style="margin-top:18px">
+          <span class="badge">The payoff</span>
+          <p>Branch name in Part 2, merge style here — <b>your agreement has now been used twice.</b> It's a workflow, not a document.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Both PRs merged → stretch or debrief</span></div>
+</section>
+
+<!-- 14 · STRETCH 1 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Optional stretch</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num warm">OPTIONAL · 1</span><div><div class="title">Stretch 1 — the migration plan</div><div class="lead">How does your team get <b>from</b> today's habits <b>to</b> the strategy you chose — over a quarter? Often more interesting than the strategy itself.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix t">1</div><div class="tx">Add a <b>Migration plan</b> section to <span class="inlinecode">docs/branching-strategy.md</span>.</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>One concrete first step</b> — what happens next <i>Monday</i>? "Adopt GitHub Flow" is not a step; "add a PR template and require reviews" is.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx"><b>The riskiest change</b> — long-lived branches don't vanish overnight. Name the messiest case and how you'd <b>de-risk</b> it.</div></div>
+        <div class="step"><div class="ix t">4</div><div class="tx"><b>A measurable success criterion</b> — e.g. "PR-open-to-merge under 24 h by end of Q3".</div></div>
+        <div class="step"><div class="ix t">5</div><div class="tx">Commit and push on the same branch — <b>the open docs PR updates itself</b> (or re-opens the conversation if you already merged).</div></div>
+      </div>
+      <div>
+        <div class="code"><pre>git switch feature/branching-agreement-&lt;ini&gt;
+<span class="cm"># add "## Migration plan" to the doc</span>
+git commit -am <span class="cmd2">"docs: add migration plan"</span>
+git push        <span class="cm"># the PR picks it up</span></pre></div>
+        <div class="goal" style="margin-top:18px">
+          <span class="badge">Why bother</span>
+          <p>A team that can <b>write</b> a migration plan can probably <b>run</b> one. A team that can't will keep doing whatever it's doing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Stretch 1 of 2 — optional</span></div>
+</section>
+
+<!-- 15 · STRETCH 2 -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Optional stretch</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num phase2">OPTIONAL · 2</span><div><div class="title">Stretch 2 — protect <span class="mono" style="font-size:30px">main</span></div><div class="lead">Turn your agreement's rules into settings a repo enforces — on a repo you own (your fork works).</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix p">1</div><div class="tx">Open <b>Settings → Branches</b> and add a protection rule for <span class="inlinecode">main</span>.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Require a pull request before merging</b> — 1 approval.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx"><b>Dismiss stale approvals</b> when new commits are pushed — an approve shouldn't survive a rewrite.</div></div>
+        <div class="step"><div class="ix p">4</div><div class="tx"><b>Restrict direct pushes to <span class="inlinecode">main</span></b> for everyone — <b>including admins</b> ("do not allow bypassing").</div></div>
+        <div class="step"><div class="ix p">5</div><div class="tx"><b>Screenshot the settings</b> and share in chat with one line on <b>what you protected against</b>.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># Settings → Branches → Add branch protection rule</span>
+[x] Require a pull request before merging
+      Required approvals: 1
+[x] Dismiss stale pull request approvals
+      when new commits are pushed
+[x] Do not allow bypassing the above settings</pre></div>
+        <div class="goal" style="margin-top:18px;border-left-color:var(--peri)">
+          <span class="badge" style="background:var(--peri);color:var(--navy)">No CI check — yet</span>
+          <p>We don't require "passing CI" here because Lab 02 ships <b>no CI on purpose</b> — <span class="inlinecode">validate.sh</span> is something <i>you</i> run. <b>Lab 03 turns it into a required status check</b> no one can merge past.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Stretch 2 of 2 — optional</span></div>
+</section>
+
+<!-- 16 · DONE -->
+<section class="slide dark">
+  <div class="topbar">
+    <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
+    <div class="stage on-dark">The assignment → Debrief</div>
+  </div>
+  <div class="body">
+    <div class="eyebrow">Nicely done</div>
+    <div class="title" style="color:#fff;max-width:24ch">The agreement isn't a document. You used it — twice.</div>
+    <ul class="checks" style="max-width:940px;margin-top:22px">
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You wrote <b>team rules</b> — and your Part 2 branch name and Part 4 merge button both came from them.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You shipped <b>two reviewable PRs</b> on a real Ignition project — small, one concern, <span class="mono" style="color:#dbe4f0">validate.sh</span> green.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You reviewed a peer with <span class="mono" style="color:#dbe4f0">praise: / suggestion: / issue:</span> — and picked a <b>deliberate verdict</b>.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>Bring to the debrief: <b>which strategy surprised you</b>, one thing you'll <b>steal</b> from someone's PR, one habit you'll <b>drop</b> — and when a request-changes does more harm than good.</span></li>
+    </ul>
+    <div class="goal" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14);border-left-color:var(--peri2)">
+      <span class="badge" style="background:var(--peri2);color:var(--navy)">Next</span>
+      <p style="color:#c4cfde">Debrief &amp; wrap-up — then tomorrow, <b style="color:#fff">Lab 03</b> makes it enforceable: <span class="mono" style="color:#dbe4f0">validate.sh</span> becomes a CI gate no one can merge past.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Lab 02 complete</span></div>
+</section>
+
+</div>
+
+<div class="hud"><div class="bar" id="bar"></div></div>
+<div class="pager" id="pager">01 / 16</div>
+<div class="hint" id="hint">↑ ↓ / scroll to navigate</div>
+
+<script>
+const deck=document.getElementById('deck');
+const slides=[...document.querySelectorAll('.slide')];
+const bar=document.getElementById('bar');
+const pager=document.getElementById('pager');
+const hint=document.getElementById('hint');
+function pad(n){return String(n).padStart(2,'0')}
+function update(){
+  const i=Math.round(deck.scrollTop/window.innerHeight);
+  bar.style.width=((i)/(slides.length-1)*100)+'%';
+  pager.textContent=pad(i+1)+' / '+pad(slides.length);
+  const dark=slides[i]&&slides[i].classList.contains('dark');
+  pager.classList.toggle('on-dark',dark);
+  hint.classList.toggle('on-dark',dark);
+}
+deck.addEventListener('scroll',()=>{requestAnimationFrame(update)});
+window.addEventListener('keydown',e=>{
+  const i=Math.round(deck.scrollTop/window.innerHeight);
+  if(e.key==='ArrowDown'||e.key==='PageDown'||e.key===' '){e.preventDefault();deck.scrollTo({top:(i+1)*window.innerHeight})}
+  if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();deck.scrollTo({top:(i-1)*window.innerHeight})}
+  if(e.key==='Home'){deck.scrollTo({top:0})}
+  if(e.key==='End'){deck.scrollTo({top:slides.length*window.innerHeight})}
+});
+update();
+setTimeout(()=>{hint.style.transition='opacity .6s';hint.style.opacity='0'},4200);
+</script>
+</body>
+</html>
