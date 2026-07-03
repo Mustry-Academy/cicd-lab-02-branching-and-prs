@@ -43,7 +43,7 @@ Spin up your gateway (optional, but it makes the project tangible):
 
 ```bash
 cp .env.example .env
-ops/setup.sh        # boots one Ignition gateway, waits for RUNNING, prints the URL + login
+scripts/setup.sh        # boots one Ignition gateway, waits for RUNNING, prints the URL + login
 # open http://localhost:8088  → log in with the .env credentials
 ```
 
@@ -51,14 +51,14 @@ Before opening any PR, run the validator — the green/red signal this lab uses 
 place of a test suite (gateway-free, runs in a second):
 
 ```bash
-ops/validate.sh     # every project file must be valid JSON / parse as Python
+scripts/validate.sh     # every project file must be valid JSON / parse as Python
 ```
 
 Stop the gateway when you're done:
 
 ```bash
-ops/teardown.sh             # stop (keeps the gateway's data volume)
-ops/teardown.sh --volumes   # stop and wipe gateway state for a fresh start
+scripts/teardown.sh             # stop (keeps the gateway's data volume)
+scripts/teardown.sh --volumes   # stop and wipe gateway state for a fresh start
 ```
 
 ### Picking up your edits
@@ -74,7 +74,7 @@ If you'd rather hot-reload without a full restart, set up a one-time Ignition AP
 key (optional — instructions in `.env.example`) and trigger a project scan instead:
 
 ```bash
-ops/scan.sh                 # faster reload via the gateway's scan API
+scripts/scan.sh                 # faster reload via the gateway's scan API
 ```
 
 ## Lab structure
@@ -103,7 +103,7 @@ cicd-lab-02-branching-and-prs/
 │   └── pr-review-style.md
 ├── instructor-notes/             ← answer key (read after solo work)
 │   └── lab-key.md
-├── ops/
+├── scripts/
 │   ├── setup.sh                  ← boot the gateway and wait for RUNNING
 │   ├── scan.sh                   ← push project-file edits to the running gateway
 │   ├── teardown.sh               ← stop the gateway (--volumes to wipe state)
@@ -137,7 +137,7 @@ volumes:
 
 > The gateway regenerates a `.resources/` blob store and other operational files inside `projects/` as it runs. Those are gateway-owned churn and are gitignored — if you ever see them in `git status`, your ignore rules are off.
 
-> **No CI in this lab.** We deliberately ship no `.github/workflows/`. `ops/validate.sh` is something *you* run; Lab 03 turns it into a required status check no one can merge past. Having pre-built CI here would muddy that narrative.
+> **No CI in this lab.** We deliberately ship no `.github/workflows/`. `scripts/validate.sh` is something *you* run; Lab 03 turns it into a required status check no one can merge past. Having pre-built CI here would muddy that narrative.
 
 ## License
 

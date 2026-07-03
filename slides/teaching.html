@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lab 02 — Teaching: Branching strategies, pull requests &amp; Ignition in Git</title>
+<title>Lab 02 Teaching: Branching strategies, pull requests &amp; Ignition in Git</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -189,7 +189,7 @@ body{
 .divider .q em{font-style:normal;color:var(--peri2)}
 .divider .sub2{font-size:18px;color:#aebbcd;margin-top:18px;max-width:60ch;line-height:1.5}
 
-/* generic reveal — elements fade/rise in when .show is added */
+/* generic reveal: elements fade/rise in when .show is added */
 .reveal{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
 .reveal.show{opacity:1;transform:none}
 
@@ -218,7 +218,7 @@ body{
 .gci text{fill:#7fe9d3;font-family:'IBM Plex Mono';font-size:12.5px;font-weight:600;text-anchor:middle;dominant-baseline:central}
 .gflag{fill:#9fb6cf;font-family:'IBM Plex Mono';font-size:14px;text-anchor:middle}
 .note-red{fill:#ef6f6f;font-family:'Libre Franklin';font-weight:700;font-size:20px;text-anchor:middle}
-/* PR-state pill on the lifecycle slide — colour swaps per state (open→review→approved→merged) */
+/* PR-state pill on the lifecycle slide: colour swaps per state (open→review→approved→merged) */
 .gpr rect{fill:rgba(147,169,240,.14);stroke:var(--peri);stroke-width:1.6}
 .gpr text{fill:var(--peri2);font-family:'IBM Plex Mono';font-size:14px;font-weight:600;text-anchor:middle;dominant-baseline:central}
 .gpr.review rect{fill:rgba(240,183,101,.14);stroke:#f0b765}
@@ -265,22 +265,22 @@ body{
 <div class="deck" id="deck">
 
 <!-- 1 · COVER -->
-<!-- TODO(instructors): verify session times — welcome package says Day-1 afternoon = 13:00 teaching / 14:00 we-do / 15:00 you-do -->
+<!-- TODO(instructors): verify session times: welcome package says Day-1 afternoon = 13:00 teaching / 14:00 we-do / 15:00 you-do -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow">
       <img class="logo-img logo-lg" src="logos/OriginalLight.png" alt="Mustry Solutions">
     </div>
-    <div class="stage on-dark">Lab 02 · 13:00 – 14:00</div>
+    <div class="stage on-dark">Lab 02 · 13:00-14:00</div>
   </div>
 
   <div class="cover">
     <div class="eyebrow">Teaching · 60 min</div>
     <div class="big">Branching &amp; pull requests, <em>applied to Ignition</em>.</div>
-    <div class="sub">This morning you learned how Git works. This afternoon: how a <em style="color:#fff;font-style:normal">team</em> uses it. Three strategies for branching, what a pull request looks like when it's done right — and what an Ignition project actually is once it lives in a repo.</div>
+    <div class="sub">This morning you learned how Git works. This afternoon: how a <em style="color:#fff;font-style:normal">team</em> uses it. Three strategies for branching, what a pull request looks like when it's done right, and what an Ignition project actually is once it lives in a repo.</div>
   </div>
 
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Lab 02 — Branching &amp; Pull Requests</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Lab 02 · Branching &amp; Pull Requests</span></div>
 </section>
 
 <!-- 2 · WHY THIS MATTERS / AGENDA -->
@@ -295,14 +295,14 @@ body{
       <span class="num">01</span>
       <div>
         <div class="title">From solo Git to a team workflow</div>
-        <div class="lead">Branch, merge, rebase — you have the <b>mechanics</b>. But mechanics don't tell a team of five <b>where to branch from</b>, <b>when to merge</b>, or <b>who reviews what</b>. That's an agreement. Today you'll learn the standard ones — and write your own.</div>
+        <div class="lead">Branch, merge, rebase: you have the <b>mechanics</b>. But mechanics don't tell a team of five <b>where to branch from</b>, <b>when to merge</b>, or <b>who reviews what</b>. That's an agreement. Today you'll learn the standard ones, then write your own.</div>
       </div>
     </div>
     <div class="cols" style="grid-template-columns:repeat(3,1fr)">
       <div class="does">
         <div class="hd">Chapter 1 · Branching strategies</div>
         <ul>
-          <li><span class="d"></span>Git Flow, GitHub Flow, trunk-based — side by side</li>
+          <li><span class="d"></span>Git Flow, GitHub Flow, trunk-based, side by side</li>
           <li><span class="d"></span>One release scenario, three answers</li>
           <li><span class="d"></span>How to pick for <b>your</b> team</li>
         </ul>
@@ -329,7 +329,7 @@ body{
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Three chapters, one thread</span></div>
 </section>
 
-<!-- 3 · DIVIDER — CHAPTER 1 -->
+<!-- 3 · DIVIDER · CHAPTER 1 -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -338,7 +338,7 @@ body{
   <div class="divider">
     <div class="eyebrow">Chapter 1</div>
     <div class="q">How should a team <em>branch</em>?</div>
-    <div class="sub2">Branches are free — agreements are not. Three well-known strategies answer the same questions differently: where does work start, how long do branches live, and what does "release" mean?</div>
+    <div class="sub2">Branches are free; agreements are not. Three well-known strategies answer the same questions differently: where does work start, how long do branches live, and what does "release" mean?</div>
   </div>
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Git Flow → GitHub Flow → trunk-based</span></div>
 </section>
@@ -361,7 +361,7 @@ body{
     <div>
       <div class="quote" style="border-left-width:6px;padding:30px 34px;margin-top:18px">
         <p style="font-size:26px;line-height:1.5">"Your team is dropping <b>V2.0</b> of your Ignition project next week. Mid-week, an end user reports a <b>P1 bug in v1.2</b> that's already running in production. You need to ship the v1.2 hotfix <b>today</b> AND keep V2.0 on track."</p>
-        <div class="src" style="font-size:13px;margin-top:14px">— the scenario, docs/branching-strategies.md</div>
+        <div class="src" style="font-size:13px;margin-top:14px">the scenario, docs/branching-strategies.md</div>
       </div>
     </div>
   </div>
@@ -418,12 +418,12 @@ body{
 
   <div class="stage-wrap">
     <div class="vtitle">Trunk-based development</div>
-    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">Everyone commits to <b style="color:#fff">main</b> (the trunk). Branches live <b style="color:#fff">hours, not days</b> — and <b style="color:#fff">feature flags</b> hide unfinished work in production.</p>
+    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">Everyone commits to <b style="color:#fff">main</b> (the trunk). Branches live <b style="color:#fff">hours, not days</b>, and <b style="color:#fff">feature flags</b> hide unfinished work in production.</p>
     <div class="viz" id="viz-trunk"></div>
   </div>
 
   <div class="controls">
-    <span class="lead-step" id="trunk-step">Same scenario, almost no branching to see — that's the point.</span>
+    <span class="lead-step" id="trunk-step">Same scenario, almost no branching to see. That's the point.</span>
     <button class="btn" data-act="back">◀ Back</button>
     <button class="btn primary" data-act="next">Next step ▶</button>
   </div>
@@ -440,28 +440,28 @@ body{
     <div class="sechead">
       <span class="num">03</span>
       <div>
-        <div class="title">Picking one — the decision matrix</div>
-        <div class="lead">There is no "best" strategy. There's the one that fits <b>your team's reality</b> — release cadence, versions in production, and discipline level.</div>
+        <div class="title">Picking one: the decision matrix</div>
+        <div class="lead">There is no "best" strategy. There's the one that fits <b>your team's reality</b>: release cadence, versions in production, and discipline level.</div>
       </div>
     </div>
     <table class="tbl">
       <tr><th>Your situation</th><th>Best fit</th></tr>
-      <tr><td>Single SaaS product, continuous deploy, 2–10 engineers</td><td class="strat">GitHub Flow</td></tr>
-      <tr><td>Multiple released versions live at once — you still patch the <b>old</b> ones (e.g. a v1.2 hotfix while v2.0 ships)</td><td class="strat">Git Flow <span style="font-weight:500;color:var(--txt-dim)">(release/hotfix branches give each version a place to live)</span></td></tr>
+      <tr><td>Single SaaS product, continuous deploy, 2 to 10 engineers</td><td class="strat">GitHub Flow</td></tr>
+      <tr><td>Multiple released versions live at once, and you still patch the <b>old</b> ones (e.g. a v1.2 hotfix while v2.0 ships)</td><td class="strat">Git Flow <span style="font-weight:500;color:var(--txt-dim)">(release/hotfix branches give each version a place to live)</span></td></tr>
       <tr><td>Strict regulatory environment, lengthy validation per release</td><td class="strat">Git Flow <span style="font-weight:500;color:var(--txt-dim)">(release branches make audit easy)</span></td></tr>
-      <tr><td>Feature flags <b>and</b> fast, trusted CI already in place, and you want to integrate continuously to <span class="mono">main</span></td><td class="strat">Trunk-based <span style="font-weight:500;color:var(--txt-dim)">(needs both — it's GitHub Flow with the branch life cut to hours)</span></td></tr>
+      <tr><td>Feature flags <b>and</b> fast, trusted CI already in place, and you want to integrate continuously to <span class="mono">main</span></td><td class="strat">Trunk-based <span style="font-weight:500;color:var(--txt-dim)">(needs both; it's GitHub Flow with the branch life cut to hours)</span></td></tr>
       <tr><td>Brand-new team, learning Git for the first time</td><td class="strat">GitHub Flow <span style="font-weight:500;color:var(--txt-dim)">(lowest cognitive overhead)</span></td></tr>
     </table>
     <div class="callout">
       <div class="lab" style="color:var(--blue)">The real question is just one</div>
-      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality — <b>not the one that sounds most sophisticated</b>. You'll write that choice down in the you-do.</p>
+      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality, <b>not the one that sounds most sophisticated</b>. You'll write that choice down in the you-do.</p>
     </div>
   </div>
 
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>docs/branching-strategies.md — the full matrix</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>docs/branching-strategies.md · the full matrix</span></div>
 </section>
 
-<!-- 9 · DIVIDER — CHAPTER 2 -->
+<!-- 9 · DIVIDER · CHAPTER 2 -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -484,12 +484,12 @@ body{
 
   <div class="stage-wrap">
     <div class="vtitle">The life of a feature branch</div>
-    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">A pull request is not a Git command — it is a <b style="color:#fff">platform workflow</b> (GitHub, GitLab, Gitea…) wrapped around a branch: <i>"merge my branch into yours, but look at it first."</i> Here is that branch, start to finish.</p>
+    <p class="lead" style="text-align:center;margin:6px auto 0;color:#c4cfde">A pull request is not a Git command. It is a <b style="color:#fff">platform workflow</b> (GitHub, GitLab, Gitea…) wrapped around a branch: <i>"merge my branch into yours, but look at it first."</i> Here is that branch, start to finish.</p>
     <div class="viz" id="viz-prlife"></div>
   </div>
 
   <div class="controls">
-    <span class="lead-step" id="prlife-step">One feature, one branch — from <b>git switch -c</b> to <b>branch deleted</b>.</span>
+    <span class="lead-step" id="prlife-step">One feature, one branch, from <b>git switch -c</b> to <b>branch deleted</b>.</span>
     <button class="btn" data-act="back">◀ Back</button>
     <button class="btn primary" data-act="next">Next step ▶</button>
   </div>
@@ -534,7 +534,7 @@ body{
     </div>
     <div class="callout">
       <div class="lab">The rule of thumb</div>
-      <p>If you catch yourself writing <b>"and"</b> in the PR title — <b>split the PR.</b></p>
+      <p>If you catch yourself writing <b>"and"</b> in the PR title, <b>split the PR.</b></p>
     </div>
   </div>
 
@@ -553,7 +553,7 @@ body{
       <span class="num">05</span>
       <div>
         <div class="title">What makes a PR easy to review</div>
-        <div class="lead">Four properties, in order of importance. The template enforces three of them by structure — <b>smallness is on you</b>.</div>
+        <div class="lead">Four properties, in order of importance. The template enforces three of them by structure; <b>smallness is on you</b>.</div>
       </div>
     </div>
     <div class="cols" style="grid-template-columns:1fr 1fr">
@@ -561,7 +561,7 @@ body{
         <div class="hd">1 · Small</div>
         <ul>
           <li><span class="d"></span>Under 200 lines of diff, ideally under 50</li>
-          <li><span class="d"></span>Reviewers find <b>more bugs in small PRs</b> — they actually read them</li>
+          <li><span class="d"></span>Reviewers find <b>more bugs in small PRs</b> because they actually read them</li>
           <li><span class="d"></span>A 1,000-line PR gets rubber-stamped, no matter how rigorous the reviewer feels</li>
         </ul>
       </div>
@@ -586,12 +586,12 @@ body{
         <ul>
           <li><span class="d"></span>A test that would have caught the bug, or…</li>
           <li><span class="d"></span>…an explicit manual test plan in "How to test"</li>
-          <li><span class="d"></span>In this lab: <span class="mono">ops/validate.sh</span> + the behavior you changed</li>
+          <li><span class="d"></span>In this lab: <span class="mono">scripts/validate.sh</span> + the behavior you changed</li>
         </ul>
       </div>
     </div>
     <div class="refs">
-      <span class="ref"><b>deep-dive</b> docs/pr-review-style.md — the fuller toolkit (optional)</span>
+      <span class="ref"><b>deep-dive</b> docs/pr-review-style.md · the fuller toolkit (optional)</span>
     </div>
   </div>
 
@@ -617,12 +617,12 @@ body{
       <tr><th style="width:150px">Label</th><th>Meaning</th><th>Example</th></tr>
       <tr>
         <td><span class="chip praise">praise:</span></td>
-        <td>Something <b>genuinely good</b> — tells the author what's working</td>
+        <td>Something <b>genuinely good</b>; tells the author what's working</td>
         <td>"praise: nicely focused diff, easy to review."</td>
       </tr>
       <tr>
         <td><span class="chip sugg">suggestion:</span></td>
-        <td>A specific, <b>optional</b> improvement — accept, decline with reasoning, or discuss</td>
+        <td>A specific, <b>optional</b> improvement; accept, decline with reasoning, or discuss</td>
         <td>"suggestion: collapse these two ifs into one."</td>
       </tr>
       <tr>
@@ -632,16 +632,16 @@ body{
       </tr>
       <tr>
         <td><span class="chip dim">nitpick: question: thought: chore:</span></td>
-        <td colspan="2">The fuller set, when you want it — see <span class="mono" style="font-size:12px">docs/pr-review-style.md</span> · conventionalcomments.org</td>
+        <td colspan="2">The fuller set, when you want it: see <span class="mono" style="font-size:12px">docs/pr-review-style.md</span> · conventionalcomments.org</td>
       </tr>
     </table>
     <div class="callout">
       <div class="lab">Tone</div>
-      <p>Labels don't make rude feedback polite. <b>If you wouldn't say it in person, don't write it in the PR.</b> Async amplifies tone — neutral in your head reads cold on screen. "?" is not a review comment.</p>
+      <p>Labels don't make rude feedback polite. <b>If you wouldn't say it in person, don't write it in the PR.</b> Async amplifies tone: neutral in your head reads cold on screen. "?" is not a review comment.</p>
     </div>
   </div>
 
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>praise · suggestion · issue — enough to review well today</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>praise · suggestion · issue · enough to review well today</span></div>
 </section>
 
 <!-- 14 · VERDICTS + MERGE STYLES -->
@@ -655,7 +655,7 @@ body{
     <div class="sechead">
       <span class="num">07</span>
       <div>
-        <div class="title">The verdict — and the merge button</div>
+        <div class="title">The verdict, and the merge button</div>
         <div class="lead">A review ends in one of three verdicts; an approved PR ends in one of three merges. <b>Both are choices your team agreement should make for you.</b></div>
       </div>
     </div>
@@ -663,32 +663,32 @@ body{
       <div class="does">
         <div class="hd">Three verdicts</div>
         <ul>
-          <li><span class="d" style="background:var(--good)"></span><b>Approve</b> — happy to merge as-is; trivial nitpicks are fine inside an approve</li>
-          <li><span class="d" style="background:var(--bad)"></span><b>Request changes</b> — there's at least one <span class="chip issue" style="font-size:11.5px">issue:</span> the author must address</li>
-          <li><span class="d" style="background:var(--txt-faint)"></span><b>Comment-only</b> — you read it but aren't voting (not your area, or someone already approved)</li>
-          <li><span class="d" style="background:var(--warn)"></span><b>Common mistake:</b> request-changes for nitpicks — friction without value</li>
+          <li><span class="d" style="background:var(--good)"></span><b>Approve</b>: happy to merge as-is; trivial nitpicks are fine inside an approve</li>
+          <li><span class="d" style="background:var(--bad)"></span><b>Request changes</b>: there's at least one <span class="chip issue" style="font-size:11.5px">issue:</span> the author must address</li>
+          <li><span class="d" style="background:var(--txt-faint)"></span><b>Comment-only</b>: you read it but aren't voting (not your area, or someone already approved)</li>
+          <li><span class="d" style="background:var(--warn)"></span><b>Common mistake:</b> request-changes for nitpicks, which is friction without value</li>
         </ul>
       </div>
       <div class="does">
         <div class="hd">Three merges (GitHub's dropdown)</div>
         <ul>
-          <li><span class="d"></span><b>Merge commit</b> (<span class="mono">--no-ff</span>) — preserves the branch shape in the graph</li>
-          <li><span class="d"></span><b>Squash &amp; merge</b> — the whole PR becomes one commit on <span class="mono">main</span></li>
-          <li><span class="d"></span><b>Rebase &amp; merge</b> — replays commits linearly, no merge commit</li>
-          <li><span class="d"></span>Pick the one <b>your agreement specified</b> — that's the whole point of writing it</li>
+          <li><span class="d"></span><b>Merge commit</b> (<span class="mono">--no-ff</span>): preserves the branch shape in the graph</li>
+          <li><span class="d"></span><b>Squash &amp; merge</b>: the whole PR becomes one commit on <span class="mono">main</span></li>
+          <li><span class="d"></span><b>Rebase &amp; merge</b>: replays commits linearly, no merge commit</li>
+          <li><span class="d"></span>Pick the one <b>your agreement specified</b>; that's the whole point of writing it</li>
         </ul>
       </div>
     </div>
     <div class="callout">
       <div class="lab" style="color:var(--blue)">Authors have rights too</div>
-      <p>Review is a <b>negotiation</b>. Respond to every comment (<b>+1</b>, a reply, or a fix-up commit) — but declining a suggestion <b>with reasoning</b> is a valid response. And <b>don't force-push during review</b>: it nukes the reviewer's context. Additive commits now, squash on merge if you must.</p>
+      <p>Review is a <b>negotiation</b>. Respond to every comment (<b>+1</b>, a reply, or a fix-up commit), but declining a suggestion <b>with reasoning</b> is a valid response. And <b>don't force-push during review</b>: it nukes the reviewer's context. Additive commits now, squash on merge if you must.</p>
     </div>
   </div>
 
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>approve · request-changes · comment — then merge deliberately</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>approve · request-changes · comment · then merge deliberately</span></div>
 </section>
 
-<!-- 15 · DIVIDER — CHAPTER 3 -->
+<!-- 15 · DIVIDER · CHAPTER 3 -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -697,7 +697,7 @@ body{
   <div class="divider">
     <div class="eyebrow">Chapter 3</div>
     <div class="q">Now do it to an <em>Ignition project</em>.</div>
-    <div class="sub2">Everything so far was generic. Here's the part your team actually came for: what an Ignition 8.3 project looks like once it's files in a repo — and where Git's assumptions get tested.</div>
+    <div class="sub2">Everything so far was generic. Here's the part your team actually came for: what an Ignition 8.3 project looks like once it's files in a repo, and where Git's assumptions get tested.</div>
   </div>
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>files → ignore rules → diffs → conflicts</span></div>
 </section>
@@ -714,7 +714,7 @@ body{
       <span class="num">08</span>
       <div>
         <div class="title">An Ignition 8.3 project is a folder of small text files</div>
-        <div class="lead">This is the real project from this lab's repo (<span class="mono">projects/lab-project/</span>) — a Perspective HMI screen and two script libraries. <b>What the Designer edits is what Git tracks.</b></div>
+        <div class="lead">This is the real project from this lab's repo (<span class="mono">projects/lab-project/</span>): a Perspective HMI screen and two script libraries. <b>What the Designer edits is what Git tracks.</b></div>
       </div>
     </div>
     <div class="cols2">
@@ -734,15 +734,15 @@ body{
       <div>
         <ul class="checks">
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Resources are folders.</b> Each one is a <span class="mono">resource.json</span> manifest plus its payload file(s): <span class="mono">view.json</span> for a Perspective view, <span class="mono">code.py</span> for a script library.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Namespaced by module.</b> <span class="mono">com.inductiveautomation.perspective</span>, <span class="mono">ignition/script-python</span> — each module owns its subtree.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>It's all JSON and Python.</b> Which means: diffable, blame-able, branchable, reviewable — everything from this morning applies.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab</b> the compose stack bind-mounts only <span class="mono">./projects</span> into the gateway — the file you edit on your laptop <i>is</i> the file the gateway runs. Gateway config stays in a named volume, out of the repo (that story is Lab 04's).</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Namespaced by module.</b> <span class="mono">com.inductiveautomation.perspective</span>, <span class="mono">ignition/script-python</span>: each module owns its subtree.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>It's all JSON and Python.</b> Which means: diffable, blame-able, branchable, reviewable. Everything from this morning applies.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab</b> the compose stack bind-mounts only <span class="mono">./projects</span> into the gateway: the file you edit on your laptop <i>is</i> the file the gateway runs. Gateway config stays in a named volume, out of the repo (that story is Lab 04's).</span></li>
         </ul>
       </div>
     </div>
   </div>
 
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>projects/lab-project/ — open it in your editor</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>projects/lab-project/ · open it in your editor</span></div>
 </section>
 
 <!-- 17 · COMMIT vs IGNORE -->
@@ -762,27 +762,27 @@ body{
     </div>
     <div class="cols2">
       <div class="does" style="border-left:5px solid var(--good)">
-        <div class="hd" style="color:var(--good)">Commit — human-authored</div>
+        <div class="hd" style="color:var(--good)">Commit: human-authored</div>
         <ul>
-          <li><span class="d" style="background:var(--good)"></span><span class="mono">project.json</span> — the project manifest</li>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">project.json</span>: the project manifest</li>
           <li><span class="d" style="background:var(--good)"></span><span class="mono">resource.json</span> + payloads (<span class="mono">view.json</span>, <span class="mono">code.py</span>, <span class="mono">config.json</span>)</li>
-          <li><span class="d" style="background:var(--good)"></span><span class="mono">.gitignore</span> / <span class="mono">.gitattributes</span> / PR template — the repo's own rules</li>
-          <li><span class="d" style="background:var(--good)"></span><span class="mono">docker-compose.yml</span>, <span class="mono">ops/</span> scripts, docs</li>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">.gitignore</span> / <span class="mono">.gitattributes</span> / PR template: the repo's own rules</li>
+          <li><span class="d" style="background:var(--good)"></span><span class="mono">docker-compose.yml</span>, <span class="mono">scripts/</span> scripts, docs</li>
         </ul>
       </div>
       <div class="does" style="border-left:5px solid var(--bad)">
-        <div class="hd" style="color:var(--bad)">Ignore — generated or secret</div>
+        <div class="hd" style="color:var(--bad)">Ignore: generated or secret</div>
         <ul>
-          <li><span class="d" style="background:var(--bad)"></span><span class="mono">**/.resources/</span> — the gateway's blob store, regenerated on boot/scan</li>
-          <li><span class="d" style="background:var(--bad)"></span><span class="mono">**/*.digest.json</span>, <span class="mono">**/.metadata/</span>, <span class="mono">migration-log-*.md</span> — gateway churn</li>
-          <li><span class="d" style="background:var(--bad)"></span><span class="mono">.env</span> — credentials never enter history (commit <span class="mono">.env.example</span> instead)</li>
-          <li><span class="d" style="background:var(--bad)"></span>OS/editor junk — <span class="mono">.DS_Store</span>, <span class="mono">.idea/</span>, <span class="mono">__pycache__/</span></li>
+          <li><span class="d" style="background:var(--bad)"></span><span class="mono">**/.resources/</span>: the gateway's blob store, regenerated on boot/scan</li>
+          <li><span class="d" style="background:var(--bad)"></span><span class="mono">**/*.digest.json</span>, <span class="mono">**/.metadata/</span>, <span class="mono">migration-log-*.md</span>: gateway churn</li>
+          <li><span class="d" style="background:var(--bad)"></span><span class="mono">.env</span>: credentials never enter history (commit <span class="mono">.env.example</span> instead)</li>
+          <li><span class="d" style="background:var(--bad)"></span>OS/editor junk: <span class="mono">.DS_Store</span>, <span class="mono">.idea/</span>, <span class="mono">__pycache__/</span></li>
         </ul>
       </div>
     </div>
     <div class="callout">
       <div class="lab">The line-ending trap</div>
-      <p>This repo's <span class="mono">.gitattributes</span> forces <b>LF</b> on all text files. Without it, Windows clones sprinkle CRLF into Ignition's JSON — <b>noisy diffs on every file you never touched</b>, and it can confuse the gateway's project-scan heuristics. If gateway-generated files ever show up in <span class="mono">git status</span>, your ignore rules are off — fix that before committing.</p>
+      <p>This repo's <span class="mono">.gitattributes</span> forces <b>LF</b> on all text files. Without it, Windows clones sprinkle CRLF into Ignition's JSON, giving <b>noisy diffs on every file you never touched</b>, and it can confuse the gateway's project-scan heuristics. If gateway-generated files ever show up in <span class="mono">git status</span>, your ignore rules are off; fix that before committing.</p>
     </div>
   </div>
 
@@ -800,7 +800,7 @@ body{
     <div class="sechead">
       <span class="num">10</span>
       <div>
-        <div class="title">A Designer save is a file write — so it's a diff</div>
+        <div class="title">A Designer save is a file write, so it's a diff</div>
         <div class="lead">Save a view in the Designer → the gateway writes these JSON files. Change one label → <b>a one-line diff a reviewer reads in ten seconds</b>. That's what makes PR-sized Ignition changes possible.</div>
       </div>
     </div>
@@ -808,8 +808,8 @@ body{
       <div>
         <ul class="checks">
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>The chain:</b> Designer save → project files on the gateway → <span class="mono">git status</span> shows exactly what changed → <span class="mono">git add -p</span> → a scoped commit → a small PR.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab your editor plays the Designer</b> — same files, same diffs, The bind mount means that changes are bidirectional, make a change in the designer, and you'll see it in your files, make a change in the files, and you'll see it in the designer.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Read your own diff before you commit.</b> It's the cheapest review you'll ever get — and the habit that keeps Ignition PRs small.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab your editor plays the Designer</b>: same files, same diffs. The bind mount means that changes are bidirectional, make a change in the designer, and you'll see it in your files, make a change in the files, and you'll see it in the designer.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Read your own diff before you commit.</b> It's the cheapest review you'll ever get, and the habit that keeps Ignition PRs small.</span></li>
         </ul>
       </div>
       <div class="code">
@@ -818,12 +818,12 @@ body{
 <span class="cm">+++ b/…/views/pages/overview/view.json</span>
    "meta": { "name": "Subtitle" },
    "props": {
-<span class="del">-    "text": "Plant 4 — Refrigeration Overview",</span>
-<span class="add">+    "text": "Plant 4 — Refrigeration Overview (night shift)",</span>
+<span class="del">-    "text": "Plant 4: Refrigeration Overview",</span>
+<span class="add">+    "text": "Plant 4: Refrigeration Overview (night shift)",</span>
      "style": {
        "color": "#6b7f9c",
 
-<span class="cm"># and for a script change — plain Python diffs</span>
+<span class="cm"># and for a script change: plain Python diffs</span>
 <span class="cm">--- a/…/script-python/lab/display/code.py</span>
 <span class="cm">+++ b/…/script-python/lab/display/code.py</span>
  def format_reading(value, units):
@@ -849,7 +849,7 @@ body{
       <span class="num">11</span>
       <div>
         <div class="title">You can also edit straight in VS Code</div>
-        <div class="lead">The project is just text on disk, so your editor is a first-class way in — <b>but the gateway won't notice your edits until you tell it to scan.</b></div>
+        <div class="lead">The project is just text on disk, so your editor is a first-class way in. <b>But the gateway won't notice your edits until you tell it to scan.</b></div>
       </div>
     </div>
     <div class="cols2">
@@ -860,9 +860,9 @@ body{
         <div class="does" style="margin-top:14px">
           <div class="hd">Extensions</div>
           <ul>
-            <li><span class="d"></span><b>Flint for Ignition</b> — Ignition project support in the editor</li>
-            <li><span class="d"></span><b>Docker</b> — manage the lab's containers without leaving VS Code</li>
-            <li><span class="d"></span><b>Remote Development</b> extension pack — edit inside the container / over SSH as if it were local</li>
+            <li><span class="d"></span><b>Flint for Ignition</b>: Ignition project support in the editor</li>
+            <li><span class="d"></span><b>Docker</b>: manage the lab's containers without leaving VS Code</li>
+            <li><span class="d"></span><b>Remote Development</b> extension pack: edit inside the container / over SSH as if it were local</li>
           </ul>
         </div>
         <div class="callout" style="margin-top:18px">
@@ -876,7 +876,7 @@ body{
 $ code projects/lab-project/.../code.py
 
 <span class="cm"># …then tell the gateway to pick it up:</span>
-$ ops/scan.sh
+$ scripts/scan.sh
 <span class="mark">→ POST</span> /data/api/v1/scan/<span class="hot">projects</span>   <span class="cm"># project resources</span>
 <span class="mark">→ POST</span> /data/api/v1/scan/<span class="hot">config</span>     <span class="cm"># gateway config files</span>
 <span class="cm">   header: X-Ignition-API-Token: &lt;key&gt;</span>
@@ -884,7 +884,7 @@ $ ops/scan.sh
         </div>
         <ul class="checks" style="margin-top:18px">
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Two scans, two jobs.</b> A <b>project scan</b> reloads views &amp; scripts; a <b>config scan</b> reloads gateway config. VS Code edits usually need both.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Or install a module.</b> The <b>ignition-project-scan-endpoint</b> module adds one clean endpoint — <span class="mono" style="font-size:12px">POST /data/project-scan-endpoint/scan</span> — that a script (and later, CI) can call to reload the project.<br><span class="mono" style="font-size:12px;color:var(--txt-faint)">github.com/bw-design-group/ignition-project-scan-endpoint</span></span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Or install a module.</b> The <b>ignition-project-scan-endpoint</b> module adds one clean endpoint, <span class="mono" style="font-size:12px">POST /data/project-scan-endpoint/scan</span>, that a script (and later, CI) can call to reload the project.<br><span class="mono" style="font-size:12px;color:var(--txt-faint)">github.com/bw-design-group/ignition-project-scan-endpoint</span></span></li>
         </ul>
       </div>
     </div>
@@ -903,10 +903,10 @@ $ ops/scan.sh
   <div class="body">
     <div class="eyebrow">Your turn</div>
     <div class="title" style="max-width:26ch;color:#fff">Now you make a real pull request in an Ignition project.</div>
-    <div class="lead" style="color:#c4cfde;max-width:70ch">The assignment uses <b style="color:#fff">GitHub Flow</b> — the strategy from Chapter 1 — end to end: branch, edit, open a PR, get it reviewed, merge.</div>
+    <div class="lead" style="color:#c4cfde;max-width:70ch">The assignment uses <b style="color:#fff">GitHub Flow</b>, the strategy from Chapter 1, end to end: branch, edit, open a PR, get it reviewed, merge.</div>
     <ul class="checks" style="max-width:960px;margin-top:22px">
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Branch and change something.</b> Off <span class="mono">main</span>, fix the null-reading bug in <span class="mono">lab.display</span> — edit in your Designer or in VS Code, then scan so the gateway picks it up.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open the PR.</b> Small, one concern, filled-in template — <b>What / Why / How to test</b> — exactly the good PR from Chapter 2.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Branch and change something.</b> Off <span class="mono">main</span>, fix the null-reading bug in <span class="mono">lab.display</span>: edit in your Designer or in VS Code, then scan so the gateway picks it up.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open the PR.</b> Small, one concern, filled-in template (<b>What / Why / How to test</b>), exactly the good PR from Chapter 2.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Review a peer's PR, then merge.</b> Leave feedback with <span class="mono">praise:</span> / <span class="mono">suggestion:</span> / <span class="mono">issue:</span>, address what you get back, and merge your own.</span></li>
     </ul>
   </div>
@@ -946,7 +946,7 @@ window.addEventListener('keydown',e=>{
   if(e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();deck.scrollTo({top:(i-1)*window.innerHeight})}
   if(e.key==='Home'){deck.scrollTo({top:0})}
   if(e.key==='End'){deck.scrollTo({top:slides.length*window.innerHeight})}
-  // Left/Right ONLY step the current slide's animation — they never change slides.
+  // Left/Right ONLY step the current slide's animation; they never change slides.
   if(e.key==='ArrowRight'){e.preventDefault(); if(bound[i])bound[i].go(1);}
   if(e.key==='ArrowLeft'){e.preventDefault(); if(bound[i])bound[i].go(-1);}
 });
@@ -978,17 +978,17 @@ function defsArrow(svg){
 }
 /* lane label at the left edge of a swim-lane.
    Without env: branch name at x:40 (used by GitHub Flow / Trunk vizzes).
-   With env:    two left-margin columns — ENVIRONMENT pill (far left) + BRANCH name. */
+   With env:    two left-margin columns: ENVIRONMENT pill (far left) + BRANCH name. */
 const ENV_X=-250, BRANCH_X=-150;   // column anchors (live in the widened negative-x margin)
 function laneLabel(svg,y,name,hot,env){
   const g=el('g',{class:'vshow'},svg);
   if(env){
-    // environment pill — far-left column
+    // environment pill: far-left column
     const w=env.length*8.2+22,h=27;
     const pill=el('g',{class:'genv'},g);
     el('rect',{x:ENV_X-w/2,y:y+6-h/2-5,width:w,height:h,rx:13},pill);
     el('text',{x:ENV_X,y:y+6-5},pill).textContent=env;
-    // branch name — second column, left-anchored
+    // branch name: second column, left-anchored
     el('text',{class:'glane'+(hot?' hotlane':''),x:BRANCH_X,y:y+6,'text-anchor':'start'},g).textContent=name;
   }else{
     el('text',{class:'glane'+(hot?' hotlane':''),x:40,y:y+6},g).textContent=name;
@@ -996,7 +996,7 @@ function laneLabel(svg,y,name,hot,env){
   return g;
 }
 /* column header row for the env+branch swim-lane margin (call once, above the top lane).
-   No reveal class on purpose — static labeling, visible from step 0. */
+   No reveal class on purpose: static labeling, visible from step 0. */
 function laneHeader(svg,yTop){
   const g=el('g',{class:'ghead'},svg);
   el('text',{class:'gcolhd',x:ENV_X,y:yTop,'text-anchor':'middle'},g).textContent='ENVIRONMENT';
@@ -1011,7 +1011,7 @@ function tagBadge(svg,x,y,label){
   el('text',{x,y:y+1},g).textContent=label;
   return g;
 }
-/* small teal CI chip — a pipeline run and the trigger that fired it */
+/* small teal CI chip: a pipeline run and the trigger that fired it */
 function ciChip(svg,x,y,label){
   const w=label.length*7.6+24,h=26;
   const g=el('g',{class:'vshow gci'},svg);
@@ -1019,7 +1019,7 @@ function ciChip(svg,x,y,label){
   el('text',{x,y:y+1},g).textContent=label;
   return g;
 }
-/* PR-state pill (open / review / approved / merged) — used on the lifecycle slide.
+/* PR-state pill (open / review / approved / merged), used on the lifecycle slide.
    Returns the <g> and a setState() so one pill can travel through its states. */
 function prPill(svg,x,y,label){
   const g=el('g',{class:'vshow gpr'},svg);
@@ -1110,16 +1110,16 @@ function bindControls(slideEl,ctrl){
   const chipJ=ciChip(svg,1640,yM-48,'⚙ CI → Production · on tag push');
   const lead=slides[4].querySelector('#gitflow-step');
   const steps=[
-    {on:[lane.M,lane.D,node.A,node.B,E.AB,tagA],t:'Two long-lived branches: <b>main</b> is production — the last release is <b>tag v1.2</b>; <b>develop</b> is where v2.0 integrates.'},
-    {on:[lane.F,node.C,node.D,E.BC,E.CD],t:'A <b>v2.0 feature branch is already open</b> off develop — work is in flight, not yet merged.'},
-    {on:[lane.H,node.G,E.AG],t:'⚠ Mid-feature, a P1 bug hits production. <b>hotfix/v1.2.1</b> branches off <b>main</b>, the code customers actually run — not the half-done feature.'},
-    {on:[node.H,E.AH,E.GH,tagH,chipH],t:'You merge the hotfix into <b>main</b> and tag the merge commit <b>v1.2.1</b> — both manual steps. Pushing the tag is what CI listens for: <b>auto-deploy to Production</b>. Ship today.'},
-    {on:[node.I,E.BI,E.GI],t:'…and into <b>develop</b>, so the fix isn\'t lost — the clean <b>merge twice</b>. Every push to develop also redeploys the <b>Development</b> gateway.'},
-    {on:[node.U,E.DU,E.IU],t:'Before merging, the developer <b>updates the feature branch from develop</b> — pulling the hotfix down (<b>merge</b> or <b>rebase</b>). Conflicts get resolved <b>here, on the branch</b>, not on the shared develop.'},
-    {on:[node.E,E.UE,E.IE],t:'Now the updated feature merges cleanly into <b>develop</b> — it already carries the hotfix, so nothing new to reconcile.'},
-    {on:[lane.R,node.F,E.EF,chipF],t:'Release week: <b>release/v2.0</b> branches off develop — every push to it auto-deploys to <b>Staging</b>, where QA/SAT runs. No new features allowed on it.'},
+    {on:[lane.M,lane.D,node.A,node.B,E.AB,tagA],t:'Two long-lived branches: <b>main</b> is production, so the last release is <b>tag v1.2</b>; <b>develop</b> is where v2.0 integrates.'},
+    {on:[lane.F,node.C,node.D,E.BC,E.CD],t:'A <b>v2.0 feature branch is already open</b> off develop: work is in flight, not yet merged.'},
+    {on:[lane.H,node.G,E.AG],t:'⚠ Mid-feature, a P1 bug hits production. <b>hotfix/v1.2.1</b> branches off <b>main</b>, the code customers actually run, not the half-done feature.'},
+    {on:[node.H,E.AH,E.GH,tagH,chipH],t:'You merge the hotfix into <b>main</b> and tag the merge commit <b>v1.2.1</b>, both manual steps. Pushing the tag is what CI listens for: <b>auto-deploy to Production</b>. Ship today.'},
+    {on:[node.I,E.BI,E.GI],t:'…and into <b>develop</b>, so the fix isn\'t lost: the clean <b>merge twice</b>. Every push to develop also redeploys the <b>Development</b> gateway.'},
+    {on:[node.U,E.DU,E.IU],t:'Before merging, the developer <b>updates the feature branch from develop</b>, pulling the hotfix down (<b>merge</b> or <b>rebase</b>). Conflicts get resolved <b>here, on the branch</b>, not on the shared develop.'},
+    {on:[node.E,E.UE,E.IE],t:'Now the updated feature merges cleanly into <b>develop</b>: it already carries the hotfix, so nothing new to reconcile.'},
+    {on:[lane.R,node.F,E.EF,chipF],t:'Release week: <b>release/v2.0</b> branches off develop, and every push to it auto-deploys to <b>Staging</b>, where QA/SAT runs. No new features allowed on it.'},
     {on:[node.J,E.HJ,E.FJ,node.K,E.EK,E.FK,tagJ,chipJ],t:'The release also merges twice: you merge into main and tag <b>v2.0</b>; pushing that tag fires the <b>Production pipeline</b> again. And back into develop. Second goal met.'},
-    {on:[],t:'Both goals met — but count the lanes and double-merges. <b>That is the price of parallel versions.</b> Overkill for most teams; right when you truly maintain v1.x and v2.x at once.'}
+    {on:[],t:'Both goals met, but count the lanes and double-merges. <b>That is the price of parallel versions.</b> Overkill for most teams; right when you truly maintain v1.x and v2.x at once.'}
   ];
   const all=[...Object.values(lane),...Object.values(node),...Object.values(E),tagA,tagH,chipH,chipF,tagJ,chipJ];
   controllers.gitflow={max:steps.length-1,render(s){
@@ -1164,7 +1164,7 @@ function bindControls(slideEl,ctrl){
   el('text',{class:'gbranch',x:460,y:yB+80},lblFeat).textContent='feature/v2-orders';
   const lblFix=el('g',{class:'vshow'},svg);
   el('text',{class:'gbranch',x:720,y:yFix+80},lblFix).textContent='fix/cart-total';
-  // what shipped (tags) + the pipeline runs that shipped it — in GitHub Flow, merging IS releasing
+  // what shipped (tags) + the pipeline runs that shipped it; in GitHub Flow, merging IS releasing
   const tagA=tagBadge(svg,200,yM-88,'tag v1.2');
   const tag1=tagBadge(svg,900,yM-88,'tag v1.2.1');
   const chip1=ciChip(svg,900,yM-52,'⚙ CI → Production · on push to main');
@@ -1172,18 +1172,18 @@ function bindControls(slideEl,ctrl){
   const chip2=ciChip(svg,1290,yM-52,'⚙ CI → Production · on push to main');
   // the v1.2 question
   const noteQ=el('g',{class:'vshow'},svg);
-  el('text',{class:'note-red',x:1480,y:yM-16},noteQ).textContent='main is v2.0 now —';
+  el('text',{class:'note-red',x:1480,y:yM-16},noteQ).textContent='main is v2.0 now,';
   el('text',{class:'note-red',x:1480,y:yM+14},noteQ).textContent='where does v1.2 live?';
-  el('text',{class:'gsha',x:1480,y:yM+48},noteQ).textContent='answer: the tags — git checkout v1.2';
+  el('text',{class:'gsha',x:1480,y:yM+48},noteQ).textContent='answer: the tags, git checkout v1.2';
   const lead=slides[5].querySelector('#ghflow-step');
   const steps=[
-    {on:[laneM,node.A,tagA],t:'One long-lived branch. <b>What is on main is what is in production</b> — <b>tag v1.2</b> today.'},
-    {on:[laneF,node.B,node.C,E.AB,E.BC,lblFeat],t:'The <b>v2.0 branch is already open</b> off main — same in-flight work as Git Flow, minus the develop lane.'},
-    {on:[laneX,node.D,E.AD,lblFix],t:'⚠ Mid-feature, the P1 hits. Nothing special happens: a fix branch off <b>main</b> — which is still v1.2. <b>Same moves, smaller diff.</b>'},
+    {on:[laneM,node.A,tagA],t:'One long-lived branch. <b>What is on main is what is in production</b>: <b>tag v1.2</b> today.'},
+    {on:[laneF,node.B,node.C,E.AB,E.BC,lblFeat],t:'The <b>v2.0 branch is already open</b> off main: same in-flight work as Git Flow, minus the develop lane.'},
+    {on:[laneX,node.D,E.AD,lblFix],t:'⚠ Mid-feature, the P1 hits. Nothing special happens: a fix branch off <b>main</b>, which is still v1.2. <b>Same moves, smaller diff.</b>'},
     {on:[node.E,E.DE,E.AE,tag1,chip1],t:'The fix PR merges → <b>the push to main auto-deploys</b> → CI tags what shipped: <b>v1.2.1</b>. Ship today; the feature branch is untouched.'},
-    {on:[node.F,E.EF,E.CF],t:'The feature branch <b>updates from main</b>, picking up the fix — one merge, no develop to keep in sync.'},
+    {on:[node.F,E.EF,E.CF],t:'The feature branch <b>updates from main</b>, picking up the fix: one merge, no develop to keep in sync.'},
     {on:[node.G,E.FG,E.EG,tag2,chip2],t:'Release week: the feature PR merges → same trigger: <b>push to main → deploy → tag v2.0</b>. Merging <b>is</b> releasing.'},
-    {on:[noteQ],t:'The catch: main <b>is</b> v2.0 now. Where does v1.2 live? <b>In the tags</b> — <span class="mono">git checkout v1.2</span> gets you back. Without tags, GitHub Flow has no answer.'}
+    {on:[noteQ],t:'The catch: main <b>is</b> v2.0 now. Where does v1.2 live? <b>In the tags</b>: <span class="mono">git checkout v1.2</span> gets you back. Without tags, GitHub Flow has no answer.'}
   ];
   const all=[laneM,laneX,laneF,...Object.values(node),...Object.values(E),lblFeat,lblFix,tagA,tag1,chip1,tag2,chip2,noteQ];
   controllers.ghflow={max:steps.length-1,render(s){
@@ -1221,20 +1221,20 @@ function bindControls(slideEl,ctrl){
   E.EF=edge(svg,1100,yM,1340,yM,{r:R,arrow:true});
   const lblFix=el('g',{class:'vshow'},svg);
   el('text',{class:'gbranch',x:650,y:yB+82},lblFix).textContent='fix-cart-total · lives ~2 hours';
-  // tags are automated version markers here — CI stamps them as commits flow through
+  // tags are automated version markers here; CI stamps them as commits flow through
   const tagA=tagBadge(svg,200,yM-88,'tag v1.2');
   const tagFix=tagBadge(svg,870,yM-88,'tag v1.2.1');
   const chipD=ciChip(svg,870,yM-52,'⚙ CI → Production · on every green push');
   const tagV2=tagBadge(svg,1340,yM-88,'tag v2.0');
   const lead=slides[6].querySelector('#trunk-step');
   const steps=[
-    {on:[laneM,node.A,tagA],t:'Everyone commits to <b>main</b> — the trunk. It is production, always — currently <b>tag v1.2</b>.'},
-    {on:[node.B,E.AB],t:'v2.0 work is <b>already landing on main</b> — behind a feature flag that is OFF in production. Unfinished work ships dark.'},
+    {on:[laneM,node.A,tagA],t:'Everyone commits to <b>main</b>, the trunk. It is production, always, currently <b>tag v1.2</b>.'},
+    {on:[node.B,E.AB],t:'v2.0 work is <b>already landing on main</b>, behind a feature flag that is OFF in production. Unfinished work ships dark.'},
     {on:[laneB,node.C,E.BC,lblFix],t:'⚠ Mid-feature, the P1 hits: a fix branch born this morning…'},
-    {on:[node.D,E.CD,E.BD,tagFix,chipD],t:'…and merged before lunch — <b>every green push to main auto-deploys</b>; CI tags <b>v1.2.1</b>. Safe with v2.0-wip on main <b>because the flag is OFF</b>. Branch lifetime: hours.'},
-    {on:[node.E,E.DE],t:'v2.0 keeps landing <b>directly on main</b>, still dark. Nothing to sync — the feature was never on a stale branch.'},
-    {on:[node.F,E.EF,tagV2],t:'The release is a <b>flag flip</b>, not a merge — not even a special pipeline run: the flag commit ships like any other push. <b>tag v2.0</b> just records the moment.'},
-    {on:[],t:'The price: a feature-flag system + serious CI/test discipline — every commit to main must be safe. <b>That safety net is exactly what we start building tomorrow.</b>'}
+    {on:[node.D,E.CD,E.BD,tagFix,chipD],t:'…and merged before lunch: <b>every green push to main auto-deploys</b>; CI tags <b>v1.2.1</b>. Safe with v2.0-wip on main <b>because the flag is OFF</b>. Branch lifetime: hours.'},
+    {on:[node.E,E.DE],t:'v2.0 keeps landing <b>directly on main</b>, still dark. Nothing to sync: the feature was never on a stale branch.'},
+    {on:[node.F,E.EF,tagV2],t:'The release is a <b>flag flip</b>, not a merge, not even a special pipeline run: the flag commit ships like any other push. <b>tag v2.0</b> just records the moment.'},
+    {on:[],t:'The price: a feature-flag system + serious CI/test discipline, because every commit to main must be safe. <b>That safety net is exactly what we start building tomorrow.</b>'}
   ];
   const all=[laneM,laneB,...Object.values(node),...Object.values(E),lblFix,tagA,tagFix,chipD,tagV2];
   controllers.trunk={max:steps.length-1,render(s){
@@ -1244,7 +1244,7 @@ function bindControls(slideEl,ctrl){
   }};
 })();
 
-/* ---------- slide 10: PR LIFECYCLE — the life of a feature branch ---------- */
+/* ---------- slide 10: PR LIFECYCLE, the life of a feature branch ---------- */
 (function(){
   const svg=el('svg',{viewBox:'0 0 2060 520',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-prlife'));
   defsArrow(svg);
@@ -1279,17 +1279,17 @@ function bindControls(slideEl,ctrl){
   el('text',{class:'gnote',x:1240,y:yM-96},baseNote).textContent='review happened BEFORE this';
   // branch deleted marker
   const del=el('g',{class:'vshow'},svg);
-  el('text',{class:'note-red',x:1520,y:yB+8},del).textContent='branch deleted —';
+  el('text',{class:'note-red',x:1520,y:yB+8},del).textContent='branch deleted,';
   el('text',{class:'note-red',x:1520,y:yB+38},del).textContent='it did its job';
   const lead=slides[9].querySelector('#prlife-step');
   const steps=[
-    {on:[laneM,node.A],t:'You start from <b>main</b> — the base. This is the code everyone shares.'},
-    {on:[laneB,node.B,E.AB,lblFeat],t:'<b>1 · Branch.</b> <span class="mono">git switch -c feature/null-reading-fix</span> — a short-lived branch, named per your team\'s agreement. First commit lands on it, not on main.',fn:()=>pr.setState('','PR #14 · open')},
-    {on:[node.C,E.BC,pr.g],t:'<b>2 · Open the PR.</b> Push the branch, then open a pull request: <b>base ← compare</b> (merge your branch <i>into</i> main). The description is half the work — the repo\'s template pre-fills <b>What · Why · How to test</b>.'},
+    {on:[laneM,node.A],t:'You start from <b>main</b>, the base. This is the code everyone shares.'},
+    {on:[laneB,node.B,E.AB,lblFeat],t:'<b>1 · Branch.</b> <span class="mono">git switch -c feature/null-reading-fix</span> gives a short-lived branch, named per your team\'s agreement. First commit lands on it, not on main.',fn:()=>pr.setState('','PR #14 · open')},
+    {on:[node.C,E.BC,pr.g],t:'<b>2 · Open the PR.</b> Push the branch, then open a pull request: <b>base ← compare</b> (merge your branch <i>into</i> main). The description is half the work; the repo\'s template pre-fills <b>What · Why · How to test</b>.'},
     {on:[cmt],t:'<b>3 · Review.</b> A reviewer reads the diff and leaves a comment: <span class="mono" style="color:#f0b765">issue:</span> something to fix before merge. <b>A PR is a conversation with a merge button at the end.</b>',fn:()=>pr.setState('review','PR #14 · in review')},
-    {on:[node.D,E.CD],t:'You answer with an <b>additive fix-up commit</b> — no force-push, so the reviewer\'s context survives. Re-review, then approve.',fn:()=>pr.setState('approved','PR #14 · approved ✓')},
-    {on:[node.M,E.DM,E.AM,baseNote],t:'<b>4 · Merge.</b> The approved branch merges into main — in the style your agreement chose. The review already happened, so what lands has <b>been looked at first</b>.',fn:()=>pr.setState('merged','PR #14 · merged')},
-    {on:[del],t:'<b>5 · Delete the branch.</b> It did its job — its commits live on in main. Fresh feature → fresh branch, and the whole loop runs again.',fn:()=>pr.setState('merged','PR #14 · merged')}
+    {on:[node.D,E.CD],t:'You answer with an <b>additive fix-up commit</b>: no force-push, so the reviewer\'s context survives. Re-review, then approve.',fn:()=>pr.setState('approved','PR #14 · approved ✓')},
+    {on:[node.M,E.DM,E.AM,baseNote],t:'<b>4 · Merge.</b> The approved branch merges into main, in the style your agreement chose. The review already happened, so what lands has <b>been looked at first</b>.',fn:()=>pr.setState('merged','PR #14 · merged')},
+    {on:[del],t:'<b>5 · Delete the branch.</b> It did its job; its commits live on in main. Fresh feature → fresh branch, and the whole loop runs again.',fn:()=>pr.setState('merged','PR #14 · merged')}
   ];
   const all=[laneM,laneB,...Object.values(node),...Object.values(E),lblFeat,pr.g,cmt,baseNote,del];
   controllers.prlife={max:steps.length-1,render(s){

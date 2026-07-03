@@ -17,7 +17,7 @@ Keep it short; the goal is to make the reviewer's job easy.
 
 ## Checklist
 
-- [ ] Validation passes locally (`ops/validate.sh`)
-- [ ] Gateway still starts cleanly (`ops/setup.sh` → gateway reaches RUNNING) — for project changes
+- [ ] Validation passes locally (`scripts/validate.sh`)
+- [ ] Gateway still starts cleanly (`scripts/setup.sh` → gateway reaches RUNNING) — for project changes
 - [ ] No secrets committed
 - [ ] Changes are scoped to one logical thing
