@@ -84,12 +84,14 @@ scripts/scan.sh                 # faster reload via the gateway's scan API
 ## Lab structure
 
 The whole lab lives in one file, [`exercises/lab.md`](./exercises/lab.md): a single
-**We-do / we do / you do** flow covering two linked topics —
+**we-do / you-do** flow covering two linked topics —
 
-- **Branching strategies** — Git Flow vs GitHub Flow vs trunk-based, captured in a one-page team agreement
+- **Branching strategies** — Git Flow vs GitHub Flow vs trunk-based, and which fits your team
 - **Pull requests** — scope, review, and merge hygiene
 
-The you-do ties them together: you write your team's branching rules, then open, review, and merge real PRs that follow them.
+The you-do ties them together: you run the release-week scenario (a v2.0 feature plus
+a P1 production fix) through **GitHub Flow** — the course's strategy — with PRs your
+peers review, merged in release order and tagged. A stretch reruns it in Git Flow.
 
 ## Repo layout
 

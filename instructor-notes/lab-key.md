@@ -1,12 +1,13 @@
 # Lab 02: instructor answer key
 
 > **Do not read this before you've attempted the You-do.** The point of this lab is
-> the *process*: running the Git Flow hotfix scenario correctly, and reviewing well,
-> not getting the "right" strategy or the "right" comments.
+> the *process*: running the GitHub Flow release-week scenario correctly, and
+> reviewing well, not getting the "right" strategy or the "right" comments.
 
 The lab is one we-do / you-do flow covering two topics. The You-do is a single
 scenario: discuss a strategy (breakout room), then run the release-week feature + P1
-hotfix through Git Flow, review peers' PRs, merge in order, and open one PR upstream.
+fix through GitHub Flow, review peers' PRs, merge in release order, and open one PR
+upstream. Git Flow's double-merge is the first stretch.
 This key is grouped by topic; see [`exercises/lab.md`](../exercises/lab.md) for the flow.
 
 ---
@@ -37,7 +38,7 @@ What to probe for in the argument:
 
 - **Specific branch naming.** "use descriptive names" is a hope; `feature/<jira-id>-slug`, `fix/<slug>`, `hotfix/<slug>` is a rule. `dev`/`test`/`prod` as *branch* names is a smell (those are tags/environments).
 - **A justified merge style.** Can they say *why* `--no-ff` vs squash vs rebase? Best answer names a benefit: "`--no-ff` keeps branch shape in `git log --graph`, so what shipped in v1.2 is visible without tags." "Rebase because it's clean" without saying why clean beats informative is shallow.
-- **A concrete hotfix rule.** "Branch from the `v1.2` tag, fix, merge to `main` and `develop`, tag `v1.2.1`, deploy" is concrete. "Hotfix as needed" is a hope. Part 2 makes them *do* the concrete version, so this discussion primes it.
+- **A concrete hotfix rule.** "Branch from `main`, fix, merge first, tag `v1.2.1`, deploy" (GitHub Flow) or "branch from the `v1.2` tag, merge to `main` and `develop`, tag" (Git Flow) is concrete. "Hotfix as needed" is a hope. Part 2 makes them *do* the GitHub Flow version, so this discussion primes it.
 
 ## Common pitfalls in the discussion
 
@@ -46,26 +47,27 @@ What to probe for in the argument:
 - **No mention of who merges.** Who has merge rights? The PR author? A reviewer? Anyone with approval? Worth asking.
 - **No mention of release cadence.** "We ship when ready" is not a cadence. Push for at least a rough rhythm.
 
-## Stretch: GitHub Flow rerun
+## Stretch: Git Flow rerun
 
-The first stretch has participants re-run the *same* scenario in GitHub Flow, to feel
-the contrast against Git Flow. It only works after a rewind — post-scenario, their
-fork's `main` already contains the hotfix, so there'd be nothing left to fix. The
-exercise has them `git reset --hard v1.2` + force-push `main` and delete `develop`
-first; expect "wait, force-push?!" — the answer is that it's their throwaway fork,
-and rewriting a shared `main` for real is exactly what Stretch 2's branch protection
-forbids. Then, what "good" looks like: they actually notice the two differences that
-matter, not just "it was simpler."
+The first stretch has participants re-run the *same* scenario in Git Flow, to feel
+the contrast against GitHub Flow. It only works after a rewind — post-scenario, their
+fork's `main` already contains both changes, so there'd be nothing left to do. The
+exercise has them `git reset --hard v1.2` + force-push `main` (and delete the local
+feature branch) first; expect "wait, force-push?!" — the answer is that it's their
+throwaway fork, and rewriting a shared `main` for real is exactly what Stretch 2's
+branch protection forbids. Then, what "good" looks like: they actually notice the
+two differences that matter, not just "it was more work."
 
-- **The hotfix merges once, not twice.** In GitHub Flow both changes PR straight into `main`; there's no `develop` to also patch. A participant who still merges twice hasn't switched models.
-- **They spot what GitHub Flow *can't* do.** The payoff question: where does `v1.2` live? If production were an *older* release than `main`, GitHub Flow has nowhere to put the fix without a release branch or tag. A participant who says "GitHub Flow is just better, less ceremony" has missed the trade-off; push them on the multi-version case.
+- **The hotfix merges twice.** They create a long-lived `develop`, run the feature off `develop` and the hotfix off `main`, and the hotfix needs **two PRs** — into `main` (tagged `v1.2.1`) *and* into `develop`. A participant who merges it once hasn't switched models: their next "release" from `develop` would regress the fix. One mechanical gotcha lives here: deleting the hotfix branch after the first merge auto-closes the still-open second PR — both merges first, then delete.
+- **They spot what the ceremony buys.** In the main scenario `v1.2` lived in a tag; here a whole branch structure guards the released version. That's the point: Git Flow is what it takes when production runs an *older* release than `main` and tags alone stop being enough.
 
 A participant who can articulate "Git Flow's double-merge is the price of supporting
 old versions" has understood both strategies from the inside. That's the whole goal.
 
 ## Branching-strategy debrief crib
 
-- *"Did the double-merge feel worth it?"*: The best answers connect ceremony to a *reason*: worth it when more than one version is live, pure overhead when only `main` ships. Someone who found it purely annoying probably has a single-version reality, which is a fine answer if they *say* that.
+- *"Where does `v1.2` live in GitHub Flow — and when do tags stop being enough?"*: The answer to the first half is **in the tags** (`git checkout v1.2` gets you back). The second half is the binary from the matrix: tags stop being enough when more than one version is live and old releases need patches — that's what `develop` + double-merge buy. Stretch-doers can answer from experience; push the others to reason it out.
+- *"Did the double-merge feel worth it?"* (stretch-doers): The best answers connect ceremony to a *reason*: worth it when more than one version is live, pure overhead when only `main` ships. Someone who found it purely annoying probably has a single-version reality, which is a fine answer if they *say* that.
 - *"Which strategy surprised you?"*: Most non-developers are surprised by **trunk-based**. It looks chaotic but works in mature teams. Worth contrasting with Git Flow, which looks rigorous but mostly creates merge work.
 - *"Which would you adopt tomorrow?"*: Push for a one-sentence reason. "GitHub Flow because we're a 4-person team and continuous deploy" is a good answer. "GitHub Flow because it's simple" without a fit-to-team reason is shallow.
 - *"What makes branching harder for Ignition teams?"*: Three honest answers:
@@ -80,20 +82,22 @@ old versions" has understood both strategies from the inside. That's the whole g
 
 ## The scenario, and the branches you should see
 
-Part 2 produces roughly three branches and three PRs per participant:
+Part 2 produces two branches and two PRs per participant, both based on `main`:
 
-1. `feature/v2-<view>-<ini>` off **`develop`**: a new Perspective view (the v2.0 feature). PR base = `develop`.
-2. `hotfix/null-reading-<ini>` off **`main`** / the `v1.2` tag: the null-reading fix. **Two** PRs, `hotfix -> main` (then tag `v1.2.1`) and `hotfix -> develop`.
-3. The feature branch, updated from `develop` after the hotfix lands, then its PR merged.
+1. `feature/v2-<view>-<ini>` off **`main`**: a new Perspective view (the v2.0 feature). PR base = `main`, left open until the fix has shipped.
+2. `fix/null-reading-<ini>` off **`main`**: the null-reading fix. **One** PR, `fix -> main` — merged first, then `v1.2.1` tagged on `main`.
+3. The feature branch, updated from `main` after the fix lands (`git merge main`), then its PR merged.
 
-The single most important Git Flow check across all of it: **did the hotfix branch
-off production (`main`/`v1.2`), not `develop`?** If it branched off `develop`, it
-drags unreleased v2.0 work into the production fix. That's the classic mistake this
-scenario exists to catch. See it in the graph with `git log --graph --oneline --all`.
+The single most important GitHub Flow check across all of it: **did the fix merge —
+and `v1.2.1` get tagged — before the feature?** Merging is releasing: whatever is on
+`main` at tag time ships in that release. A `v1.2.1` tag that contains half of v2.0
+is the classic mistake this scenario exists to catch. See it with
+`git log --graph --oneline --all` (the tag should sit on the fix's merge commit, below
+the feature's).
 
-## The hotfix code (reference solution)
+## The fix code (reference solution)
 
-The hotfix has participants fix `lab.display.format_reading()` so a null reading
+The P1 fix has participants repair `lab.display.format_reading()` so a null reading
 (comms loss / unread tag) shows a placeholder instead of throwing. A clean solution:
 
 ```python
@@ -125,7 +129,7 @@ What to look for / push on:
 
 ## The feature (reference solution)
 
-The v2.0 feature is a new Perspective view, added off `develop`. A clean one:
+The v2.0 feature is a new Perspective view, added off `main`. A clean one:
 
 - **A new resource folder** under `views/pages/` (easiest: copy `overview`, rename),
   with its `view.json` payload and `resource.json` manifest, plus the page registered
@@ -135,7 +139,7 @@ The v2.0 feature is a new Perspective view, added off `develop`. A clean one:
 Watch for: a copy that breaks the JSON (validate.sh catches it), a page that isn't
 registered so nothing actually goes "live," or a sprawling redesign that's no longer
 a small PR. Any of those is fair review fodder. The feature is deliberately low-stakes
-(the *hotfix* carries the review teeth); its job is to be the open branch that the
+(the *fix* carries the review teeth); its job is to be the open branch that the
 P1 ambush interrupts.
 
 ## What "good" looks like for the peer review
@@ -144,10 +148,10 @@ The You-do asks for a few genuinely helpful comments: at minimum a `praise:` and
 
 ### A reference review skeleton
 
-The **hotfix PR** is the richest to review, and carries a Git-Flow-specific check
+The **fix PR** is the richest to review, and carries a GitHub-Flow-specific check
 the null-reading fix alone doesn't. A strong review will include something like:
 
-- **The Git Flow structural check.** Did the hotfix branch off **production** (`main`/`v1.2`), not `develop`? And is it heading to *both* `main` and `develop`? A hotfix that only targets `main` reappears next release; one that branched off `develop` drags v2.0 into production. Either is a legitimate `issue:`, and the point of the whole scenario.
+- **The GitHub Flow structural check.** Is the fix **just the fix** — no v2.0 work riding along — and is the plan to merge it (and tag `v1.2.1`) *before* the feature? Merging is releasing: a fix PR that merges after the feature quietly ships half of v2.0 under a patch tag. Either problem is a legitimate `issue:`, and the point of the whole scenario.
 - **One `praise:`** something genuinely good. A focused diff, or keeping the `None` guard. Praise is not throwaway; it tells the author what's working.
 - **At least one `question:`** there's almost always something genuinely unclear. "question: should a null reading show `--`, or hold the last-known value? What do operators expect on comms loss?" Questions surface assumptions the author didn't realize they had.
 - **At least one `suggestion:`** a specific change the author could make. Not a vague "this could be better" but a concrete alternative. "suggestion: reuse `lab.util.to_float(value, default=None)` for the junk-input case — keeping the `None` check on the result."
@@ -185,28 +189,29 @@ Common author mistakes:
 - **Accepting every suggestion without thinking.** Authors are not obligated to agree. A `decline: I think the explicit None check reads clearer than the helper here` is a valid response.
 - **Force-pushing over fix-ups.** A force-push during review nukes the reviewer's context. Prefer additive commits during review; squash on merge if you must.
 
-## Merge order (the Git Flow payoff)
+## Merge order (the GitHub Flow payoff)
 
-The merge *order* is the lesson here, more than the merge *style*. Participants should
-close the PRs in Git Flow order:
+The merge *order* is the lesson here, more than the merge *style*. In GitHub Flow,
+merging is releasing, so merge order is release order:
 
-1. `hotfix -> main` first (production is on fire), then **tag `v1.2.1`** on `main`.
-2. `hotfix -> develop` (so v2.0 doesn't regress the fix).
-3. `feature -> develop` last (v2.0 progresses, now on top of the hotfix).
+1. `fix -> main` first (production is on fire), then **tag `v1.2.1`** on `main`.
+2. `feature -> main` last (v2.0 progresses), after updating the feature branch
+   from `main` so it carries the fix.
 
 Common mistakes to catch:
 
-- **Only merging the hotfix to `main`.** The single most important thing to verify. If `develop` never gets it, the bug returns the moment v2.0 ships. Ask them to prove the fix is on `develop` (`git log develop --oneline | grep -i placeholder`).
-- **Deleting the hotfix branch between the two merges.** GitHub auto-closes any open PR whose head branch is deleted: taking the **Delete branch** button right after `hotfix -> main` kills the still-open `hotfix -> develop` PR. Both hotfix PRs merged first, *then* delete — though they should keep the branch for the upstream PR anyway.
-- **Forgetting the tag.** `v1.2.1` is what makes "we shipped a patch" legible later. No tag, no audit trail.
-- **Merging the feature before the hotfix reaches `develop`.** Not fatal (a later `git merge develop` fixes it), but it means the feature branch was tested without the fix.
-- **Updating the feature branch too early.** `git merge develop` on the feature branch only picks up the hotfix *after* `hotfix -> develop` has merged; run before that, it's a silent no-op ("Already up to date") and they'll think they're done. The exercise sequences it in the merge step for this reason.
+- **Tagging `v1.2.1` after the feature merged.** The single most important thing to verify: the "patch" tag now ships half of v2.0. Ask them to prove it — `git log v1.2.1 --oneline` should contain the placeholder fix but **not** the status page. The tag should sit on the fix's merge commit.
+- **Forgetting the tag.** In GitHub Flow the tag *is* the release record; skip it and "what's in production" has no answer beyond "whatever main was at some point." No tag, no audit trail.
+- **Merging the feature before the fix.** Not fatal for the code (main ends up the same), but the release story is wrong — and if they then tag, see mistake one.
+- **Updating the feature branch too early.** `git merge main` on the feature branch only picks up the fix *after* `fix -> main` has merged; run before that, it's a silent no-op ("Already up to date") and they'll think they're done. The exercise sequences it in the merge step for this reason.
+- **Deleting the fix branch before Part 4.** The upstream PR wants that branch; the merged PR's **Restore branch** button (or a re-push) recovers it.
 
 As for the merge *button* itself, GitHub's dropdown gives three options; any is fine
-here as long as it's deliberate. `--no-ff` (merge commit) best preserves the Git Flow
-branch shape in `git log --graph`, which is arguably the point of using Git Flow at
-all. If GitHub doesn't show all three, the repo restricted them in Settings, Branches,
-Merge button options; worth surfacing as a procedural point.
+here as long as it's deliberate. A merge commit keeps the branch shape visible in
+`git log --graph`; squash gives `main` a clean one-commit-per-PR history, which is
+why many GitHub Flow teams default to it. If GitHub doesn't show all three, the repo
+restricted them in Settings, Branches, Merge button options; worth surfacing as a
+procedural point.
 
 ## The upstream (cross-fork) PR
 
@@ -215,7 +220,7 @@ base = the **upstream** course repo, head = their fork's branch. What "good" loo
 like:
 
 - **It's actually cross-fork.** In the GitHub PR UI, the base repo dropdown shows `mustry-academy/cicd-lab-02-...`, not their own fork. A common miss: `gh pr create` on a fork defaults the base to upstream *already*, which can surprise them the other direction. Either way, confirm the base repo is the course repo.
-- **The branch may already be deleted.** If they took the delete button after merging, the hotfix branch is gone from their fork. The merged PR's page has a **Restore branch** button, or they can push the branch again — either works; no need to redo anything.
+- **The branch may already be deleted.** If they took the delete button after merging, the fix branch is gone from their fork. The merged PR's page has a **Restore branch** button, or they can push the branch again — either works; no need to redo anything.
 - **Written for a stranger.** The maintainer has none of their context, so the What / Why / How to test carries the whole thing. This is the payoff of the template habit.
 - **We don't merge these.** Be explicit in the room: cohort PRs to the course repo won't be merged. The learning objective is *doing* the cross-fork PR (the entire open-source contribution loop), not landing it. Close or leave them; don't merge into the course repo.
 

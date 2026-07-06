@@ -157,7 +157,6 @@ body{
 <div class="deck" id="deck">
 
 <!-- 1 · COVER -->
-<!-- [VERIFY] session times: teaching.html carries a TODO: welcome package says Day-1 afternoon = 13:00 teaching / 14:00 we-do / 15:00 you-do; this deck assumes we-do+you-do = 14:00-16:00 -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img logo-lg" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -166,7 +165,7 @@ body{
   <div class="cover">
     <div class="eyebrow">The assignment · breakout rooms</div>
     <div class="big">Live the <em>hotfix scenario</em> yourself.</div>
-    <div class="sub">In your breakout room, on your own fork of a real Ignition project: pick a strategy for your team, then run the release-week scenario for real. Ship a v2.0 feature, get ambushed by a P1 bug in production, and thread both through Git Flow with PRs your peers review.</div>
+    <div class="sub">In your breakout room, on your own fork of a real Ignition project: pick a strategy for your team, then run the release-week scenario for real. Ship a v2.0 feature, get ambushed by a P1 bug in production, and thread both through GitHub Flow with PRs your peers review.</div>
     <div class="for">
       <span>Floating to help</span>
       <span class="pill"><b>Sam</b></span>
@@ -188,7 +187,7 @@ body{
     <div class="sechead"><span class="num">READ FIRST</span><div><div class="title">How this works</div></div></div>
     <ul class="checks" style="max-width:940px">
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Share your screen</b> in your breakout room. This is a "look over your shoulder" class, so we'll drop in where it's useful.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Until Part 3·C, every PR's <b>base repo = your fork</b> (the base <i>branch</i> varies per step: <span class="inlinecode">develop</span> or <span class="inlinecode">main</span>). Careful: GitHub's "Compare &amp; pull request" banner and <span class="inlinecode">gh pr create</span> default the base to the <b>upstream course repo</b> — switch it to your fork. That's how everyone gets real merge rights without pushing to one shared repo.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Until Part 3·C, every PR has <b>base repo = your fork</b>, base branch = <span class="inlinecode">main</span>. Careful: GitHub's "Compare &amp; pull request" banner and <span class="inlinecode">gh pr create</span> default the base to the <b>upstream course repo</b> — switch it to your fork. That's how everyone gets real merge rights without pushing to one shared repo.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">scripts/validate.sh</span> before every PR.</b> It's this lab's green/red signal (every project file valid JSON, every script parseable) and the PR template's first checkbox.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open PRs early, share every link</b> in the cohort chat and tag a peer as reviewer. The review step needs a peer's PR to exist, and merging needs a peer to have reviewed <i>yours</i>.</span></li>
     </ul>
@@ -216,21 +215,21 @@ body{
         <div class="gate">sets up the strategy you'll feel next</div>
       </div>
       <div class="pcard p1">
-        <div class="pn">PART 2 · THE SCENARIO · GIT FLOW</div>
-        <h4>Feature + P1 hotfix, live</h4>
-        <p>Ship a v2.0 view on a <span class="inlinecode">feature/*</span> branch. Mid-work a P1 bug hits <span class="inlinecode">main</span>: fix it on a <span class="inlinecode">hotfix/*</span> branch, Git Flow's way. PRs your peers review.</p>
+        <div class="pn">PART 2 · THE SCENARIO · GITHUB FLOW</div>
+        <h4>Feature + P1 fix, live</h4>
+        <p>Ship a v2.0 view on a <span class="inlinecode">feature/*</span> branch. Mid-work a P1 bug hits production: fix it on a <span class="inlinecode">fix/*</span> branch and release it with a tag, GitHub Flow's way. PRs your peers review.</p>
         <div class="gate">gate → scripts/validate.sh ✅ · links in chat</div>
       </div>
       <div class="pcard p2">
         <div class="pn">PART 3 · REVIEW · +CONTRIBUTE</div>
         <h4>Review, merge &amp; a PR upstream</h4>
         <p>Review a peer's PR with <span class="inlinecode">praise:</span> / <span class="inlinecode">suggestion:</span> / <span class="inlinecode">issue:</span>, merge yours, then open one PR back to the <b>upstream</b> repo. That's open source.</p>
-        <div class="gate">stretch → rerun it in GitHub Flow</div>
+        <div class="gate">stretch → rerun it in Git Flow</div>
       </div>
     </div>
     <div class="goal">
       <span class="badge">Why this order</span>
-      <p>You <b>argue</b> a strategy in Part 1, then <b>feel</b> Git Flow's double-merge hotfix in Part 2. And the review loop only works if everyone's PR links are <b>in the cohort chat early</b>. Open PRs first, review while you wait.</p>
+      <p>You <b>argue</b> a strategy in Part 1, then <b>live</b> GitHub Flow's release week in Part 2 (the stretch lets you feel Git Flow's double-merge too). And the review loop only works if everyone's PR links are <b>in the cohort chat early</b>. Open PRs first, review while you wait.</p>
     </div>
   </div>
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Discuss → run the scenario → review → contribute</span></div>
@@ -285,7 +284,7 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
       <div class="steps">
         <div class="step"><div class="ix t">1</div><div class="tx"><b>Go around the room.</b> Each person sketches their own team or project out loud: <b>release cadence · regulatory constraints · team size · how often production ships</b>.</div></div>
         <div class="step"><div class="ix t">2</div><div class="tx"><b>Argue the fit.</b> For each person, the room agrees which of the three strategies fits <b>their</b> reality, and <i>why</i>. Disagreement is the point; talk it out.</div></div>
-        <div class="step"><div class="ix t">3</div><div class="tx"><b>Land on one for the room.</b> You'll run <b>Part 2 in Git Flow</b> regardless, but knowing which one you'd actually pick is what makes feeling the difference land.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx"><b>Land on one for the room.</b> You'll run <b>Part 2 in GitHub Flow</b> regardless (it's the course's strategy), but knowing which one you'd actually pick is what makes feeling the difference land.</div></div>
       </div>
       <div>
         <ul class="checks">
@@ -300,7 +299,7 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
       </div>
     </div>
   </div>
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 1 · the argument → now feel Git Flow</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 1 · the argument → now live GitHub Flow</span></div>
 </section>
 
 <!-- 6 · PART 2 DIVIDER · THE SCENARIO -->
@@ -310,13 +309,13 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
     <div class="stage on-dark">Part 2 · breakout rooms · the scenario</div>
   </div>
   <div class="body">
-    <div class="eyebrow">Part 2 · Git Flow · for real</div>
+    <div class="eyebrow">Part 2 · GitHub Flow · for real</div>
     <div class="title" style="color:#fff;max-width:24ch">The release-week scenario, but this time it's you</div>
-    <p class="lead">The same story from the teaching deck. <b style="color:#fff">v1.2 is live in production.</b> You start shipping the v2.0 feature, and mid-work, a P1 bug in production ambushes you. You thread <b style="color:#fff">both</b> through Git Flow, exactly the way Chapter 1 drew it.</p>
+    <p class="lead">The same story from the teaching deck. <b style="color:#fff">v1.2 is live in production.</b> You start shipping the v2.0 feature, and mid-work, a P1 bug in production ambushes you. You thread <b style="color:#fff">both</b> through GitHub Flow, exactly the way Chapter 1 drew it.</p>
     <ul class="checks" style="margin-top:22px;max-width:920px">
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Step 1</b>, set the stage: <span class="mono" style="color:#dbe4f0">main</span> + <span class="mono" style="color:#dbe4f0">develop</span>, <span class="mono" style="color:#dbe4f0">v1.2</span> tagged as what's live.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Step 1</b>, set the stage: one <span class="mono" style="color:#dbe4f0">main</span>, <span class="mono" style="color:#dbe4f0">v1.2</span> tagged as what's live.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Step 2</b>, the v2.0 feature: add a new Perspective view on a <span class="mono" style="color:#dbe4f0">feature/*</span> branch → PR.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Step 3</b>, the ambush: a P1 bug in production. Fix it on a <span class="mono" style="color:#dbe4f0">hotfix/*</span> branch, merged Git Flow's way, <b style="color:#fff">twice</b>.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Step 3</b>, the ambush: a P1 bug in production. Fix it on a <span class="mono" style="color:#dbe4f0">fix/*</span> branch — <b style="color:#fff">one</b> PR into <span class="mono" style="color:#dbe4f0">main</span>, released with the <span class="mono" style="color:#dbe4f0">v1.2.1</span> tag.</span></li>
     </ul>
   </div>
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 2 · steps 1 → 3</span></div>
@@ -329,26 +328,23 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
     <div class="stage">Part 2 · step 1 · set the stage</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 1</span><div><div class="title">Set up the Git Flow world</div><div class="lead">Two long-lived branches and a tag marking what's in production. This is the graph the scenario runs on.</div></div></div>
+    <div class="sechead"><span class="num">STEP 1</span><div><div class="title">Set the GitHub Flow stage</div><div class="lead">One long-lived branch and a tag marking what's in production. This is the graph the scenario runs on.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix p">1</div><div class="tx">On your fork, make sure <span class="inlinecode">main</span> exists and <b>create <span class="inlinecode">develop</span> off it</b>: the two long-lived branches Git Flow needs.</div></div>
-        <div class="step"><div class="ix p">2</div><div class="tx"><b>Tag what's live: <span class="inlinecode">v1.2</span> on <span class="inlinecode">main</span>.</b> This is "production", the thing the P1 bug is running against.</div></div>
-        <div class="step"><div class="ix p">3</div><div class="tx"><b>Push both</b> the branch and the tag to your fork. Now the world matches the teaching-deck diagram.</div></div>
+        <div class="step"><div class="ix p">1</div><div class="tx">GitHub Flow needs just <b>one long-lived branch: <span class="inlinecode">main</span></b>. Every branch you cut starts there and returns there through a PR.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Tag what's live: <span class="inlinecode">v1.2</span> on <span class="inlinecode">main</span>.</b> This is "production", the thing the P1 bug is running against. In GitHub Flow, <b>tags carry the release history</b>.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx"><b>Push the tag</b> to your fork. Now the world matches the teaching-deck diagram. (Your first real <span class="inlinecode">git push</span> of the course — named this morning, used now.)</div></div>
       </div>
       <div>
-        <div class="code"><pre><span class="cm"># two long-lived branches</span>
+        <div class="code"><pre><span class="cm"># one long-lived branch: main is it</span>
 git switch main
-git switch -c develop
-git push -u origin develop
 
 <span class="cm"># mark what's live in production</span>
-git switch main
 git tag v1.2
 git push origin v1.2      <span class="cm"># → "production" is v1.2</span></pre></div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">The mental model</span>
-          <p><span class="inlinecode">main</span> = production · <span class="inlinecode">develop</span> = the next release in progress · <span class="inlinecode">v1.2</span> = the exact commit customers are running. Every branch you cut next answers "off which of these?"</p>
+          <p><span class="inlinecode">main</span> = the one shared line of development · <span class="inlinecode">v1.2</span> = the exact commit customers are running · <b>releasing = merging to <span class="inlinecode">main</span> and tagging</b>. Every branch you cut next is short-lived: off <span class="inlinecode">main</span>, back to <span class="inlinecode">main</span>.</p>
         </div>
       </div>
     </div>
@@ -363,15 +359,15 @@ git push origin v1.2      <span class="cm"># → "production" is v1.2</span></pr
     <div class="stage">Part 2 · step 2 · the v2.0 feature</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 2</span><div><div class="title">Ship the v2.0 feature: a new Perspective view</div><div class="lead">A small, real Ignition change: add a view so it goes live in the project. Off <span class="inlinecode">develop</span>, the Git Flow way.</div></div></div>
+    <div class="sechead"><span class="num">STEP 2</span><div><div class="title">Ship the v2.0 feature: a new Perspective view</div><div class="lead">A small, real Ignition change: add a view so it goes live in the project. Off <span class="inlinecode">main</span>, the GitHub Flow way.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch off <span class="inlinecode">develop</span></b> (not <span class="inlinecode">main</span>, because features target the next release): <span class="inlinecode">feature/v2-&lt;view-name&gt;-&lt;ini&gt;</span>.</div></div>
+        <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch off <span class="inlinecode">main</span></b> — in GitHub Flow every branch starts at <span class="inlinecode">main</span> and returns to it through a PR: <span class="inlinecode">feature/v2-&lt;view-name&gt;-&lt;ini&gt;</span>.</div></div>
         <div class="step"><div class="ix p">2</div><div class="tx"><b>Add a new view.</b> Easiest path: copy the <span class="inlinecode">overview</span> resource folder to a new name under <span class="inlinecode">views/pages/</span>, edit its <span class="inlinecode">view.json</span> title, and register the page in <span class="inlinecode">page-config/config.json</span> so it's reachable.</div></div>
-        <div class="step"><div class="ix p">3</div><div class="tx"><b>Validate → commit → PR into <span class="inlinecode">develop</span>.</b> <span class="inlinecode">scripts/validate.sh</span> green, Conventional Commits message, template filled in, link in chat. <b>Leave it open</b>: the ambush comes before you merge. (Yes, a copied view makes a big diff; that's fine — the review focuses on the page registration and valid JSON, not 1,600 lines of it.)</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx"><b>Validate → commit → PR into <span class="inlinecode">main</span>.</b> <span class="inlinecode">scripts/validate.sh</span> green, Conventional Commits message, template filled in, link in chat. <b>Leave it open</b>: the ambush comes before you merge. (Yes, a copied view makes a big diff; that's fine — the review focuses on the page registration and valid JSON, not the sheer line count.)</div></div>
       </div>
       <div>
-        <div class="code"><pre>git switch develop
+        <div class="code"><pre>git switch main
 git switch -c feature/v2-status-&lt;ini&gt;
 
 <span class="cm"># add a new Perspective view (copy overview → rename)</span>
@@ -382,7 +378,7 @@ scripts/validate.sh          <span class="cm"># → green</span>
 git add -A
 git commit -m <span class="cmd2">"feat(views): add v2.0 status page"</span>
 git push -u origin feature/v2-status-&lt;ini&gt;
-<span class="cm"># PR: base = develop · link in chat · don't merge yet</span></pre></div>
+<span class="cm"># PR: base = main · link in chat · don't merge yet</span></pre></div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">See it live?</span>
           <p>Gateway up? <span class="inlinecode">scripts/scan.sh</span> (or <span class="inlinecode">docker compose restart</span>), then open the project: your new page is there. That's the "it goes live" moment.</p>
@@ -393,43 +389,42 @@ git push -u origin feature/v2-status-&lt;ini&gt;
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Feature open → then the P1 hits</span></div>
 </section>
 
-<!-- 9 · PART 2 · STEP 3 · THE HOTFIX AMBUSH -->
+<!-- 9 · PART 2 · STEP 3 · THE P1 AMBUSH -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
     <div class="stage">Part 2 · step 3 · the P1 ambush</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 3</span><div><div class="title">P1 in production: hotfix it the Git Flow way</div><div class="lead">Your feature is still open when a customer hits the null-reading crash <b>in v1.2, live</b>. It can't wait for v2.0. This is where Git Flow earns its keep.</div></div></div>
+    <div class="sechead"><span class="num">STEP 3</span><div><div class="title">P1 in production: fix it the GitHub Flow way</div><div class="lead">Your feature is still open when a customer hits the null-reading crash <b>in v1.2, live</b>. It can't wait for v2.0. This is where merge order starts to matter.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch the hotfix off production</b> (<span class="inlinecode">main</span> / the <span class="inlinecode">v1.2</span> tag, <b>not</b> <span class="inlinecode">develop</span>): <span class="inlinecode">hotfix/null-reading-&lt;ini&gt;</span>. Your v2.0 work isn't in production, so it must not ride along.</div></div>
+        <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch the fix off <span class="inlinecode">main</span></b>: <span class="inlinecode">fix/null-reading-&lt;ini&gt;</span>. Because your feature PR is still <b>open</b>, <span class="inlinecode">main</span> <i>is</i> v1.2 — the fix carries no v2.0 work.</div></div>
         <div class="step"><div class="ix p">!</div><div class="tx"><b>The bug:</b> <span class="inlinecode">lab.display.format_reading()</span> does <span class="inlinecode">"%.1f" % None</span> on a null reading (comms loss) and throws. <b>Fix:</b> a placeholder like <span class="inlinecode">"-- °C"</span> for <span class="inlinecode">None</span> / bad input, while keeping <span class="inlinecode">0</span> formatting as <span class="inlinecode">"0.0 °C"</span>.</div></div>
-        <div class="step"><div class="ix p">2</div><div class="tx"><b>It lands twice</b>, the Git Flow move: open <b>two PRs</b> from the one hotfix branch — into <span class="inlinecode">main</span> (production gets the fix) <b>and</b> into <span class="inlinecode">develop</span> (so v2.0 doesn't regress it). <b>Don't merge yet</b>: reviews come first; Part 3 merges in order and tags <span class="inlinecode">v1.2.1</span>.</div></div>
-        <div class="step"><div class="ix p">3</div><div class="tx"><b>That's three PRs open</b> (feature → <span class="inlinecode">develop</span>, hotfix → <span class="inlinecode">main</span>, hotfix → <span class="inlinecode">develop</span>): every link in chat, a peer on each. You'll pull the hotfix down into your feature branch in Part 3, <b>after</b> it has actually landed on <span class="inlinecode">develop</span>.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>One PR into <span class="inlinecode">main</span>.</b> That's the whole GitHub Flow ceremony: no <span class="inlinecode">develop</span>, no double-merge. <b>Don't merge yet</b>: reviews come first; Part 3 merges in order and tags <span class="inlinecode">v1.2.1</span>.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx"><b>That's two PRs open</b> (feature → <span class="inlinecode">main</span>, fix → <span class="inlinecode">main</span>): both links in chat, a peer on each. <b>Merge order is the lesson</b>: the fix lands (and <span class="inlinecode">v1.2.1</span> is tagged) <i>before</i> the feature merges — in GitHub Flow, <b>merging is releasing</b>.</div></div>
       </div>
       <div>
-        <div class="code"><pre><span class="cm"># hotfix off PRODUCTION, not develop</span>
+        <div class="code"><pre><span class="cm"># the fix branches off main — which IS v1.2,</span>
+<span class="cm"># because the feature hasn't merged yet</span>
 git switch main
-git switch -c hotfix/null-reading-&lt;ini&gt;
+git switch -c fix/null-reading-&lt;ini&gt;
 
 <span class="cm"># fix format_reading() in lab/display/code.py</span>
 scripts/validate.sh
 git commit -am <span class="cmd2">"fix(display): placeholder for null readings"</span>
-git push -u origin hotfix/null-reading-&lt;ini&gt;
+git push -u origin fix/null-reading-&lt;ini&gt;
 
-<span class="cm"># the Git Flow double-merge, staged as TWO open PRs</span>
-<span class="cm"># from this one branch (both reviewed, merged in Part 3):</span>
-<span class="cm">#   PR 1: hotfix → main     (merge first, then tag v1.2.1)</span>
-<span class="cm">#   PR 2: hotfix → develop  (so the fix rides into v2.0)</span></pre></div>
+<span class="cm"># ONE PR: fix → main</span>
+<span class="cm">#   reviewed → merged FIRST → tagged v1.2.1  (Part 3)</span></pre></div>
         <div class="goal warn-g" style="margin-top:18px">
           <span class="badge">The whole lesson</span>
-          <p>A hotfix that only lands on <span class="inlinecode">main</span> <b>reappears next release</b>, because develop never got it. Git Flow's "merge twice" is annoying <i>and</i> exactly why it exists. You just felt both.</p>
+          <p><b>Merging is releasing:</b> whatever is on <span class="inlinecode">main</span> when you tag <span class="inlinecode">v1.2.1</span> ships in v1.2.1. Merge the feature first and your "patch" quietly ships half of v2.0. Order is the one ceremony GitHub Flow kept.</p>
         </div>
       </div>
     </div>
   </div>
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Three branches, ~3 PRs → now review peers'</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Two branches, two PRs → now review peers'</span></div>
 </section>
 
 <!-- 10 · PART 3A · REVIEW A PEER'S PR -->
@@ -439,11 +434,11 @@ git push -u origin hotfix/null-reading-&lt;ini&gt;
     <div class="stage">Part 3 · the review</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">PART 3 · A</span><div><div class="title">Review a peer's PR</div><div class="lead">You each have a hotfix PR and a feature PR open. Coordinate in chat so <b>each PR gets one reviewer</b>.</div></div></div>
+    <div class="sechead"><span class="num">PART 3 · A</span><div><div class="title">Review a peer's PR</div><div class="lead">You each have a fix PR and a feature PR open. Coordinate in chat so <b>each PR gets one reviewer</b>.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix p">1</div><div class="tx"><b>Pick a peer's PR</b> from the cohort chat; the <b>hotfix</b> is the richest to review.</div></div>
-        <div class="step"><div class="ix p">2</div><div class="tx"><b>Read slowly (at least 5 minutes)</b> before writing anything. Hotfix: do valid readings still format (<span class="inlinecode">162.0</span> → <span class="inlinecode">"162.0 °C"</span>, and <span class="inlinecode">0</span> → <span class="inlinecode">"0.0 °C"</span>)? And, the Git Flow check, did it branch off <b>production</b>, not <span class="inlinecode">develop</span>? Feature PR: JSON well-formed, page registered, change scoped?</div></div>
+        <div class="step"><div class="ix p">1</div><div class="tx"><b>Pick a peer's PR</b> from the cohort chat; the <b>fix</b> is the richest to review.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Read slowly (at least 5 minutes)</b> before writing anything. Fix PR: do valid readings still format (<span class="inlinecode">162.0</span> → <span class="inlinecode">"162.0 °C"</span>, and <span class="inlinecode">0</span> → <span class="inlinecode">"0.0 °C"</span>)? And, the GitHub Flow check: is the fix <b>just the fix</b> (no v2.0 work riding along), set to merge <b>before</b> the feature? Merging is releasing. Feature PR: JSON well-formed, page registered, change scoped?</div></div>
         <div class="step"><div class="ix p">3</div><div class="tx"><b>Check their verification:</b> did they run <span class="inlinecode">validate.sh</span>? Could you actually follow their "How to test"? Read the description and commit message too.</div></div>
         <div class="step"><div class="ix p">4</div><div class="tx"><b>Comment:</b> at minimum a <span class="inlinecode">praise:</span> and a <span class="inlinecode">suggestion:</span>, with an <span class="inlinecode">issue:</span> only if something is actually wrong. No quota; quality over quantity.</div></div>
         <div class="step"><div class="ix p">5</div><div class="tx"><b>Verdict:</b> <b>Request changes</b> if you left at least one <span class="inlinecode">issue:</span>, else <b>Approve</b>.</div></div>
@@ -475,13 +470,13 @@ issue: format_reading(0, "°C") now returns
     <div class="stage">Part 3 · respond &amp; merge</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">PART 3 · B</span><div><div class="title">Respond, then merge, Git Flow's way</div><div class="lead">Close the loop on all three branches, in the right order: <b>hotfix first (production is on fire), then the feature.</b></div></div></div>
+    <div class="sechead"><span class="num">PART 3 · B</span><div><div class="title">Respond, then merge, in release order</div><div class="lead">Close the loop on both branches, in the right order: <b>the fix first (production is on fire), then the feature.</b></div></div></div>
     <div class="cols2">
       <div class="steps">
         <div class="step"><div class="ix p">1</div><div class="tx">On <b>your PRs</b>, react to <b>every</b> comment: <span class="inlinecode">+1</span> the praise, answer questions, push a <b>fix-up commit</b> for what you accept, and <b>decline with reasoning</b> what you don't.</div></div>
         <div class="step"><div class="ix p">2</div><div class="tx"><b>Additive commits, no force-push</b> during review. Re-request review when you're ready.</div></div>
-        <div class="step"><div class="ix p">3</div><div class="tx"><b>Merge in Git Flow order:</b> hotfix <span class="inlinecode">→ main</span> first (production's on fire; tag <span class="inlinecode">v1.2.1</span>), then hotfix <span class="inlinecode">→ develop</span>. Don't take the <b>Delete branch</b> button until <b>both</b> hotfix PRs are merged — deleting the branch auto-closes the still-open second PR. Then keep it anyway: Part C sends it upstream.</div></div>
-        <div class="step"><div class="ix p">4</div><div class="tx"><b>Now finish the feature:</b> pull the hotfix down (<span class="inlinecode">git merge develop</span>), push, then merge its PR into <span class="inlinecode">develop</span> and delete the feature branch.</div></div>
+        <div class="step"><div class="ix p">3</div><div class="tx"><b>Merge the fix PR first</b> (production's on fire), then <b>tag <span class="inlinecode">v1.2.1</span> on <span class="inlinecode">main</span></b> — in GitHub Flow, the tag <i>is</i> the release. Keep the fix branch: Part C sends it upstream.</div></div>
+        <div class="step"><div class="ix p">4</div><div class="tx"><b>Now finish the feature:</b> pull the fix down (<span class="inlinecode">git merge main</span>), push, then merge its PR into <span class="inlinecode">main</span> and delete the feature branch.</div></div>
       </div>
       <div>
         <div class="code"><pre><span class="cm"># a fix-up during review: additive, never force-push</span>
@@ -489,16 +484,18 @@ git add -p
 git commit -m <span class="cmd2">"fix(display): reuse lab.util.to_float"</span>
 git push
 
-<span class="cm"># merge order matters in Git Flow:</span>
-<span class="cm">#  1. hotfix → main      → tag v1.2.1  (prod fixed)</span>
-<span class="cm">#  2. hotfix → develop               (no regression)</span>
-<span class="cm">#  3. update the feature, then feature → develop</span>
+<span class="cm"># merge order = release order in GitHub Flow:</span>
+<span class="cm">#  1. fix → main, then tag the release</span>
+git switch main && git pull
+git tag v1.2.1 && git push origin v1.2.1
+
+<span class="cm">#  2. update the feature, then feature → main</span>
 git switch feature/v2-status-&lt;ini&gt;
-git merge develop         <span class="cm"># pick up the hotfix</span>
+git merge main            <span class="cm"># pick up the fix</span>
 git push</pre></div>
         <div class="goal good-g" style="margin-top:18px">
           <span class="badge">The payoff</span>
-          <p>You didn't read about the double-merge; you <b>did</b> it, under a fake fire drill. That's the difference between knowing Git Flow and having felt it.</p>
+          <p>You didn't read about merge order; you <b>released</b> under a fake fire drill — fix, tag, then feature. That's GitHub Flow handling a release week.</p>
         </div>
       </div>
     </div>
@@ -516,7 +513,7 @@ git push</pre></div>
     <div class="sechead"><span class="num">PART 3 · C</span><div><div class="title">Send one PR back to the upstream repo</div><div class="lead">Every PR so far had <b>base = your fork</b>. Now open one with <b>base = the upstream repo</b>: that's exactly how open source works.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix p">1</div><div class="tx"><b>Pick your cleanest branch.</b> The hotfix is ideal: a small, real fix any maintainer would want. (Already deleted it? The merged PR's page has a <b>Restore branch</b> button — or just push the branch again.)</div></div>
+        <div class="step"><div class="ix p">1</div><div class="tx"><b>Pick your cleanest branch.</b> The fix is ideal: a small, real fix any maintainer would want. (Already deleted it? The merged PR's page has a <b>Restore branch</b> button — or just push the branch again.)</div></div>
         <div class="step"><div class="ix p">2</div><div class="tx"><b>Open a PR with base = <span class="inlinecode">mustry-academy/cicd-lab-02-…</span></b> (the <b>upstream</b>), head = your fork's branch. GitHub calls this a <i>cross-fork</i> PR — and this once, the upstream default you've been switching away from is exactly right.</div></div>
         <div class="step"><div class="ix p">3</div><div class="tx"><b>Write it for a stranger.</b> The maintainer doesn't know your context: the <b>What / Why / How to test</b> is all they get. That's why the template matters.</div></div>
       </div>
@@ -542,30 +539,34 @@ git push</pre></div>
     <div class="stage">Optional stretch</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num warm">OPTIONAL · 1</span><div><div class="title">Stretch 1: now do it in GitHub Flow</div><div class="lead">Same scenario, one long-lived branch. The point isn't the code; it's <b>feeling</b> what Git Flow's ceremony bought you, and what it cost.</div></div></div>
+    <div class="sechead"><span class="num warm">OPTIONAL · 1</span><div><div class="title">Stretch 1: now do it in Git Flow</div><div class="lead">Same scenario, the heavyweight strategy. The point isn't the code; it's <b>feeling</b> what Git Flow's ceremony buys — support for more than one live version — and what it costs.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix t">1</div><div class="tx"><b>Rewind the repo first.</b> After Part 2, <span class="inlinecode">main</span> already has the hotfix, so there'd be nothing to fix: reset your fork's <span class="inlinecode">main</span> back to <span class="inlinecode">v1.2</span> and delete <span class="inlinecode">develop</span> (it's your throwaway fork; force-push is fine <i>here</i>).</div></div>
-        <div class="step"><div class="ix t">2</div><div class="tx"><b>Now think GitHub Flow:</b> one <span class="inlinecode">main</span>, no <span class="inlinecode">develop</span>, no <span class="inlinecode">release/*</span>. <b>Run the same two changes:</b> the v2.0 view on a <span class="inlinecode">feature/*</span> branch, the null-reading fix on a <span class="inlinecode">fix/*</span> branch, and <b>both PR straight into <span class="inlinecode">main</span></b>.</div></div>
-        <div class="step"><div class="ix t">3</div><div class="tx"><b>Notice the difference.</b> The hotfix merges <b>once</b>, not twice. But where does <span class="inlinecode">v1.2</span> live? If prod were an older release, GitHub Flow has <b>nowhere to put the fix</b>. That's the whole trade-off, in your hands.</div></div>
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Rewind the repo first.</b> After Part 2, <span class="inlinecode">main</span> already has both changes: reset your fork's <span class="inlinecode">main</span> back to <span class="inlinecode">v1.2</span> and clear the local feature branch (it's your throwaway fork; force-push is fine <i>here</i> — and note it's exactly what Stretch 2's protection forbids on a shared repo).</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>Build the Git Flow world:</b> a long-lived <span class="inlinecode">develop</span> next to <span class="inlinecode">main</span>. Rerun the two changes Git Flow's way: the view on <span class="inlinecode">feature/*</span> <b>off <span class="inlinecode">develop</span></b> → PR into <span class="inlinecode">develop</span>; the fix on <span class="inlinecode">hotfix/*</span> <b>off <span class="inlinecode">main</span></b> → <b>two PRs</b>, into <span class="inlinecode">main</span> (tag <span class="inlinecode">v1.2.1</span>) <b>and</b> into <span class="inlinecode">develop</span>.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx"><b>Feel the difference.</b> The hotfix merges <b>twice</b> — skip the <span class="inlinecode">develop</span> merge and v2.0 regresses the fix next release. In Part 2, <span class="inlinecode">v1.2</span> lived in a tag; here a whole branch structure guards it. That's the trade-off, in your hands.</div></div>
       </div>
       <div>
         <div class="code"><pre><span class="cm"># rewind the fork to before the scenario</span>
 git switch main
 git reset --hard v1.2
 git push --force origin main
-git push origin --delete develop
+git branch -D feature/v2-status-&lt;ini&gt;   <span class="cm"># local leftover</span>
+git tag -d v1.2.1
+git push origin --delete v1.2.1         <span class="cm"># un-release the patch</span>
 
-<span class="cm"># GitHub Flow: everything targets main</span>
-git switch -c feature/v2-status-&lt;ini&gt;   <span class="cm"># → PR into main</span>
-git switch main
-git switch -c fix/null-reading-&lt;ini&gt;    <span class="cm"># → PR into main</span>
+<span class="cm"># the Git Flow world: TWO long-lived branches</span>
+git switch -c develop
+git push -u origin develop
 
-<span class="cm"># one merge each. no develop, no double-merge.</span>
-<span class="cm"># simpler, until more than one version is live.</span></pre></div>
+<span class="cm"># same two changes, Git Flow's way:</span>
+<span class="cm">#   feature/v2-… off develop → PR into develop</span>
+<span class="cm">#   hotfix/null-… off main   → TWO PRs:</span>
+<span class="cm">#     → main (tag v1.2.1)  AND  → develop</span>
+<span class="cm"># the hotfix merges TWICE — that's the point</span></pre></div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">The takeaway</span>
-          <p>Git Flow's double-merge felt like bureaucracy, until you ask GitHub Flow to patch an <b>old</b> version and it can't. <b>You now know both from the inside.</b></p>
+          <p>GitHub Flow answered release week with <b>one merge and a tag</b>. Git Flow's double-merge is what it costs to support <b>old versions</b> properly. <b>You now know both from the inside.</b></p>
         </div>
       </div>
     </div>
@@ -614,12 +615,12 @@ git switch -c fix/null-reading-&lt;ini&gt;    <span class="cm"># → PR into mai
   </div>
   <div class="body">
     <div class="eyebrow">Nicely done</div>
-    <div class="title" style="color:#fff;max-width:24ch">You didn't read Git Flow. You survived it.</div>
+    <div class="title" style="color:#fff;max-width:24ch">You didn't read GitHub Flow. You released with it.</div>
     <ul class="checks" style="max-width:940px;margin-top:22px">
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You ran the <b>release-week scenario</b> for real: a v2.0 feature and a P1 hotfix, threaded through <span class="mono" style="color:#dbe4f0">main / develop / hotfix</span> the Git Flow way.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You felt the <b>double-merge</b> (why a hotfix lands on <span class="mono" style="color:#dbe4f0">main</span> <i>and</i> <span class="mono" style="color:#dbe4f0">develop</span>) instead of just hearing about it.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You ran the <b>release-week scenario</b> for real: a v2.0 feature and a P1 fix, both through PRs into <span class="mono" style="color:#dbe4f0">main</span> the GitHub Flow way.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You felt that <b>merging is releasing</b>: the fix merged and <span class="mono" style="color:#dbe4f0">v1.2.1</span> was tagged <i>before</i> the feature landed — merge order as release order.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>You reviewed a peer with <span class="mono" style="color:#dbe4f0">praise: / suggestion: / issue:</span>, and opened one PR <b>upstream</b>: the open-source loop.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>Bring to the debrief: <b>did the double-merge feel worth it</b>, one thing you'll <b>steal</b> from someone's PR, one habit you'll <b>drop</b>, and when a request-changes does more harm than good.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span>Bring to the debrief: <b>where does v1.2 live in GitHub Flow, and when do tags stop being enough</b>; one thing you'll <b>steal</b> from someone's PR; one habit you'll <b>drop</b>; and when a request-changes does more harm than good.</span></li>
     </ul>
     <div class="goal" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14);border-left-color:var(--peri2)">
       <span class="badge" style="background:var(--peri2);color:var(--navy)">Next</span>

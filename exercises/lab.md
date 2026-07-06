@@ -5,7 +5,7 @@ how a team *branches*, and how changes flow through *pull requests*. They're one
 story. A branching strategy is the plan; a pull request is where the plan meets
 reality, where your branch naming, your review habits, and your merge-style rules
 actually get used. So you'll learn both, then live them: you'll run the release-week
-hotfix scenario through Git Flow on a real Ignition project, end to end.
+hotfix scenario through GitHub Flow on a real Ignition project, end to end.
 
 ## What you're working on
 
@@ -40,7 +40,7 @@ scripts/validate.sh       # checks every project file is valid JSON / parses as 
 By the end of this lab you should be able to:
 
 - Describe **Git Flow**, **GitHub Flow**, and **trunk-based development**, and pick one that fits a team
-- Run a **Git Flow hotfix** end to end: branch off production, fix, and merge back to both `main` and `develop` (with a version tag)
+- Run a **GitHub Flow release week** end to end: a feature and a P1 fix through PRs into `main`, released in the right order with version tags — and know when a team needs more (Git Flow's double-merge, in the stretch)
 - Open a PR a reviewer enjoys reading: small, scoped, with a clear what / why / how-to-test
 - Review someone else's PR with feedback that helps, and choose between approve, request-changes, and comment-only
 - Merge cleanly and in the right order when approved, and open a cross-fork PR upstream
@@ -88,8 +88,9 @@ tone, and handling disagreement) it's in the optional
 
 You'll live the release-week scenario from the teaching deck, for real, on your own
 fork. Ship a v2.0 feature, get ambushed by a P1 bug in production, and thread both
-through **Git Flow**, exactly the way Chapter 1 drew it. Then your peers review your
-PRs, you merge in the right order, and you send one PR back upstream.
+through **GitHub Flow** — the course's strategy — exactly the way Chapter 1 drew it.
+Then your peers review your PRs, you merge in release order, and you send one PR
+back upstream.
 
 Do the whole thing in your breakout room, sharing your screen. Open PRs early and
 drop every link in the cohort chat: the review step needs a peer's PR to exist, and
@@ -106,53 +107,52 @@ project (release cadence, regulatory constraints, team size, how often productio
 ships), and the room argues which of Git Flow, GitHub Flow, or trunk-based fits
 **their** reality, and why. Disagreement is the point.
 
-You'll run step 2 in **Git Flow** regardless. Knowing which one you'd actually pick
-is what makes feeling the difference land in the stretch.
+You'll run step 2 in **GitHub Flow** regardless — it's the course's strategy.
+Knowing which one you'd actually pick is what makes feeling the difference land
+in the stretch.
 
 > Never worked on a multi-engineer team? Argue it for an Ignition team you've
 > consulted with, or use the scenario in `docs/branching-strategies.md` as a stand-in.
 
-### 2. Run the release-week scenario in Git Flow
+### 2. Run the release-week scenario in GitHub Flow
 
 `v1.2` is live in production. You start the v2.0 feature, and mid-work a P1 bug in
-production ambushes you. You thread both through Git Flow.
+production ambushes you. You thread both through GitHub Flow.
 
-**Step 1: set up the Git Flow world.** On your fork, make sure `main` exists and
-create `develop` off it, the two long-lived branches Git Flow needs. Then tag what's
-live as `v1.2` on `main`, and push both the branch and the tag.
+**Step 1: set the GitHub Flow stage.** One long-lived branch — `main` — and a tag
+marking what's in production. In GitHub Flow, tags carry the release history. Tag
+what's live as `v1.2` on `main` and push the tag (your first real `git push` of
+the course: named this morning, used now).
 
 ```bash
-git switch main
-git switch -c develop
-git push -u origin develop
-
 git switch main
 git tag v1.2
 git push origin v1.2      # "production" is v1.2
 ```
 
-Mental model: `main` = production, `develop` = the next release in progress,
-`v1.2` = the exact commit customers are running.
+Mental model: `main` = the one shared line of development, `v1.2` = the exact
+commit customers are running, releasing = merging to `main` and tagging. Every
+branch you cut next is short-lived: off `main`, back to `main` through a PR.
 
-**Step 2: ship the v2.0 feature (a new Perspective view).** Branch off `develop`
-(features target the next release, not `main`), named per your discussion, e.g.
-`feature/v2-<view-name>-<your-initials>`. Add a new view: the easiest path is to
-copy the `overview` resource folder to a new name under `views/pages/`, edit its
-`view.json` title, and register the page in `page-config/config.json` so it's
-reachable. Run `scripts/validate.sh` (green), commit with a
+**Step 2: ship the v2.0 feature (a new Perspective view).** Branch off `main` —
+in GitHub Flow every branch starts at `main` and returns to it through a PR —
+named per your discussion, e.g. `feature/v2-<view-name>-<your-initials>`. Add a
+new view: the easiest path is to copy the `overview` resource folder to a new name
+under `views/pages/`, edit its `view.json` title, and register the page in
+`page-config/config.json` so it's reachable. Run `scripts/validate.sh` (green),
+commit with a
 [Conventional Commits](https://www.conventionalcommits.org/) message, push, and open
-a PR with **base = `develop`**. Drop the link in chat, tag a peer, and **leave it
+a PR with **base = `main`**. Drop the link in chat, tag a peer, and **leave it
 open**: the ambush comes before you merge.
 
 > Gateway up? `scripts/scan.sh` (or `docker compose restart`), then open the project.
 > Your new page is there. That's the "it goes live" moment.
 
-**Step 3: the P1 ambush, hotfixed the Git Flow way.** Your feature is still open when
+**Step 3: the P1 ambush, fixed the GitHub Flow way.** Your feature is still open when
 a customer hits the null-reading crash in v1.2, live. It can't wait for v2.0.
 
-1. Branch the hotfix off **production** (`main` / the `v1.2` tag), **not** `develop`:
-   `hotfix/null-reading-<your-initials>`. Your v2.0 work isn't in production, so it
-   must not ride along.
+1. Branch the fix off `main`: `fix/null-reading-<your-initials>`. Because your
+   feature PR is still **open**, `main` *is* v1.2 — the fix carries no v2.0 work.
 2. The bug: `lab.display.format_reading()` in
    [`projects/lab-project/ignition/script-python/lab/display/code.py`](../projects/lab-project/ignition/script-python/lab/display/code.py)
    does `"%.1f" % None` on a null reading (a tag not yet read, or a comms loss) and
@@ -160,42 +160,41 @@ a customer hits the null-reading crash in v1.2, live. It can't wait for v2.0.
    placeholder like `"-- °C"` for `None` (and other bad input), while keeping the
    normal numeric formatting. Remember `0` is a valid reading and must still format as
    `"0.0 °C"`. Run `scripts/validate.sh` (green).
-3. **It lands twice**, the Git Flow move: open **two PRs** from the one hotfix
-   branch — into `main` (production gets the fix) **and** into `develop` (so v2.0
-   doesn't regress it). **Don't merge either yet**: your peers review first, and
-   the merging (plus the `v1.2.1` tag) happens in order in step 3.
-4. That's **three PRs open** (feature → `develop`, hotfix → `main`,
-   hotfix → `develop`): every link in chat, a peer tagged on each. You'll pull the
-   hotfix down into your feature branch in step 3, after it has actually landed
-   on `develop`.
+3. **One PR into `main`.** That's the whole GitHub Flow ceremony: no `develop`, no
+   double-merge. **Don't merge yet**: your peers review first, and the merging
+   (plus the `v1.2.1` tag) happens in release order in step 3.
+4. That's **two PRs open** (feature → `main`, fix → `main`): both links in chat, a
+   peer tagged on each. **Merge order is the lesson now**: the fix must land (and
+   `v1.2.1` be tagged) *before* the feature merges — in GitHub Flow, merging is
+   releasing.
 
 ```bash
+# the fix branches off main — which IS v1.2, because the feature hasn't merged yet
 git switch main
-git switch -c hotfix/null-reading-<ini>
+git switch -c fix/null-reading-<ini>
 # fix format_reading(), then:
 scripts/validate.sh
 git commit -am "fix(display): placeholder for null readings"
-git push -u origin hotfix/null-reading-<ini>
-# the double-merge, staged as TWO open PRs (reviewed and merged in step 3):
-#   PR 1: hotfix -> main     (merged first, then tag v1.2.1)
-#   PR 2: hotfix -> develop
+git push -u origin fix/null-reading-<ini>
+# ONE PR: fix -> main   (reviewed, merged first, then tagged v1.2.1 — step 3)
 ```
 
-> The whole lesson: a hotfix that only lands on `main` reappears next release,
-> because `develop` never got it. Git Flow's "merge twice" is annoying *and* exactly
-> why it exists. You just felt both.
+> The whole lesson: merging is releasing. Whatever is on `main` when you tag
+> `v1.2.1` ships in v1.2.1 — merge the feature first and your "patch" quietly
+> ships half of v2.0. Order is the one ceremony GitHub Flow kept.
 
 ### 3. Review a peer's PR, then merge yours
 
-You each have two hotfix PRs and a feature PR open. Coordinate in chat so each PR
-gets one reviewer (the two hotfix PRs carry the same diff; reviewing one is enough).
+You each have a fix PR and a feature PR open. Coordinate in chat so each PR gets
+one reviewer.
 
-1. Pick a peer's PR from the chat. The **hotfix** is the richest to review.
-2. **Read it slowly**, at least 5 minutes before writing anything. For the hotfix:
+1. Pick a peer's PR from the chat. The **fix** is the richest to review.
+2. **Read it slowly**, at least 5 minutes before writing anything. For the fix:
    - Do valid readings still format? `format_reading(162.0, "°C")` must return
      `"162.0 °C"`, and `format_reading(0, "°C")` must return `"0.0 °C"` (zero is a
      valid reading, not "missing").
-   - Git Flow check: did it branch off **production**, not `develop`?
+   - GitHub Flow check: is the fix **just the fix** (no v2.0 work riding along),
+     and is it set to merge **before** the feature? Merging is releasing.
    - Did they run `validate.sh`? Is the "How to test" something you could follow?
    For the feature PR: is the JSON well-formed, the page registered, the change scoped?
 3. Leave a few genuinely helpful comments: at minimum a `praise:` and a `suggestion:`,
@@ -206,18 +205,23 @@ gets one reviewer (the two hotfix PRs carry the same diff; reviewing one is enou
 > Watch your tone. Conventional comments help, but they're not magic. If you
 > wouldn't say it in person, don't write it in the PR.
 
-Then respond and merge, in Git Flow order:
+Then respond and merge, in release order:
 
 1. On your PRs, react to every comment (`+1` for praise, reply to questions, push a
    fix-up commit for what you accept, reply with reasoning for what you decline).
    Additive commits, no force-push during review. Re-request review when ready.
-2. Merge in order: hotfix into `main` first (production is on fire; tag `v1.2.1`),
-   then hotfix into `develop`. Don't take the **Delete branch** button until
-   **both** hotfix PRs are merged — deleting the branch auto-closes the still-open
-   second PR. Then keep the hotfix branch anyway: step 4 sends it upstream.
-3. Now finish the feature: pull the hotfix down into your feature branch
-   (`git switch feature/...` then `git merge develop`), push, then merge the
-   feature PR into `develop` and delete the feature branch (GitHub offers a
+2. Merge the **fix PR first** (production is on fire), then tag `v1.2.1` on
+   `main` — in GitHub Flow, the tag *is* the release:
+
+   ```bash
+   git switch main && git pull
+   git tag v1.2.1 && git push origin v1.2.1
+   ```
+
+   Keep the fix branch: step 4 sends it upstream.
+3. Now finish the feature: pull the fix down into your feature branch
+   (`git switch feature/...` then `git merge main`), push, then merge the
+   feature PR into `main` and delete the feature branch (GitHub offers a
    button; take it).
 
 ### 4. Send one PR back upstream (open source)
@@ -225,7 +229,7 @@ Then respond and merge, in Git Flow order:
 Every PR so far had base = your fork. Now open one with **base = the upstream repo**
 (`mustry-academy/cicd-lab-02-branching-and-prs`), head = your fork's branch. GitHub
 calls this a cross-fork PR — and this once, the upstream default you've been
-switching away from is exactly right. Pick your cleanest branch (the hotfix is
+switching away from is exactly right. Pick your cleanest branch (the fix is
 ideal; if you already deleted it, the merged PR's page has a **Restore branch**
 button, or just push the branch again), and write the description for a stranger:
 the maintainer has none of your context, so the What / Why / How to test is all
@@ -240,24 +244,33 @@ PR, not landing it.
 
 ## Stretch challenges `[OPTIONAL]`
 
-- **Now do it in GitHub Flow.** Same scenario, one long-lived branch. First rewind
-  your fork — after the scenario, `main` already has the hotfix, so there'd be
-  nothing left to fix:
+- **Now do it in Git Flow.** Same scenario, the heavyweight strategy — feel what
+  the ceremony buys (support for more than one live version) and what it costs.
+  First rewind your fork — after the scenario, `main` already has both changes:
 
   ```bash
   git switch main
   git reset --hard v1.2
   git push --force origin main       # your throwaway fork: force-push is fine here
-  git push origin --delete develop
+  # GitHub's delete button only removed the remote branch; clear the local one
+  # too (keep the fix branch — your upstream PR rides on it):
+  git branch -D feature/v2-<view-name>-<ini>
+  # and un-release the patch, so the stretch can re-tag it:
+  git tag -d v1.2.1 && git push origin --delete v1.2.1
   ```
 
-  Then think GitHub Flow (one `main`, no `develop`, no `release/*`) and run the same
-  two changes: the v2.0 view on a `feature/*` branch, the null-reading fix on a
-  `fix/*` branch, both PR'd straight into `main`. Notice the difference: the hotfix merges **once**,
-  not twice. But where does `v1.2` live? If production were an older release, GitHub
-  Flow has nowhere to put the fix. That's the whole trade-off, in your hands. Git
-  Flow's double-merge felt like bureaucracy until you ask GitHub Flow to patch an
-  *old* version and it can't. You now know both from the inside.
+  Then build the Git Flow world: a long-lived `develop` next to `main`
+  (`git switch -c develop && git push -u origin develop`). Rerun the two changes
+  Git Flow's way: the v2.0 view on `feature/*` **off `develop`** → PR into
+  `develop`; the null-reading fix on `hotfix/*` **off `main`** → **two PRs**, into
+  `main` (tag `v1.2.1`) **and** into `develop`. Merge the hotfix PRs first (both,
+  *then* delete the branch — deleting it between the two merges auto-closes the
+  still-open second PR), pull the hotfix into the feature (`git merge develop`),
+  then merge the feature. Notice the difference: the hotfix merges **twice** — skip
+  the `develop` merge and v2.0 regresses the fix next release. In the main scenario
+  `v1.2` lived in a tag; here a whole branch structure guards it. GitHub Flow
+  answered release week with one merge and a tag; Git Flow's double-merge is what
+  it costs to support *old* versions properly. You now know both from the inside.
 - **Branch protection.** On a repo you own, require PR reviews before merging
   (1 approval), dismiss stale reviews on new commits, and restrict direct pushes to
   `main` (no one, including admins). Screenshot the settings and share it with a
@@ -267,7 +280,7 @@ PR, not landing it.
 
 ## Debrief
 
-- Did the double-merge feel worth it? When does Git Flow's ceremony earn its keep, and when is it just merge work?
+- Where does `v1.2` live in GitHub Flow — and when do tags stop being enough? (Stretch-doers: did the double-merge feel worth it? When does Git Flow's ceremony earn its keep, and when is it just merge work?)
 - Which of the three branching strategies surprised you? Which would you adopt tomorrow if it were up to you?
 - One thing you saw in someone else's PR that you'll steal for your own work? One habit you want to drop?
 - When does a `request-changes` review do more harm than good?

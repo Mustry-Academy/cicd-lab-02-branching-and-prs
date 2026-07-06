@@ -265,7 +265,6 @@ body{
 <div class="deck" id="deck">
 
 <!-- 1 · COVER -->
-<!-- TODO(instructors): verify session times: welcome package says Day-1 afternoon = 13:00 teaching / 14:00 we-do / 15:00 you-do -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow">
@@ -454,7 +453,7 @@ body{
     </table>
     <div class="callout">
       <div class="lab" style="color:var(--blue)">The real question is just one</div>
-      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality, <b>not the one that sounds most sophisticated</b>. You'll argue that choice out in the you-do.</p>
+      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs — you'll run it for real this afternoon (and can feel Git Flow's double-merge in the stretch). For <b>your team</b>, pick what fits your reality, <b>not the one that sounds most sophisticated</b>. You'll argue that choice out in the you-do.</p>
     </div>
   </div>
 
@@ -942,16 +941,17 @@ $ scripts/scan.sh
 
   <div class="body">
     <div class="eyebrow">Your turn</div>
-    <div class="title" style="max-width:26ch;color:#fff">Now you make a real pull request in an Ignition project.</div>
-    <div class="lead" style="color:#c4cfde;max-width:70ch">The assignment uses <b style="color:#fff">GitHub Flow</b>, the strategy from Chapter 1, end to end: branch, edit, open a PR, get it reviewed, merge.</div>
+    <div class="title" style="max-width:26ch;color:#fff">Now you live release week in an Ignition project.</div>
+    <div class="lead" style="color:#c4cfde;max-width:70ch">The assignment runs Chapter 1's release-week scenario in <b style="color:#fff">GitHub Flow</b>, the course's strategy: ship the v2.0 feature, get ambushed by the P1, and thread both through PRs your peers review.</div>
     <ul class="checks" style="max-width:960px;margin-top:22px">
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Branch and change something.</b> Off <span class="mono">main</span>, fix the null-reading bug in <span class="mono">lab.display</span>: edit in your Designer or in VS Code, then scan so the gateway picks it up.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open the PR.</b> Small, one concern, filled-in template (<b>What / Why / How to test</b>), exactly the good PR from Chapter 2.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Review a peer's PR, then merge.</b> Leave feedback with <span class="mono">praise:</span> / <span class="mono">suggestion:</span> / <span class="mono">issue:</span>, address what you get back, and merge your own.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Argue the fit first.</b> In your room: which of the three strategies fits <b>your</b> team's reality? Out loud, no writing.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Two branches off <span class="mono">main</span>.</b> A new view on <span class="mono">feature/*</span>, then mid-work the P1 hits: the null-reading fix in <span class="mono">lab.display</span> on <span class="mono">fix/*</span> — edit in your Designer or in VS Code, scan so the gateway picks it up. Your first real <span class="mono">git push</span>, too.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Two PRs, merged in release order.</b> Small, one concern, filled-in template (<b>What / Why / How to test</b>), a Conventional Commits message like <span class="mono">fix(display): …</span> (that's the commits; the review labels are a different convention). The fix merges first and is tagged <span class="mono">v1.2.1</span>: merging is releasing.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Review a peer's PR, then merge.</b> Feedback with <span class="mono">praise:</span> / <span class="mono">suggestion:</span> / <span class="mono">issue:</span>, and one PR back <b>upstream</b>. Stretch: rerun it all in Git Flow and feel the double-merge.</span></li>
     </ul>
   </div>
 
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Next → hands-on: GitHub Flow, one real PR</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Next → hands-on: GitHub Flow, release week, two PRs</span></div>
 </section>
 
 </div>
