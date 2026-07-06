@@ -295,7 +295,7 @@ body{
       <span class="num">01</span>
       <div>
         <div class="title">From solo Git to a team workflow</div>
-        <div class="lead">Branch, merge, rebase: you have the <b>mechanics</b>. But mechanics don't tell a team of five <b>where to branch from</b>, <b>when to merge</b>, or <b>who reviews what</b>. That's an agreement. Today you'll learn the standard ones, then write your own.</div>
+        <div class="lead">Branch, merge, rebase: you have the <b>mechanics</b>. But mechanics don't tell a team of five <b>where to branch from</b>, <b>when to merge</b>, or <b>who reviews what</b>. That's an agreement. Today you'll learn the standard ones, then argue out your own.</div>
       </div>
     </div>
     <div class="cols" style="grid-template-columns:repeat(3,1fr)">
@@ -454,7 +454,7 @@ body{
     </table>
     <div class="callout">
       <div class="lab" style="color:var(--blue)">The real question is just one</div>
-      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality, <b>not the one that sounds most sophisticated</b>. You'll write that choice down in the you-do.</p>
+      <p>Five rows, but the split is binary: <b>is more than one version live at a time?</b> No → GitHub Flow (trunk-based is its high-discipline extreme). Yes → Git Flow. Everything else is a variation. This course uses <b>GitHub Flow</b> for the labs. For <b>your team</b>, pick what fits your reality, <b>not the one that sounds most sophisticated</b>. You'll argue that choice out in the you-do.</p>
     </div>
   </div>
 
@@ -666,8 +666,8 @@ body{
           <li><span class="d" style="background:var(--good)"></span><b>Approve</b>: happy to merge as-is; trivial nitpicks are fine inside an approve</li>
           <li><span class="d" style="background:var(--bad)"></span><b>Request changes</b>: there's at least one <span class="chip issue" style="font-size:11.5px">issue:</span> the author must address</li>
           <li><span class="d" style="background:var(--txt-faint)"></span><b>Comment-only</b>: you read it but aren't voting (not your area, or someone already approved)</li>
-          <li><span class="d" style="background:var(--warn)"></span><b>Common mistake:</b> request-changes for nitpicks, which is friction without value</li>
         </ul>
+        <div style="margin-top:12px;padding:9px 12px;background:var(--warn-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--warn)">Common mistake:</b> request-changes for nitpicks, which is friction without value</div>
       </div>
       <div class="does">
         <div class="hd">Three merges (GitHub's dropdown)</div>
@@ -675,8 +675,8 @@ body{
           <li><span class="d"></span><b>Merge commit</b> (<span class="mono">--no-ff</span>): preserves the branch shape in the graph</li>
           <li><span class="d"></span><b>Squash &amp; merge</b>: the whole PR becomes one commit on <span class="mono">main</span></li>
           <li><span class="d"></span><b>Rebase &amp; merge</b>: replays commits linearly, no merge commit</li>
-          <li><span class="d"></span>Pick the one <b>your agreement specified</b>; that's the whole point of writing it</li>
         </ul>
+        <div style="margin-top:12px;padding:9px 12px;background:var(--peri-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--blue)">Not a preference:</b> pick the one your team agreed on — deliberately, not whatever the dropdown remembers</div>
       </div>
     </div>
     <div class="callout">
