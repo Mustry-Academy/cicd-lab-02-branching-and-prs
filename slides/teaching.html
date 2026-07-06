@@ -672,9 +672,40 @@ body{
       <div class="does">
         <div class="hd">Three merges (GitHub's dropdown)</div>
         <ul>
-          <li><span class="d"></span><b>Merge commit</b> (<span class="mono">--no-ff</span>): preserves the branch shape in the graph</li>
-          <li><span class="d"></span><b>Squash &amp; merge</b>: the whole PR becomes one commit on <span class="mono">main</span></li>
-          <li><span class="d"></span><b>Rebase &amp; merge</b>: replays commits linearly, no merge commit</li>
+          <li><span class="d"></span><span><b>Merge commit</b> (<span class="mono">--no-ff</span>): preserves the branch shape in the graph</span>
+            <svg viewBox="0 0 120 40" width="104" height="35" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
+              <path d="M14 28 H106" stroke="var(--line2)" stroke-width="2" fill="none"/>
+              <path d="M14 28 C28 12 34 10 46 10 H72 C88 10 94 24 100 27" stroke="var(--teal)" stroke-width="2" fill="none"/>
+              <circle cx="14" cy="28" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              <circle cx="48" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              <circle cx="72" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              <circle cx="101" cy="28" r="5" fill="var(--blue)"/>
+            </svg></li>
+          <li><span class="d"></span><span><b>Squash &amp; merge</b>: the whole PR becomes one commit on <span class="mono">main</span></span>
+            <svg viewBox="0 0 120 40" width="104" height="35" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
+              <path d="M14 28 H106" stroke="var(--line2)" stroke-width="2" fill="none"/>
+              <g opacity=".35">
+                <path d="M14 28 C28 12 34 10 46 10 H74" stroke="var(--teal)" stroke-width="2" fill="none" stroke-dasharray="3 3"/>
+                <circle cx="48" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+                <circle cx="72" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              </g>
+              <path d="M78 13 C90 15 95 19 98 22" stroke="var(--blue)" stroke-width="1.8" fill="none" stroke-dasharray="3 3"/>
+              <circle cx="14" cy="28" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              <rect x="96" y="23" width="10" height="10" rx="2.5" fill="var(--blue)"/>
+            </svg></li>
+          <li><span class="d"></span><span><b>Rebase &amp; merge</b>: replays commits linearly, no merge commit</span>
+            <svg viewBox="0 0 120 40" width="104" height="35" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
+              <path d="M14 28 H106" stroke="var(--line2)" stroke-width="2" fill="none"/>
+              <g opacity=".3">
+                <circle cx="42" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+                <circle cx="62" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              </g>
+              <path d="M46 14 L72 24" stroke="var(--txt-faint)" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+              <path d="M66 14 L94 24" stroke="var(--txt-faint)" stroke-width="1.5" stroke-dasharray="3 3" fill="none"/>
+              <circle cx="14" cy="28" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
+              <circle cx="76" cy="28" r="4" fill="var(--panel2)" stroke="var(--blue)" stroke-width="2"/>
+              <circle cx="98" cy="28" r="4" fill="var(--panel2)" stroke="var(--blue)" stroke-width="2"/>
+            </svg></li>
         </ul>
         <div style="margin-top:12px;padding:9px 12px;background:var(--peri-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--blue)">Not a preference:</b> pick the one your team agreed on — deliberately, not whatever the dropdown remembers</div>
       </div>
