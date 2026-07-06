@@ -659,21 +659,24 @@ body{
         <div class="lead">A review ends in one of three verdicts; an approved PR ends in one of three merges. <b>Both are choices your team agreement should make for you.</b></div>
       </div>
     </div>
-    <div class="cols2">
-      <div class="does">
+    <div class="cols2" style="align-items:stretch">
+      <div class="does" style="display:flex;flex-direction:column">
         <div class="hd">Three verdicts</div>
-        <ul>
-          <li><span class="d" style="background:var(--good)"></span><b>Approve</b>: happy to merge as-is; trivial nitpicks are fine inside an approve</li>
-          <li><span class="d" style="background:var(--bad)"></span><b>Request changes</b>: there's at least one <span class="chip issue" style="font-size:11.5px">issue:</span> the author must address</li>
-          <li><span class="d" style="background:var(--txt-faint)"></span><b>Comment-only</b>: you read it but aren't voting (not your area, or someone already approved)</li>
+        <ul style="margin-bottom:14px;flex:1;justify-content:space-evenly">
+          <li><span class="d" style="background:var(--good)"></span><span><b>Approve</b>: happy to merge as-is; trivial nitpicks are fine inside an approve</span>
+            <svg viewBox="0 0 24 24" width="26" height="26" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="var(--good-soft)"/><path d="M7.5 12.5l3 3 6-6.5" stroke="var(--good)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+          <li><span class="d" style="background:var(--bad)"></span><span><b>Request changes</b>: there's at least one <span class="chip issue" style="font-size:11.5px">issue:</span> the author must address</span>
+            <svg viewBox="0 0 24 24" width="26" height="26" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="var(--bad-soft)"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="var(--bad)" stroke-width="2.4" stroke-linecap="round"/></svg></li>
+          <li><span class="d" style="background:var(--txt-faint)"></span><span><b>Comment-only</b>: you read it but aren't voting (not your area, or someone already approved)</span>
+            <svg viewBox="0 0 24 24" width="26" height="26" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="#e8ecf2"/><path d="M6.5 8.5h11M6.5 12h7" stroke="var(--txt-faint)" stroke-width="2.2" stroke-linecap="round"/></svg></li>
         </ul>
-        <div style="margin-top:12px;padding:9px 12px;background:var(--warn-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--warn)">Common mistake:</b> request-changes for nitpicks, which is friction without value</div>
+        <div style="margin-top:auto;padding:9px 12px;background:var(--warn-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--warn)">Common mistake:</b> request-changes for nitpicks, which is friction without value</div>
       </div>
-      <div class="does">
+      <div class="does" style="display:flex;flex-direction:column">
         <div class="hd">Three merges (GitHub's dropdown)</div>
-        <ul>
+        <ul style="margin-bottom:14px;flex:1;justify-content:space-evenly">
           <li><span class="d"></span><span><b>Merge commit</b> (<span class="mono">--no-ff</span>): preserves the branch shape in the graph</span>
-            <svg viewBox="0 0 120 40" width="104" height="35" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
+            <svg viewBox="0 0 120 40" width="136" height="45" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
               <path d="M14 28 H106" stroke="var(--line2)" stroke-width="2" fill="none"/>
               <path d="M14 28 C28 12 34 10 46 10 H72 C88 10 94 24 100 27" stroke="var(--teal)" stroke-width="2" fill="none"/>
               <circle cx="14" cy="28" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
@@ -682,7 +685,7 @@ body{
               <circle cx="101" cy="28" r="5" fill="var(--blue)"/>
             </svg></li>
           <li><span class="d"></span><span><b>Squash &amp; merge</b>: the whole PR becomes one commit on <span class="mono">main</span></span>
-            <svg viewBox="0 0 120 40" width="104" height="35" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
+            <svg viewBox="0 0 120 40" width="136" height="45" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
               <path d="M14 28 H106" stroke="var(--line2)" stroke-width="2" fill="none"/>
               <g opacity=".35">
                 <path d="M14 28 C28 12 34 10 46 10 H74" stroke="var(--teal)" stroke-width="2" fill="none" stroke-dasharray="3 3"/>
@@ -694,7 +697,7 @@ body{
               <rect x="96" y="23" width="10" height="10" rx="2.5" fill="var(--blue)"/>
             </svg></li>
           <li><span class="d"></span><span><b>Rebase &amp; merge</b>: replays commits linearly, no merge commit</span>
-            <svg viewBox="0 0 120 40" width="104" height="35" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
+            <svg viewBox="0 0 120 40" width="136" height="45" style="flex:none;margin-left:auto;align-self:center" aria-hidden="true">
               <path d="M14 28 H106" stroke="var(--line2)" stroke-width="2" fill="none"/>
               <g opacity=".3">
                 <circle cx="42" cy="10" r="4" fill="var(--panel2)" stroke="var(--teal)" stroke-width="2"/>
@@ -707,12 +710,16 @@ body{
               <circle cx="98" cy="28" r="4" fill="var(--panel2)" stroke="var(--blue)" stroke-width="2"/>
             </svg></li>
         </ul>
-        <div style="margin-top:12px;padding:9px 12px;background:var(--peri-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--blue)">Not a preference:</b> pick the one your team agreed on — deliberately, not whatever the dropdown remembers</div>
+        <div style="margin-top:auto;padding:9px 12px;background:var(--peri-soft);border-radius:9px;font-size:13.5px;line-height:1.4;color:var(--txt)"><b style="color:var(--blue)">Not a preference:</b> pick the one your team agreed on — deliberately, not whatever the dropdown remembers</div>
       </div>
     </div>
     <div class="callout">
-      <div class="lab" style="color:var(--blue)">Authors have rights too</div>
-      <p>Review is a <b>negotiation</b>. Respond to every comment (<b>+1</b>, a reply, or a fix-up commit), but declining a suggestion <b>with reasoning</b> is a valid response. And <b>don't force-push during review</b>: it nukes the reviewer's context. Additive commits now, squash on merge if you must.</p>
+      <div class="lab" style="color:var(--blue)">Authors have rights too &mdash; review is a negotiation</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:26px;margin-top:4px">
+        <p><b>Respond to every comment</b> &mdash; a <b>+1</b>, a reply, or a fix-up commit. Silence reads as ignoring the reviewer.</p>
+        <p style="border-left:1px solid var(--line);padding-left:26px"><b>Declining is allowed</b> &mdash; turning down a suggestion <b>with reasoning</b> is a valid response.</p>
+        <p style="border-left:1px solid var(--line);padding-left:26px"><b>Don't force-push during review</b> &mdash; it nukes the reviewer's context. Additive commits now, squash on merge if you must.</p>
+      </div>
     </div>
   </div>
 
