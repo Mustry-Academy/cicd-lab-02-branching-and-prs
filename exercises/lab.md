@@ -121,8 +121,7 @@ production ambushes you. You thread both through GitHub Flow.
 
 **Step 1: set the GitHub Flow stage.** One long-lived branch — `main` — and a tag
 marking what's in production. In GitHub Flow, tags carry the release history. Tag
-what's live as `v1.2` on `main` and push the tag (your first real `git push` of
-the course: named this morning, used now).
+what's live as `v1.2` on `main` and push the tag.
 
 ```bash
 git switch main
@@ -133,6 +132,15 @@ git push origin v1.2      # "production" is v1.2
 Mental model: `main` = the one shared line of development, `v1.2` = the exact
 commit customers are running, releasing = merging to `main` and tagging. Every
 branch you cut next is short-lived: off `main`, back to `main` through a PR.
+
+> **Two commands graduate from "named" to "used" today.** `git tag v1.2` pins a
+> permanent, human-readable name to the exact commit you're on; unlike a branch, a
+> tag never moves — that's what makes it a release marker. `git push` uploads your
+> local commits and refs to a remote (`origin` = your fork on GitHub; this morning
+> everything stayed local). Two habits that trip people up: tags don't ride along
+> with a normal push, so `git push origin v1.2` sends one explicitly — and a *new*
+> branch needs `git push -u origin <branch>` once, where `-u` links it to your
+> fork so every later push is just `git push`.
 
 **Step 2: ship the v2.0 feature (a new Perspective view).** Branch off `main` —
 in GitHub Flow every branch starts at `main` and returns to it through a PR —
