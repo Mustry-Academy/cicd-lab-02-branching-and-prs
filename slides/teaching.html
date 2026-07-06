@@ -879,11 +879,12 @@ $ code projects/lab-project/.../code.py
 $ scripts/scan.sh
 <span class="mark">→ POST</span> /data/api/v1/scan/<span class="hot">projects</span>   <span class="cm"># project resources</span>
 <span class="mark">→ POST</span> /data/api/v1/scan/<span class="hot">config</span>     <span class="cm"># gateway config files</span>
-<span class="cm">   header: X-Ignition-API-Token: &lt;key&gt;</span>
+<span class="cm">   header: X-Ignition-API-Token: &lt;name&gt;:&lt;secret&gt;</span>
 <span class="add">✓ gateway now serves your edit</span></pre>
         </div>
         <ul class="checks" style="margin-top:18px">
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Two scans, two jobs.</b> A <b>project scan</b> reloads views &amp; scripts; a <b>config scan</b> reloads gateway config. VS Code edits usually need both.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Three API-key gotchas.</b> There is no "scan permission": the key gets a <b>custom security level</b>, and that level must be in <b>Gateway Write Permissions</b>. The header value is the full <span class="mono" style="font-size:12px">name:secret</span> the UI shows — the secret alone is a 401. And keys are <b>HTTPS-only by default</b>: on this lab's plain-http gateway, disable "Require secure connections for API Keys". Step-by-step in <span class="mono" style="font-size:12px">.env.example</span>.</span></li>
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Or install a module.</b> The <b>ignition-project-scan-endpoint</b> module adds one clean endpoint, <span class="mono" style="font-size:12px">POST /data/project-scan-endpoint/scan</span>, that a script (and later, CI) can call to reload the project.<br><span class="mono" style="font-size:12px;color:var(--txt-faint)">github.com/bw-design-group/ignition-project-scan-endpoint</span></span></li>
         </ul>
       </div>
