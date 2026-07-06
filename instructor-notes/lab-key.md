@@ -200,7 +200,7 @@ merging is releasing, so merge order is release order:
 
 Common mistakes to catch:
 
-- **Tagging `v1.2.1` after the feature merged.** The single most important thing to verify: the "patch" tag now ships half of v2.0. Ask them to prove it — `git log v1.2.1 --oneline` should contain the placeholder fix but **not** the status page. The tag should sit on the fix's merge commit.
+- **Tagging `v1.2.1` after the feature merged.** The single most important thing to verify: the "patch" tag now ships half of v2.0. Ask them to prove it — `git log v1.2.1 --oneline` should contain the placeholder fix but **not** the silo detail view. The tag should sit on the fix's merge commit.
 - **Forgetting the tag.** In GitHub Flow the tag *is* the release record; skip it and "what's in production" has no answer beyond "whatever main was at some point." No tag, no audit trail.
 - **Merging the feature before the fix.** Not fatal for the code (main ends up the same), but the release story is wrong — and if they then tag, see mistake one.
 - **Updating the feature branch too early.** `git merge main` on the feature branch only picks up the fix *after* `fix -> main` has merged; run before that, it's a silent no-op ("Already up to date") and they'll think they're done. The exercise sequences it in the merge step for this reason.

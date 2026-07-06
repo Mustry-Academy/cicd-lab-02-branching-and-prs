@@ -142,11 +142,12 @@ branch you cut next is short-lived: off `main`, back to `main` through a PR.
 > branch needs `git push -u origin <branch>` once, where `-u` links it to your
 > fork so every later push is just `git push`.
 
-**Step 2: ship the v2.0 feature (a new Perspective view).** Branch off `main` —
-in GitHub Flow every branch starts at `main` and returns to it through a PR —
-named per your discussion, e.g. `feature/v2-<view-name>-<your-initials>`. Add a
-new view: the easiest path is to copy the `overview` resource folder to a new name
-under `views/pages/`, edit its `view.json` title, and register the page in
+**Step 2: ship the v2.0 feature (the silo detail view).** Oatmakers' v2.0 scope
+starts with a **silo detail view** — that's your feature. Branch off `main` — in
+GitHub Flow every branch starts at `main` and returns to it through a PR:
+`feature/v2-silo-detail-<your-initials>`. The easiest path to the view itself:
+copy the `overview` resource folder to `silo-detail` under `views/pages/`, edit
+its `view.json` title, and register the `/silo-detail` page in
 `page-config/config.json` so it's reachable. Run `scripts/validate.sh` (green),
 commit with a
 [Conventional Commits](https://www.conventionalcommits.org/) message, push, and open
@@ -262,7 +263,7 @@ PR, not landing it.
   git push --force origin main       # your throwaway fork: force-push is fine here
   # GitHub's delete button only removed the remote branch; clear the local one
   # too (keep the fix branch — your upstream PR rides on it):
-  git branch -D feature/v2-<view-name>-<ini>
+  git branch -D feature/v2-silo-detail-<ini>
   # and un-release the patch, so the stretch can re-tag it:
   git tag -d v1.2.1 && git push origin --delete v1.2.1
   ```

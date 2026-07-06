@@ -363,26 +363,26 @@ git push origin v1.2      <span class="cm"># → "production" is v1.2</span></pr
     <div class="stage">Part 2 · step 2 · the v2.0 feature</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 2</span><div><div class="title">Ship the v2.0 feature: a new Perspective view</div><div class="lead">A small, real Ignition change: add a view so it goes live in the project. Off <span class="inlinecode">main</span>, the GitHub Flow way.</div></div></div>
+    <div class="sechead"><span class="num">STEP 2</span><div><div class="title">Ship the v2.0 feature: the silo detail view</div><div class="lead">Oatmakers' v2.0 scope starts with a <b>silo detail view</b>. A small, real Ignition change: add it so it goes live in the project. Off <span class="inlinecode">main</span>, the GitHub Flow way.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch off <span class="inlinecode">main</span></b> — in GitHub Flow every branch starts at <span class="inlinecode">main</span> and returns to it through a PR: <span class="inlinecode">feature/v2-&lt;view-name&gt;-&lt;ini&gt;</span>.</div></div>
-        <div class="step"><div class="ix p">2</div><div class="tx"><b>Add a new view.</b> Easiest path: copy the <span class="inlinecode">overview</span> resource folder to a new name under <span class="inlinecode">views/pages/</span>, edit its <span class="inlinecode">view.json</span> title, and register the page in <span class="inlinecode">page-config/config.json</span> so it's reachable.</div></div>
+        <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch off <span class="inlinecode">main</span></b> — in GitHub Flow every branch starts at <span class="inlinecode">main</span> and returns to it through a PR: <span class="inlinecode">feature/v2-silo-detail-&lt;ini&gt;</span>.</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Add the view.</b> Easiest path: copy the <span class="inlinecode">overview</span> resource folder to <span class="inlinecode">silo-detail</span> under <span class="inlinecode">views/pages/</span>, edit its <span class="inlinecode">view.json</span> title, and register the page in <span class="inlinecode">page-config/config.json</span> so it's reachable.</div></div>
         <div class="step"><div class="ix p">3</div><div class="tx"><b>Validate → commit.</b> <span class="inlinecode">scripts/validate.sh</span> green, then commit in <a href="https://www.conventionalcommits.org/" style="color:var(--blue-d)"><b>Conventional Commits</b></a> style: <span class="inlinecode">type(scope): summary</span>, where the type names the kind of change — today you'll need <span class="inlinecode">feat</span> and <span class="inlinecode">fix</span>. Machines can parse it too, which pays off when releases get automated.</div></div>
         <div class="step"><div class="ix p">4</div><div class="tx"><b>PR into <span class="inlinecode">main</span>.</b> Template filled in, link in chat, <b>leave it open</b>: the ambush comes before you merge. (A copied view makes a big diff; that's fine — the review focuses on the page registration and valid JSON, not the line count.)</div></div>
       </div>
       <div>
         <div class="code"><pre>git switch main
-git switch -c feature/v2-status-&lt;ini&gt;
+git switch -c feature/v2-silo-detail-&lt;ini&gt;
 
-<span class="cm"># add a new Perspective view (copy overview → rename)</span>
-<span class="cm">#   projects/lab-project/…/views/pages/status/</span>
-<span class="cm">#   register it in page-config/config.json</span>
+<span class="cm"># add the silo detail view (copy overview → rename)</span>
+<span class="cm">#   projects/lab-project/…/views/pages/silo-detail/</span>
+<span class="cm">#   register route /silo-detail in page-config/config.json</span>
 
 scripts/validate.sh          <span class="cm"># → green</span>
 git add -A
-git commit -m <span class="cmd2">"feat(views): add v2.0 status page"</span>
-git push -u origin feature/v2-status-&lt;ini&gt;
+git commit -m <span class="cmd2">"feat(views): add v2.0 silo detail view"</span>
+git push -u origin feature/v2-silo-detail-&lt;ini&gt;
 <span class="cm"># PR: base = main · link in chat · don't merge yet</span></pre></div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">See it live?</span>
@@ -495,7 +495,7 @@ git switch main && git pull
 git tag v1.2.1 && git push origin v1.2.1
 
 <span class="cm">#  2. update the feature, then feature → main</span>
-git switch feature/v2-status-&lt;ini&gt;
+git switch feature/v2-silo-detail-&lt;ini&gt;
 git merge main            <span class="cm"># pick up the fix</span>
 git push</pre></div>
         <div class="goal good-g" style="margin-top:18px">
@@ -556,7 +556,7 @@ git push</pre></div>
 git switch main
 git reset --hard v1.2
 git push --force origin main
-git branch -D feature/v2-status-&lt;ini&gt;   <span class="cm"># local leftover</span>
+git branch -D feature/v2-silo-detail-&lt;ini&gt;  <span class="cm"># local leftover</span>
 git tag -d v1.2.1
 git push origin --delete v1.2.1         <span class="cm"># un-release the patch</span>
 
