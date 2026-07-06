@@ -95,6 +95,10 @@ Do the whole thing in your breakout room, sharing your screen. Open PRs early an
 drop every link in the cohort chat: the review step needs a peer's PR to exist, and
 merging needs a peer to have reviewed yours.
 
+> Careful when opening PRs on a fork: GitHub's "Compare & pull request" banner (and
+> `gh pr create`) defaults the **base repo** to the upstream course repo. Until
+> step 4, switch it to **your fork** every time.
+
 ### 1. Discuss: which strategy fits your team? (breakout room)
 
 Talk it through out loud, no writing. Each person sketches their own team or
@@ -156,11 +160,14 @@ a customer hits the null-reading crash in v1.2, live. It can't wait for v2.0.
    placeholder like `"-- °C"` for `None` (and other bad input), while keeping the
    normal numeric formatting. Remember `0` is a valid reading and must still format as
    `"0.0 °C"`. Run `scripts/validate.sh` (green).
-3. **Merge it twice**, the Git Flow move: into `main` (production gets the fix), tag
-   `v1.2.1`, **and** into `develop` (so v2.0 doesn't regress it). Do both via PRs so
-   your peers can review.
-4. Now finish the feature: pull the hotfix down into your feature branch
-   (`git merge develop`), so its PR into `develop` stays clean.
+3. **It lands twice**, the Git Flow move: open **two PRs** from the one hotfix
+   branch — into `main` (production gets the fix) **and** into `develop` (so v2.0
+   doesn't regress it). **Don't merge either yet**: your peers review first, and
+   the merging (plus the `v1.2.1` tag) happens in order in step 3.
+4. That's **three PRs open** (feature → `develop`, hotfix → `main`,
+   hotfix → `develop`): every link in chat, a peer tagged on each. You'll pull the
+   hotfix down into your feature branch in step 3, after it has actually landed
+   on `develop`.
 
 ```bash
 git switch main
@@ -168,10 +175,10 @@ git switch -c hotfix/null-reading-<ini>
 # fix format_reading(), then:
 scripts/validate.sh
 git commit -am "fix(display): placeholder for null readings"
-# PR 1: hotfix -> main    (then tag v1.2.1)
-# PR 2: hotfix -> develop
-git switch feature/v2-<view-name>-<ini>
-git merge develop         # pick up the hotfix
+git push -u origin hotfix/null-reading-<ini>
+# the double-merge, staged as TWO open PRs (reviewed and merged in step 3):
+#   PR 1: hotfix -> main     (merged first, then tag v1.2.1)
+#   PR 2: hotfix -> develop
 ```
 
 > The whole lesson: a hotfix that only lands on `main` reappears next release,
@@ -180,8 +187,8 @@ git merge develop         # pick up the hotfix
 
 ### 3. Review a peer's PR, then merge yours
 
-You each have a hotfix PR and a feature PR open. Coordinate in chat so each PR gets
-one reviewer.
+You each have two hotfix PRs and a feature PR open. Coordinate in chat so each PR
+gets one reviewer (the two hotfix PRs carry the same diff; reviewing one is enough).
 
 1. Pick a peer's PR from the chat. The **hotfix** is the richest to review.
 2. **Read it slowly**, at least 5 minutes before writing anything. For the hotfix:
@@ -204,17 +211,25 @@ Then respond and merge, in Git Flow order:
 1. On your PRs, react to every comment (`+1` for praise, reply to questions, push a
    fix-up commit for what you accept, reply with reasoning for what you decline).
    Additive commits, no force-push during review. Re-request review when ready.
-2. Merge in order: the two hotfix PRs first (into `main`, tag `v1.2.1`, then into
-   `develop`), then the feature PR into `develop`.
-3. Delete each branch after merge (GitHub offers a button; take it).
+2. Merge in order: hotfix into `main` first (production is on fire; tag `v1.2.1`),
+   then hotfix into `develop`. Don't take the **Delete branch** button until
+   **both** hotfix PRs are merged — deleting the branch auto-closes the still-open
+   second PR. Then keep the hotfix branch anyway: step 4 sends it upstream.
+3. Now finish the feature: pull the hotfix down into your feature branch
+   (`git switch feature/...` then `git merge develop`), push, then merge the
+   feature PR into `develop` and delete the feature branch (GitHub offers a
+   button; take it).
 
 ### 4. Send one PR back upstream (open source)
 
 Every PR so far had base = your fork. Now open one with **base = the upstream repo**
 (`mustry-academy/cicd-lab-02-branching-and-prs`), head = your fork's branch. GitHub
-calls this a cross-fork PR. Pick your cleanest branch (the hotfix is ideal), and
-write the description for a stranger: the maintainer has none of your context, so the
-What / Why / How to test is all they get.
+calls this a cross-fork PR — and this once, the upstream default you've been
+switching away from is exactly right. Pick your cleanest branch (the hotfix is
+ideal; if you already deleted it, the merged PR's page has a **Restore branch**
+button, or just push the branch again), and write the description for a stranger:
+the maintainer has none of your context, so the What / Why / How to test is all
+they get.
 
 Fork, branch, PR back to the original repo is the entire open-source contribution
 model. Linux, Python, Ignition modules on GitHub, all of it is this loop at scale.
@@ -225,10 +240,20 @@ PR, not landing it.
 
 ## Stretch challenges `[OPTIONAL]`
 
-- **Now do it in GitHub Flow.** Same scenario, one long-lived branch. Reset to
-  GitHub Flow (one `main`, no `develop`, no `release/*`), and run the same two changes:
-  the v2.0 view on a `feature/*` branch, the null-reading fix on a `fix/*` branch,
-  both PR'd straight into `main`. Notice the difference: the hotfix merges **once**,
+- **Now do it in GitHub Flow.** Same scenario, one long-lived branch. First rewind
+  your fork — after the scenario, `main` already has the hotfix, so there'd be
+  nothing left to fix:
+
+  ```bash
+  git switch main
+  git reset --hard v1.2
+  git push --force origin main       # your throwaway fork: force-push is fine here
+  git push origin --delete develop
+  ```
+
+  Then think GitHub Flow (one `main`, no `develop`, no `release/*`) and run the same
+  two changes: the v2.0 view on a `feature/*` branch, the null-reading fix on a
+  `fix/*` branch, both PR'd straight into `main`. Notice the difference: the hotfix merges **once**,
   not twice. But where does `v1.2` live? If production were an older release, GitHub
   Flow has nowhere to put the fix. That's the whole trade-off, in your hands. Git
   Flow's double-merge felt like bureaucracy until you ask GitHub Flow to patch an

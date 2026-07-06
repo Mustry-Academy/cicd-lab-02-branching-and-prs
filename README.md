@@ -33,7 +33,11 @@ your own fork, and open PRs inside it.**
    cd cicd-lab-02-branching-and-prs
    ```
 2. Branch and push to **your** fork (`git push -u origin <branch>`).
-3. Open PRs with **base = your fork's `main`**, compare = your branch.
+3. Open PRs **inside your fork**: base repo = your fork (the base *branch* varies
+   per exercise step), compare = your branch. Watch out: GitHub's "Compare & pull
+   request" banner and `gh pr create` default the base repo to the **upstream**
+   course repo — switch it to your fork (or run `gh repo set-default` once and
+   pick your fork).
 4. **Share each PR link in the cohort chat** so peers can find and review it.
 5. You own your fork, so you can merge your own PRs once they're approved.
 

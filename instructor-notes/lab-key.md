@@ -49,8 +49,13 @@ What to probe for in the argument:
 ## Stretch: GitHub Flow rerun
 
 The first stretch has participants re-run the *same* scenario in GitHub Flow, to feel
-the contrast against Git Flow. What "good" looks like: they actually notice the two
-differences that matter, not just "it was simpler."
+the contrast against Git Flow. It only works after a rewind — post-scenario, their
+fork's `main` already contains the hotfix, so there'd be nothing left to fix. The
+exercise has them `git reset --hard v1.2` + force-push `main` and delete `develop`
+first; expect "wait, force-push?!" — the answer is that it's their throwaway fork,
+and rewriting a shared `main` for real is exactly what Stretch 2's branch protection
+forbids. Then, what "good" looks like: they actually notice the two differences that
+matter, not just "it was simpler."
 
 - **The hotfix merges once, not twice.** In GitHub Flow both changes PR straight into `main`; there's no `develop` to also patch. A participant who still merges twice hasn't switched models.
 - **They spot what GitHub Flow *can't* do.** The payoff question: where does `v1.2` live? If production were an *older* release than `main`, GitHub Flow has nowhere to put the fix without a release branch or tag. A participant who says "GitHub Flow is just better, less ceremony" has missed the trade-off; push them on the multi-version case.
@@ -145,7 +150,8 @@ the null-reading fix alone doesn't. A strong review will include something like:
 - **The Git Flow structural check.** Did the hotfix branch off **production** (`main`/`v1.2`), not `develop`? And is it heading to *both* `main` and `develop`? A hotfix that only targets `main` reappears next release; one that branched off `develop` drags v2.0 into production. Either is a legitimate `issue:`, and the point of the whole scenario.
 - **One `praise:`** something genuinely good. A focused diff, or keeping the `None` guard. Praise is not throwaway; it tells the author what's working.
 - **At least one `question:`** there's almost always something genuinely unclear. "question: should a null reading show `--`, or hold the last-known value? What do operators expect on comms loss?" Questions surface assumptions the author didn't realize they had.
-- **At least one `suggestion:`** a specific change the author could make. Not a vague "this could be better" but a concrete alternative. "suggestion: reuse `lab.util.to_float` here instead of a second try/except; it already does the None-and-bad-input dance."
+- **At least one `suggestion:`** a specific change the author could make. Not a vague "this could be better" but a concrete alternative. "suggestion: reuse `lab.util.to_float(value, default=None)` for the junk-input case — keeping the `None` check on the result."
+  > **The `to_float` trap (know this one).** *Naive* reuse — `lab.util.to_float(value)` with its default of `0.0` — silently turns a null reading into `"0.0 °C"`: exactly the zero-vs-null confusion the exercise teaches, and `validate.sh` stays green through it. Correct reuse passes `default=None` and still checks for `None` before formatting, which is barely shorter than the explicit guard. If a reviewer suggests plain `to_float` and the author accepts it unthinkingly, that's a live demo of "accepting every suggestion without thinking" — surface it in the debrief.
 - **Optionally `nitpick:`** for small style things. PEP8, the docstring wording, `is None` vs `== None`. Always non-blocking.
 - **`issue:` only when you mean it.** If the fix breaks valid readings (placeholder for real numbers, or lost rounding), that's a real issue. Don't use `issue:` for taste differences.
 
@@ -191,8 +197,10 @@ close the PRs in Git Flow order:
 Common mistakes to catch:
 
 - **Only merging the hotfix to `main`.** The single most important thing to verify. If `develop` never gets it, the bug returns the moment v2.0 ships. Ask them to prove the fix is on `develop` (`git log develop --oneline | grep -i placeholder`).
+- **Deleting the hotfix branch between the two merges.** GitHub auto-closes any open PR whose head branch is deleted: taking the **Delete branch** button right after `hotfix -> main` kills the still-open `hotfix -> develop` PR. Both hotfix PRs merged first, *then* delete — though they should keep the branch for the upstream PR anyway.
 - **Forgetting the tag.** `v1.2.1` is what makes "we shipped a patch" legible later. No tag, no audit trail.
 - **Merging the feature before the hotfix reaches `develop`.** Not fatal (a later `git merge develop` fixes it), but it means the feature branch was tested without the fix.
+- **Updating the feature branch too early.** `git merge develop` on the feature branch only picks up the hotfix *after* `hotfix -> develop` has merged; run before that, it's a silent no-op ("Already up to date") and they'll think they're done. The exercise sequences it in the merge step for this reason.
 
 As for the merge *button* itself, GitHub's dropdown gives three options; any is fine
 here as long as it's deliberate. `--no-ff` (merge commit) best preserves the Git Flow
@@ -207,6 +215,7 @@ base = the **upstream** course repo, head = their fork's branch. What "good" loo
 like:
 
 - **It's actually cross-fork.** In the GitHub PR UI, the base repo dropdown shows `mustry-academy/cicd-lab-02-...`, not their own fork. A common miss: `gh pr create` on a fork defaults the base to upstream *already*, which can surprise them the other direction. Either way, confirm the base repo is the course repo.
+- **The branch may already be deleted.** If they took the delete button after merging, the hotfix branch is gone from their fork. The merged PR's page has a **Restore branch** button, or they can push the branch again — either works; no need to redo anything.
 - **Written for a stranger.** The maintainer has none of their context, so the What / Why / How to test carries the whole thing. This is the payoff of the template habit.
 - **We don't merge these.** Be explicit in the room: cohort PRs to the course repo won't be merged. The learning objective is *doing* the cross-fork PR (the entire open-source contribution loop), not landing it. Close or leave them; don't merge into the course repo.
 
