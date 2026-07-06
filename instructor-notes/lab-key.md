@@ -106,7 +106,7 @@ def format_reading(value, units):
 
 What to look for / push on:
 
-- **Normal readings still format.** `format_reading(-6.5, "°C")` must still return `"-6.5 °C"` (one decimal, units appended). A fix that returns the placeholder for valid numbers, or quietly drops the rounding, has broken the happy path. If `validate.sh` is green but a real value renders wrong, that's an `issue:`, and a great reminder that "parses cleanly" is not "works."
+- **Normal readings still format.** `format_reading(162.0, "°C")` must still return `"162.0 °C"` (one decimal, units appended). A fix that returns the placeholder for valid numbers, or quietly drops the rounding, has broken the happy path. If `validate.sh` is green but a real value renders wrong, that's an `issue:`, and a great reminder that "parses cleanly" is not "works."
 - **Null, not just zero.** The whole point is `None` (bad quality / comms loss). `0` is a *valid* reading and must still format as `"0.0 °C"`. A fix that treats `0` as missing is wrong.
 - **One concern, small diff.** If the PR also renames things or reformats the module, it's no longer the small scoped PR the block is teaching. Call it out.
 

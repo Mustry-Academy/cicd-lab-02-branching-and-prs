@@ -5,8 +5,8 @@ Day 1 of the [CI/CD for Ignition Masterclass](https://github.com/mustry-academy/
 > Compare branching strategies side by side, and learn to write a pull request a reviewer actually enjoys reading.
 
 This is the second lab in the course. The subject of the exercises is a real (if
-small) **Ignition project** — a Perspective HMI screen (a refrigeration-plant
-overview) and a couple of Python script libraries — running on a local gateway you
+small) **Ignition project** — a Perspective HMI screen (the Oatmakers Site 04
+oat-line overview, the client from Lab 01) and a couple of Python script libraries — running on a local gateway you
 spin up yourself. You don't need prior Ignition experience: the gateway's
 *administrative* complexity (config, modules, databases, deploys) is deliberately
 **abstracted away**, and what you actually edit is approachable — a small Python

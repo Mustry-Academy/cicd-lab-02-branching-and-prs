@@ -265,7 +265,7 @@ scripts/setup.sh          <span class="cm"># boots the gateway → RUNNING</span
 scripts/validate.sh       <span class="cm"># → ✓ all project files valid</span></pre></div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">What you're editing</span>
-          <p><span class="inlinecode">projects/lab-project/</span>: a Perspective refrigeration-plant overview + two script libraries. Done for the day? <span class="inlinecode">scripts/teardown.sh</span> stops the gateway.</p>
+          <p><span class="inlinecode">projects/lab-project/</span>: the Oatmakers Site 04 oat-line overview + two script libraries. Done for the day? <span class="inlinecode">scripts/teardown.sh</span> stops the gateway.</p>
         </div>
       </div>
     </div>
@@ -445,7 +445,7 @@ git merge develop        <span class="cm"># pick up the hotfix</span></pre></div
     <div class="cols2">
       <div class="steps">
         <div class="step"><div class="ix p">1</div><div class="tx"><b>Pick a peer's PR</b> from the cohort chat; the <b>hotfix</b> is the richest to review.</div></div>
-        <div class="step"><div class="ix p">2</div><div class="tx"><b>Read slowly (at least 5 minutes)</b> before writing anything. Hotfix: do valid readings still format (<span class="inlinecode">-6.5</span> → <span class="inlinecode">"-6.5 °C"</span>, and <span class="inlinecode">0</span> → <span class="inlinecode">"0.0 °C"</span>)? And, the Git Flow check, did it branch off <b>production</b>, not <span class="inlinecode">develop</span>? Feature PR: JSON well-formed, page registered, change scoped?</div></div>
+        <div class="step"><div class="ix p">2</div><div class="tx"><b>Read slowly (at least 5 minutes)</b> before writing anything. Hotfix: do valid readings still format (<span class="inlinecode">162.0</span> → <span class="inlinecode">"162.0 °C"</span>, and <span class="inlinecode">0</span> → <span class="inlinecode">"0.0 °C"</span>)? And, the Git Flow check, did it branch off <b>production</b>, not <span class="inlinecode">develop</span>? Feature PR: JSON well-formed, page registered, change scoped?</div></div>
         <!-- [VERIFY] exercises/lab.md step 3 says "does it accidentally break the `name`-defaults-to-default case"; format_reading() has no `name` param; phrased here as the happy-path check per instructor-notes/lab-key.md -->
         <div class="step"><div class="ix p">3</div><div class="tx"><b>Check their verification:</b> did they run <span class="inlinecode">validate.sh</span>? Could you actually follow their "How to test"? Read the description and commit message too.</div></div>
         <div class="step"><div class="ix p">4</div><div class="tx"><b>Comment:</b> at minimum a <span class="inlinecode">praise:</span> and a <span class="inlinecode">suggestion:</span>, with an <span class="inlinecode">issue:</span> only if something is actually wrong. No quota; quality over quantity.</div></div>

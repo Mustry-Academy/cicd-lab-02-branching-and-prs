@@ -10,8 +10,8 @@ hotfix scenario through Git Flow on a real Ignition project, end to end.
 ## What you're working on
 
 The subject of this lab is a small but **real Ignition project**
-(`projects/lab-project/`): a Perspective HMI screen (a refrigeration-plant overview)
-and two Python script libraries. You don't need prior Ignition experience: the
+(`projects/lab-project/`): a Perspective HMI screen (the Oatmakers Site 04
+oat-line overview, the client from Lab 01) and two Python script libraries. You don't need prior Ignition experience: the
 gateway's admin complexity is abstracted away, and what you edit is approachable (a
 small Python function, or a new view). The lab is about the **Git workflow** around
 those files: how you branch, how you open and review a PR, how you merge. Gateway
@@ -185,8 +185,8 @@ one reviewer.
 
 1. Pick a peer's PR from the chat. The **hotfix** is the richest to review.
 2. **Read it slowly**, at least 5 minutes before writing anything. For the hotfix:
-   - Do valid readings still format? `format_reading(-6.5, "°C")` must return
-     `"-6.5 °C"`, and `format_reading(0, "°C")` must return `"0.0 °C"` (zero is a
+   - Do valid readings still format? `format_reading(162.0, "°C")` must return
+     `"162.0 °C"`, and `format_reading(0, "°C")` must return `"0.0 °C"` (zero is a
      valid reading, not "missing").
    - Git Flow check: did it branch off **production**, not `develop`?
    - Did they run `validate.sh`? Is the "How to test" something you could follow?

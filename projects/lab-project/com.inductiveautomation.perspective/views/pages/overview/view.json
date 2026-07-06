@@ -56,7 +56,7 @@
                   "name": "Title"
                 },
                 "props": {
-                  "text": "❄  MUSTRY COLD STORAGE",
+                  "text": "🌾  OATMAKERS",
                   "style": {
                     "color": "#e6edf6",
                     "fontSize": "22px",
@@ -71,7 +71,7 @@
                   "name": "Subtitle"
                 },
                 "props": {
-                  "text": "Plant 4 — Refrigeration Overview",
+                  "text": "Site 04 — Oat Line Overview",
                   "style": {
                     "color": "#6b7f9c",
                     "fontSize": "11px",
@@ -102,7 +102,7 @@
                   "name": "SystemPill"
                 },
                 "props": {
-                  "text": "● ALL SYSTEMS NOMINAL",
+                  "text": "● L01 RUNNING",
                   "style": {
                     "backgroundColor": "#0e2a1a",
                     "border": "1px solid #1f7a4d",
@@ -131,6 +131,26 @@
                     "fontWeight": 700,
                     "letterSpacing": "1px",
                     "padding": "6px 10px"
+                  }
+                }
+              },
+              {
+                "type": "ia.display.label",
+                "meta": {
+                  "name": "Version"
+                },
+                "props": {
+                  "text": "v1.2",
+                  "style": {
+                    "backgroundColor": "#131c2e",
+                    "border": "1px solid #243049",
+                    "borderRadius": "6px",
+                    "color": "#93a4bd",
+                    "fontSize": "11px",
+                    "fontWeight": 700,
+                    "letterSpacing": "1px",
+                    "padding": "6px 10px",
+                    "fontFamily": "monospace"
                   }
                 }
               },
@@ -181,7 +201,7 @@
           {
             "type": "ia.container.flex",
             "meta": {
-              "name": "Suction"
+              "name": "Bags"
             },
             "position": {
               "basis": "0",
@@ -204,7 +224,7 @@
                   "name": "Label"
                 },
                 "props": {
-                  "text": "SUCTION PRESSURE",
+                  "text": "BAGS / MIN",
                   "style": {
                     "color": "#6b7f9c",
                     "fontSize": "11px",
@@ -219,7 +239,7 @@
                   "name": "Value"
                 },
                 "props": {
-                  "text": "32.4 psi",
+                  "text": "42",
                   "style": {
                     "color": "#e6edf6",
                     "fontSize": "30px",
@@ -234,7 +254,7 @@
                   "name": "Delta"
                 },
                 "props": {
-                  "text": "▲ 0.6 psi vs setpoint",
+                  "text": "▲ 3 vs last hour",
                   "style": {
                     "color": "#34d399",
                     "fontSize": "11px"
@@ -246,7 +266,7 @@
           {
             "type": "ia.container.flex",
             "meta": {
-              "name": "Discharge"
+              "name": "Kiln"
             },
             "position": {
               "basis": "0",
@@ -269,7 +289,7 @@
                   "name": "Label"
                 },
                 "props": {
-                  "text": "DISCHARGE TEMP",
+                  "text": "KILN TEMP",
                   "style": {
                     "color": "#6b7f9c",
                     "fontSize": "11px",
@@ -288,13 +308,13 @@
                     "binding": {
                       "type": "expr",
                       "config": {
-                        "expression": "runScript('lab.display.format_reading', 0, -6.5, '°C')"
+                        "expression": "runScript('lab.display.format_reading', 0, 162.0, '°C')"
                       }
                     }
                   }
                 },
                 "props": {
-                  "text": "-6.5 °C",
+                  "text": "162.0 °C",
                   "style": {
                     "color": "#e6edf6",
                     "fontSize": "30px",
@@ -345,7 +365,7 @@
                   "name": "Label"
                 },
                 "props": {
-                  "text": "SYSTEM LOAD",
+                  "text": "LINE LOAD",
                   "style": {
                     "color": "#6b7f9c",
                     "fontSize": "11px",
@@ -471,7 +491,7 @@
           {
             "type": "ia.container.flex",
             "meta": {
-              "name": "Compressors"
+              "name": "Stations"
             },
             "position": {
               "basis": "0",
@@ -497,7 +517,7 @@
                   "shrink": 0
                 },
                 "props": {
-                  "text": "COMPRESSORS",
+                  "text": "LINE L01 — STATIONS",
                   "style": {
                     "alignItems": "center",
                     "backgroundColor": "#0f1828",
@@ -514,7 +534,7 @@
               {
                 "type": "ia.container.flex",
                 "meta": {
-                  "name": "CMP01"
+                  "name": "CO"
                 },
                 "position": {
                   "basis": "0",
@@ -539,7 +559,7 @@
                       "shrink": 0
                     },
                     "props": {
-                      "text": "CMP-01",
+                      "text": "CO",
                       "style": {
                         "color": "#e6edf6",
                         "fontFamily": "monospace",
@@ -575,13 +595,13 @@
                   {
                     "type": "ia.display.label",
                     "meta": {
-                      "name": "Rpm"
+                      "name": "Desc"
                     },
                     "position": {
                       "grow": 1
                     },
                     "props": {
-                      "text": "2,950 rpm",
+                      "text": "Cooling",
                       "style": {
                         "color": "#cdd9e8",
                         "fontFamily": "monospace",
@@ -592,132 +612,14 @@
                   {
                     "type": "ia.display.label",
                     "meta": {
-                      "name": "Amps"
+                      "name": "Rate"
                     },
                     "position": {
                       "basis": "64px",
                       "shrink": 0
                     },
                     "props": {
-                      "text": "88 A",
-                      "style": {
-                        "color": "#cdd9e8",
-                        "fontFamily": "monospace",
-                        "fontSize": "13px"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.progress",
-                    "meta": {
-                      "name": "LoadBar"
-                    },
-                    "position": {
-                      "basis": "130px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "value": 82,
-                      "maximum": 100,
-                      "color": "#34d399",
-                      "bgColor": "#0b1220",
-                      "style": {
-                        "borderRadius": "5px",
-                        "height": "6px"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "CMP02"
-                },
-                "position": {
-                  "basis": "0",
-                  "grow": 1
-                },
-                "props": {
-                  "alignItems": "center",
-                  "style": {
-                    "borderBottom": "1px solid #1c2740",
-                    "gap": "14px",
-                    "padding": "0 18px"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Name"
-                    },
-                    "position": {
-                      "basis": "74px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "text": "CMP-02",
-                      "style": {
-                        "color": "#e6edf6",
-                        "fontFamily": "monospace",
-                        "fontSize": "14px",
-                        "fontWeight": 700
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "State"
-                    },
-                    "position": {
-                      "basis": "92px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "text": "RUNNING",
-                      "style": {
-                        "backgroundColor": "#0e2a1a",
-                        "border": "1px solid #1f7a4d",
-                        "borderRadius": "5px",
-                        "color": "#34d399",
-                        "fontSize": "10px",
-                        "fontWeight": 700,
-                        "letterSpacing": "0.5px",
-                        "padding": "4px 8px",
-                        "textAlign": "center"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Rpm"
-                    },
-                    "position": {
-                      "grow": 1
-                    },
-                    "props": {
-                      "text": "2,870 rpm",
-                      "style": {
-                        "color": "#cdd9e8",
-                        "fontFamily": "monospace",
-                        "fontSize": "13px"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Amps"
-                    },
-                    "position": {
-                      "basis": "64px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "text": "81 A",
+                      "text": "12.4 t/h",
                       "style": {
                         "color": "#cdd9e8",
                         "fontFamily": "monospace",
@@ -750,125 +652,7 @@
               {
                 "type": "ia.container.flex",
                 "meta": {
-                  "name": "CMP03"
-                },
-                "position": {
-                  "basis": "0",
-                  "grow": 1
-                },
-                "props": {
-                  "alignItems": "center",
-                  "style": {
-                    "borderBottom": "1px solid #1c2740",
-                    "gap": "14px",
-                    "padding": "0 18px"
-                  }
-                },
-                "children": [
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Name"
-                    },
-                    "position": {
-                      "basis": "74px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "text": "CMP-03",
-                      "style": {
-                        "color": "#e6edf6",
-                        "fontFamily": "monospace",
-                        "fontSize": "14px",
-                        "fontWeight": 700
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "State"
-                    },
-                    "position": {
-                      "basis": "92px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "text": "STANDBY",
-                      "style": {
-                        "backgroundColor": "#1a2233",
-                        "border": "1px solid #3b4a66",
-                        "borderRadius": "5px",
-                        "color": "#93a4bd",
-                        "fontSize": "10px",
-                        "fontWeight": 700,
-                        "letterSpacing": "0.5px",
-                        "padding": "4px 8px",
-                        "textAlign": "center"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Rpm"
-                    },
-                    "position": {
-                      "grow": 1
-                    },
-                    "props": {
-                      "text": "0 rpm",
-                      "style": {
-                        "color": "#6b7f9c",
-                        "fontFamily": "monospace",
-                        "fontSize": "13px"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.label",
-                    "meta": {
-                      "name": "Amps"
-                    },
-                    "position": {
-                      "basis": "64px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "text": "0 A",
-                      "style": {
-                        "color": "#6b7f9c",
-                        "fontFamily": "monospace",
-                        "fontSize": "13px"
-                      }
-                    }
-                  },
-                  {
-                    "type": "ia.display.progress",
-                    "meta": {
-                      "name": "LoadBar"
-                    },
-                    "position": {
-                      "basis": "130px",
-                      "shrink": 0
-                    },
-                    "props": {
-                      "value": 0,
-                      "maximum": 100,
-                      "color": "#3b4a66",
-                      "bgColor": "#0b1220",
-                      "style": {
-                        "borderRadius": "5px",
-                        "height": "6px"
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                "type": "ia.container.flex",
-                "meta": {
-                  "name": "CMP04"
+                  "name": "HT"
                 },
                 "position": {
                   "basis": "0",
@@ -892,7 +676,7 @@
                       "shrink": 0
                     },
                     "props": {
-                      "text": "CMP-04",
+                      "text": "HT",
                       "style": {
                         "color": "#e6edf6",
                         "fontFamily": "monospace",
@@ -928,13 +712,13 @@
                   {
                     "type": "ia.display.label",
                     "meta": {
-                      "name": "Rpm"
+                      "name": "Desc"
                     },
                     "position": {
                       "grow": 1
                     },
                     "props": {
-                      "text": "—",
+                      "text": "Heat treatment — kiln",
                       "style": {
                         "color": "#f87171",
                         "fontFamily": "monospace",
@@ -945,7 +729,7 @@
                   {
                     "type": "ia.display.label",
                     "meta": {
-                      "name": "Amps"
+                      "name": "Rate"
                     },
                     "position": {
                       "basis": "64px",
@@ -981,13 +765,485 @@
                     }
                   }
                 ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "KN"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "borderBottom": "1px solid #1c2740",
+                    "gap": "14px",
+                    "padding": "0 18px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Name"
+                    },
+                    "position": {
+                      "basis": "74px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "KN",
+                      "style": {
+                        "color": "#e6edf6",
+                        "fontFamily": "monospace",
+                        "fontSize": "14px",
+                        "fontWeight": 700
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "basis": "92px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "RUNNING",
+                      "style": {
+                        "backgroundColor": "#0e2a1a",
+                        "border": "1px solid #1f7a4d",
+                        "borderRadius": "5px",
+                        "color": "#34d399",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "4px 8px",
+                        "textAlign": "center"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Desc"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "Knife",
+                      "style": {
+                        "color": "#cdd9e8",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Rate"
+                    },
+                    "position": {
+                      "basis": "64px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "12.1 t/h",
+                      "style": {
+                        "color": "#cdd9e8",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.progress",
+                    "meta": {
+                      "name": "LoadBar"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "value": 71,
+                      "maximum": 100,
+                      "color": "#34d399",
+                      "bgColor": "#0b1220",
+                      "style": {
+                        "borderRadius": "5px",
+                        "height": "6px"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "PE"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "borderBottom": "1px solid #1c2740",
+                    "gap": "14px",
+                    "padding": "0 18px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Name"
+                    },
+                    "position": {
+                      "basis": "74px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "PE",
+                      "style": {
+                        "color": "#e6edf6",
+                        "fontFamily": "monospace",
+                        "fontSize": "14px",
+                        "fontWeight": 700
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "basis": "92px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "RUNNING",
+                      "style": {
+                        "backgroundColor": "#0e2a1a",
+                        "border": "1px solid #1f7a4d",
+                        "borderRadius": "5px",
+                        "color": "#34d399",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "4px 8px",
+                        "textAlign": "center"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Desc"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "Pelletizing",
+                      "style": {
+                        "color": "#cdd9e8",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Rate"
+                    },
+                    "position": {
+                      "basis": "64px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "11.8 t/h",
+                      "style": {
+                        "color": "#cdd9e8",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.progress",
+                    "meta": {
+                      "name": "LoadBar"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "value": 69,
+                      "maximum": 100,
+                      "color": "#34d399",
+                      "bgColor": "#0b1220",
+                      "style": {
+                        "borderRadius": "5px",
+                        "height": "6px"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "PL"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "borderBottom": "1px solid #1c2740",
+                    "gap": "14px",
+                    "padding": "0 18px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Name"
+                    },
+                    "position": {
+                      "basis": "74px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "PL",
+                      "style": {
+                        "color": "#e6edf6",
+                        "fontFamily": "monospace",
+                        "fontSize": "14px",
+                        "fontWeight": 700
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "basis": "92px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "RUNNING",
+                      "style": {
+                        "backgroundColor": "#0e2a1a",
+                        "border": "1px solid #1f7a4d",
+                        "borderRadius": "5px",
+                        "color": "#34d399",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "4px 8px",
+                        "textAlign": "center"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Desc"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "Packaging",
+                      "style": {
+                        "color": "#cdd9e8",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Rate"
+                    },
+                    "position": {
+                      "basis": "96px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "42 bags/min",
+                      "style": {
+                        "color": "#cdd9e8",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.progress",
+                    "meta": {
+                      "name": "LoadBar"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "value": 64,
+                      "maximum": 100,
+                      "color": "#34d399",
+                      "bgColor": "#0b1220",
+                      "style": {
+                        "borderRadius": "5px",
+                        "height": "6px"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ia.container.flex",
+                "meta": {
+                  "name": "SH"
+                },
+                "position": {
+                  "basis": "0",
+                  "grow": 1
+                },
+                "props": {
+                  "alignItems": "center",
+                  "style": {
+                    "borderBottom": "1px solid #1c2740",
+                    "gap": "14px",
+                    "padding": "0 18px"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Name"
+                    },
+                    "position": {
+                      "basis": "74px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "SH",
+                      "style": {
+                        "color": "#e6edf6",
+                        "fontFamily": "monospace",
+                        "fontSize": "14px",
+                        "fontWeight": 700
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "State"
+                    },
+                    "position": {
+                      "basis": "92px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "STANDBY",
+                      "style": {
+                        "backgroundColor": "#1a2233",
+                        "border": "1px solid #3b4a66",
+                        "borderRadius": "5px",
+                        "color": "#93a4bd",
+                        "fontSize": "10px",
+                        "fontWeight": 700,
+                        "letterSpacing": "0.5px",
+                        "padding": "4px 8px",
+                        "textAlign": "center"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Desc"
+                    },
+                    "position": {
+                      "grow": 1
+                    },
+                    "props": {
+                      "text": "Storage",
+                      "style": {
+                        "color": "#6b7f9c",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.label",
+                    "meta": {
+                      "name": "Rate"
+                    },
+                    "position": {
+                      "basis": "64px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "text": "—",
+                      "style": {
+                        "color": "#6b7f9c",
+                        "fontFamily": "monospace",
+                        "fontSize": "13px"
+                      }
+                    }
+                  },
+                  {
+                    "type": "ia.display.progress",
+                    "meta": {
+                      "name": "LoadBar"
+                    },
+                    "position": {
+                      "basis": "130px",
+                      "shrink": 0
+                    },
+                    "props": {
+                      "value": 0,
+                      "maximum": 100,
+                      "color": "#3b4a66",
+                      "bgColor": "#0b1220",
+                      "style": {
+                        "borderRadius": "5px",
+                        "height": "6px"
+                      }
+                    }
+                  }
+                ]
               }
             ]
           },
           {
             "type": "ia.container.flex",
             "meta": {
-              "name": "ColdRooms"
+              "name": "Silos"
             },
             "position": {
               "basis": "0",
@@ -1013,7 +1269,7 @@
                   "shrink": 0
                 },
                 "props": {
-                  "text": "COLD ROOMS",
+                  "text": "STORAGE — SILOS",
                   "style": {
                     "alignItems": "center",
                     "backgroundColor": "#0f1828",
@@ -1030,7 +1286,7 @@
               {
                 "type": "ia.container.flex",
                 "meta": {
-                  "name": "RoomA"
+                  "name": "SiloA"
                 },
                 "position": {
                   "basis": "0",
@@ -1067,7 +1323,7 @@
                           "grow": 1
                         },
                         "props": {
-                          "text": "Room A — Frozen",
+                          "text": "Silo A — Rolled oats",
                           "style": {
                             "color": "#cdd9e8",
                             "fontSize": "13px",
@@ -1078,10 +1334,10 @@
                       {
                         "type": "ia.display.label",
                         "meta": {
-                          "name": "Temp"
+                          "name": "Level"
                         },
                         "props": {
-                          "text": "-22.4 °C",
+                          "text": "82 %",
                           "style": {
                             "color": "#22d3ee",
                             "fontFamily": "monospace",
@@ -1098,7 +1354,7 @@
                       "name": "Bar"
                     },
                     "props": {
-                      "value": 96,
+                      "value": 82,
                       "maximum": 100,
                       "color": "#22d3ee",
                       "bgColor": "#0b1220",
@@ -1114,7 +1370,7 @@
                       "name": "Set"
                     },
                     "props": {
-                      "text": "setpoint -22.0 °C · in range",
+                      "text": "moisture 11.2 % · in range",
                       "style": {
                         "color": "#6b7f9c",
                         "fontSize": "10px"
@@ -1126,7 +1382,7 @@
               {
                 "type": "ia.container.flex",
                 "meta": {
-                  "name": "RoomB"
+                  "name": "SiloB"
                 },
                 "position": {
                   "basis": "0",
@@ -1163,7 +1419,7 @@
                           "grow": 1
                         },
                         "props": {
-                          "text": "Room B — Chilled",
+                          "text": "Silo B — Steel-cut",
                           "style": {
                             "color": "#cdd9e8",
                             "fontSize": "13px",
@@ -1174,10 +1430,10 @@
                       {
                         "type": "ia.display.label",
                         "meta": {
-                          "name": "Temp"
+                          "name": "Level"
                         },
                         "props": {
-                          "text": "-18.1 °C",
+                          "text": "54 %",
                           "style": {
                             "color": "#fbbf24",
                             "fontFamily": "monospace",
@@ -1194,7 +1450,7 @@
                       "name": "Bar"
                     },
                     "props": {
-                      "value": 78,
+                      "value": 54,
                       "maximum": 100,
                       "color": "#fbbf24",
                       "bgColor": "#0b1220",
@@ -1210,7 +1466,7 @@
                       "name": "Set"
                     },
                     "props": {
-                      "text": "setpoint -18.0 °C · door open 4m",
+                      "text": "moisture 11.8 % · intake running",
                       "style": {
                         "color": "#6b7f9c",
                         "fontSize": "10px"
@@ -1222,7 +1478,7 @@
               {
                 "type": "ia.container.flex",
                 "meta": {
-                  "name": "RoomC"
+                  "name": "SiloC"
                 },
                 "position": {
                   "basis": "0",
@@ -1258,7 +1514,7 @@
                           "grow": 1
                         },
                         "props": {
-                          "text": "Room C — Blast",
+                          "text": "Silo C — Raw intake",
                           "style": {
                             "color": "#cdd9e8",
                             "fontSize": "13px",
@@ -1269,10 +1525,10 @@
                       {
                         "type": "ia.display.label",
                         "meta": {
-                          "name": "Temp"
+                          "name": "Level"
                         },
                         "props": {
-                          "text": "-24.6 °C",
+                          "text": "37 %",
                           "style": {
                             "color": "#22d3ee",
                             "fontFamily": "monospace",
@@ -1289,7 +1545,7 @@
                       "name": "Bar"
                     },
                     "props": {
-                      "value": 100,
+                      "value": 37,
                       "maximum": 100,
                       "color": "#22d3ee",
                       "bgColor": "#0b1220",
@@ -1305,7 +1561,7 @@
                       "name": "Set"
                     },
                     "props": {
-                      "text": "setpoint -25.0 °C · in range",
+                      "text": "moisture 13.1 % · drying",
                       "style": {
                         "color": "#6b7f9c",
                         "fontSize": "10px"
@@ -1430,7 +1686,7 @@
                   "shrink": 0
                 },
                 "props": {
-                  "text": "CMP-04.motorTemp",
+                  "text": "HT.kilnTemp",
                   "style": {
                     "color": "#e6edf6",
                     "fontFamily": "monospace",
@@ -1448,7 +1704,7 @@
                   "grow": 1
                 },
                 "props": {
-                  "text": "Compressor 4 motor over-temp — unit tripped",
+                  "text": "Kiln over-temp — heat treatment tripped",
                   "style": {
                     "color": "#cdd9e8",
                     "fontSize": "12px"
@@ -1526,7 +1782,7 @@
                   "shrink": 0
                 },
                 "props": {
-                  "text": "RoomB.doorOpen",
+                  "text": "SH.siloB.gate",
                   "style": {
                     "color": "#e6edf6",
                     "fontFamily": "monospace",
@@ -1544,7 +1800,7 @@
                   "grow": 1
                 },
                 "props": {
-                  "text": "Cold Room B door open longer than 5 minutes",
+                  "text": "Silo B intake gate open longer than 5 minutes",
                   "style": {
                     "color": "#cdd9e8",
                     "fontSize": "12px"
@@ -1621,7 +1877,7 @@
                   "shrink": 0
                 },
                 "props": {
-                  "text": "CMP-03.mode",
+                  "text": "SH.conveyor",
                   "style": {
                     "color": "#e6edf6",
                     "fontFamily": "monospace",
@@ -1639,7 +1895,7 @@
                   "grow": 1
                 },
                 "props": {
-                  "text": "Compressor 3 switched to standby (lead/lag rotation)",
+                  "text": "Storage conveyor switched to standby (lead/lag rotation)",
                   "style": {
                     "color": "#cdd9e8",
                     "fontSize": "12px"
