@@ -762,6 +762,7 @@ body{
 ├── <span class="dir">com.inductiveautomation.perspective/</span>   <span class="cm">← one folder per module</span>
 │   ├── <span class="dir">views/pages/overview/</span>        <span class="cm">← one folder per resource</span>
 │   │   ├── <span class="hot">view.json</span>                <span class="cm">← the payload: the whole view</span>
+│   │   ├── <span class="cm">thumbnail.png</span>            <span class="cm">← Designer-saved view preview (binary)</span>
 │   │   └── resource.json            <span class="cm">← the manifest: scope, files list</span>
 │   ├── <span class="dir">page-config/</span>  config.json + resource.json
 │   └── <span class="dir">session-props/</span>  props.json + resource.json
@@ -773,7 +774,7 @@ body{
         <ul class="checks">
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Resources are folders.</b> Each one is a <span class="mono">resource.json</span> manifest plus its payload file(s): <span class="mono">view.json</span> for a Perspective view, <span class="mono">code.py</span> for a script library.</span></li>
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Namespaced by module.</b> <span class="mono">com.inductiveautomation.perspective</span>, <span class="mono">ignition/script-python</span>: each module owns its subtree.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>It's all JSON and Python.</b> Which means: diffable, blame-able, branchable, reviewable. Everything from this morning applies.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>It's all JSON and Python.</b> Which means: diffable, blame-able, branchable, reviewable. Everything from this morning applies. The one exception: the Designer saves a <span class="mono">thumbnail.png</span> preview next to each view — a binary Git tracks fine but can't diff (this repo's hand-built view doesn't have one yet).</span></li>
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab</b> the compose stack bind-mounts only <span class="mono">./projects</span> into the gateway: the file you edit on your laptop <i>is</i> the file the gateway runs. Gateway config stays in a named volume, out of the repo (that story is Lab 04's).</span></li>
         </ul>
       </div>
