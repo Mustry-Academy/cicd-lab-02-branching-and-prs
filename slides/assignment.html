@@ -154,6 +154,19 @@ body{
 .vizcard .node{fill:var(--navy);stroke:var(--teal);stroke-width:2}
 .vizcard .edge{stroke:#fff;stroke-width:1.6;fill:none}
 .vizcard .edge.br{stroke:var(--teal)}
+.vizcard .rhead{fill:#8fa5c0;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1.2px;text-anchor:middle}
+.vizcard .rbox{fill:rgba(147,169,240,.10);stroke:#93a9f0;stroke-width:1.5}
+.vizcard .rbox.you{fill:rgba(59,189,180,.10);stroke:var(--teal)}
+.vizcard .rlab{fill:#dbe4f0;font-family:'IBM Plex Mono',monospace;font-size:12.5px;text-anchor:middle}
+.vizcard .ntx{fill:#9fb6cf;font-family:'IBM Plex Mono',monospace;font-size:11px;text-anchor:middle}
+.vizcard .redge{stroke:#fff;stroke-width:1.6;fill:none}
+.vizcard .redge.t{stroke:var(--teal)}
+.vizcard .redge.bad{stroke:#ef6f6f;stroke-dasharray:5 4}
+.vizcard .ah{fill:#fff}
+.vizcard .ah.t{fill:var(--teal)}
+.vizcard .ah.bad{fill:#ef6f6f}
+.vizcard .gtxt{fill:#5fd39a;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;text-anchor:middle}
+.vizcard .btxt{fill:#ef6f6f;font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:600;text-anchor:middle}
 
 .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--txt-faint);padding-top:22px}
 .dark .foot{color:rgba(255,255,255,.45)}
@@ -199,12 +212,45 @@ body{
   </div>
   <div class="body">
     <div class="sechead"><span class="num">READ FIRST</span><div><div class="title">How this works</div></div></div>
-    <ul class="checks" style="max-width:940px">
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Share your screen</b> in your breakout room. This is a "look over your shoulder" class, so we'll drop in where it's useful.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Every PR has <b>base repo = your fork</b>, base branch = <span class="inlinecode">main</span>. Careful: GitHub's "Compare &amp; pull request" banner and <span class="inlinecode">gh pr create</span> default the base to the <b>upstream course repo</b> — switch it to your fork. That's how everyone gets real merge rights without pushing to one shared repo.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">scripts/validate.sh</span> before every PR.</b> It's this lab's green/red signal (every project file valid JSON, every script parseable) and the PR template's first checkbox. Tomorrow, <b>Lab 03</b> turns this exact script into a CI gate no one can merge past — today, <i>you</i> are the CI.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open PRs early, invite your reviewer early.</b> Add a peer or a tutor as a <b>collaborator on your fork</b> (Settings → Collaborators), then request their review on each PR. The review step needs a peer's PR to exist, and merging needs a peer to have reviewed <i>yours</i>.</span></li>
-    </ul>
+    <div class="cols2">
+      <ul class="checks">
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Share your screen</b> in your breakout room. This is a "look over your shoulder" class, so we'll drop in where it's useful.</span></li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Two repos are in play (see the diagram): <b>upstream</b>, the course repo you forked — you can't push there — and <b>your fork</b>, your own copy on GitHub, where your merge rights live (your clone knows it as the <span class="inlinecode">origin</span> remote). A PR's <b>base</b> is the repo + branch it merges <i>into</i>: in this lab, always <b>your fork</b>, base branch <span class="inlinecode">main</span>. Careful: GitHub's "Compare &amp; pull request" banner and <span class="inlinecode">gh pr create</span> default the base repo to <b>upstream</b> — switch it to your fork every time.</span></li>
+        <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">scripts/validate.sh</span> before every PR.</b> It's this lab's green/red signal (every project file valid JSON, every script parseable) and the PR template's first checkbox. Tomorrow, <b>Lab 03</b> turns this exact script into a CI gate no one can merge past — today, <i>you</i> are the CI.</span></li>
+      </ul>
+      <div>
+        <div class="vizcard">
+          <div class="vc-head"><b>Two repos, one rule</b></div>
+          <svg viewBox="0 0 640 305">
+            <text class="rhead" x="145" y="24">UPSTREAM · THE COURSE REPO</text>
+            <rect class="rbox" x="20" y="38" width="250" height="54" rx="10"/>
+            <text class="rlab" x="145" y="60">mustry-academy/cicd-lab-02-…</text>
+            <text class="ntx" x="145" y="80">read-only for you</text>
+            <text class="rhead" x="495" y="24">ORIGIN · YOUR FORK</text>
+            <rect class="rbox you" x="370" y="38" width="250" height="54" rx="10"/>
+            <text class="rlab" x="495" y="60">&lt;your-username&gt;/cicd-lab-02-…</text>
+            <text class="ntx" x="495" y="80">your merge rights live here</text>
+            <line class="redge" x1="270" y1="65" x2="362" y2="65"/>
+            <path class="ah" d="M370,65 l-10,-5 v10 z"/>
+            <text class="ntx" x="320" y="52">fork · once</text>
+            <path class="redge bad" d="M380,100 C350,135 300,135 272,104"/>
+            <path class="ah bad" d="M266,97 l13,0 l-6,11 z"/>
+            <text class="btxt" x="322" y="158">✗ PR's default base</text>
+            <rect class="rbox" x="310" y="220" width="250" height="54" rx="10"/>
+            <text class="rlab" x="435" y="242">~/mustry-academy/cicd-lab-02-…</text>
+            <text class="ntx" x="435" y="262">local · your clone</text>
+            <line class="redge t" x1="420" y1="220" x2="420" y2="100"/>
+            <path class="ah t" d="M420,92 l-5,10 h10 z"/>
+            <text class="ntx" x="458" y="140">git push</text>
+            <line class="redge" x1="510" y1="92" x2="510" y2="212"/>
+            <path class="ah" d="M510,220 l-5,-10 h10 z"/>
+            <text class="ntx" x="572" y="140">clone · once</text>
+            <text class="gtxt" x="320" y="298">✓ every PR: base repo = your fork · base branch = main</text>
+          </svg>
+          <div class="vc-cap" style="text-align:center;font-size:13px"><b>Fork once, clone once, push often.</b></div>
+        </div>
+      </div>
+    </div>
     <div class="goal good-g">
       <span class="badge">Ask early</span>
       <p>Stuck for more than a couple of minutes? <b>Say so in the room.</b> Don't sit blocked in silence; that's exactly what we're here for.</p>
