@@ -6,8 +6,8 @@
 
 The lab is one we-do / you-do flow covering two topics. The You-do is a single
 scenario: discuss a strategy (breakout room), then run the release-week feature + P1
-fix through GitHub Flow, review peers' PRs, merge in release order, and open one PR
-upstream. Git Flow's double-merge is the first stretch.
+fix through GitHub Flow, review peers' PRs, and merge in release order.
+Git Flow's double-merge is the first stretch.
 This key is grouped by topic; see [`exercises/lab.md`](../exercises/lab.md) for the flow.
 
 ---
@@ -204,7 +204,6 @@ Common mistakes to catch:
 - **Forgetting the tag.** In GitHub Flow the tag *is* the release record; skip it and "what's in production" has no answer beyond "whatever main was at some point." No tag, no audit trail.
 - **Merging the feature before the fix.** Not fatal for the code (main ends up the same), but the release story is wrong — and if they then tag, see mistake one.
 - **Updating the feature branch too early.** `git merge main` on the feature branch only picks up the fix *after* `fix -> main` has merged; run before that, it's a silent no-op ("Already up to date") and they'll think they're done. The exercise sequences it in the merge step for this reason.
-- **Deleting the fix branch before Part 4.** The upstream PR wants that branch; the merged PR's **Restore branch** button (or a re-push) recovers it.
 
 As for the merge *button* itself, GitHub's dropdown gives three options; any is fine
 here as long as it's deliberate. A merge commit keeps the branch shape visible in
@@ -212,17 +211,6 @@ here as long as it's deliberate. A merge commit keeps the branch shape visible i
 why many GitHub Flow teams default to it. If GitHub doesn't show all three, the repo
 restricted them in Settings, Branches, Merge button options; worth surfacing as a
 procedural point.
-
-## The upstream (cross-fork) PR
-
-Every PR so far had base = the participant's fork. Part 4 asks for one PR with
-base = the **upstream** course repo, head = their fork's branch. What "good" looks
-like:
-
-- **It's actually cross-fork.** In the GitHub PR UI, the base repo dropdown shows `mustry-academy/cicd-lab-02-...`, not their own fork. A common miss: `gh pr create` on a fork defaults the base to upstream *already*, which can surprise them the other direction. Either way, confirm the base repo is the course repo.
-- **The branch may already be deleted.** If they took the delete button after merging, the fix branch is gone from their fork. The merged PR's page has a **Restore branch** button, or they can push the branch again — either works; no need to redo anything.
-- **Written for a stranger.** The maintainer has none of their context, so the What / Why / How to test carries the whole thing. This is the payoff of the template habit.
-- **We don't merge these.** Be explicit in the room: cohort PRs to the course repo won't be merged. The learning objective is *doing* the cross-fork PR (the entire open-source contribution loop), not landing it. Close or leave them; don't merge into the course repo.
 
 ## Stretch: branch protection
 

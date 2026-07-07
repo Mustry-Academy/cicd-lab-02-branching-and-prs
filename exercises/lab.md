@@ -43,7 +43,7 @@ By the end of this lab you should be able to:
 - Run a **GitHub Flow release week** end to end: a feature and a P1 fix through PRs into `main`, released in the right order with version tags — and know when a team needs more (Git Flow's double-merge, in the stretch)
 - Open a PR a reviewer enjoys reading: small, scoped, with a clear what / why / how-to-test
 - Review someone else's PR with feedback that helps, and choose between approve, request-changes, and comment-only
-- Merge cleanly and in the right order when approved, and open a cross-fork PR upstream
+- Merge cleanly and in the right order when approved
 
 Read-ahead: [`docs/branching-strategies.md`](../docs/branching-strategies.md) covers the three strategies, with diagrams. Optional deep-dive on review craft: [`docs/pr-review-style.md`](../docs/pr-review-style.md).
 
@@ -89,16 +89,17 @@ tone, and handling disagreement) it's in the optional
 You'll live the release-week scenario from the teaching deck, for real, on your own
 fork. Ship a v2.0 feature, get ambushed by a P1 bug in production, and thread both
 through **GitHub Flow** — the course's strategy — exactly the way Chapter 1 drew it.
-Then your peers review your PRs, you merge in release order, and you send one PR
-back upstream.
+Then your peers review your PRs and you merge in release order.
 
-Do the whole thing in your breakout room, sharing your screen. Open PRs early and
-drop every link in the cohort chat: the review step needs a peer's PR to exist, and
-merging needs a peer to have reviewed yours.
+Do the whole thing in your breakout room, sharing your screen. Open PRs early, and
+invite your reviewer early: add a peer from your room or one of the tutors as a
+**collaborator on your fork** (Settings → Collaborators → Add people), then request
+their review on each PR. The review step needs a peer's PR to exist, and merging
+needs a peer to have reviewed yours.
 
 > Careful when opening PRs on a fork: GitHub's "Compare & pull request" banner (and
-> `gh pr create`) defaults the **base repo** to the upstream course repo. Until
-> step 4, switch it to **your fork** every time.
+> `gh pr create`) defaults the **base repo** to the upstream course repo — switch it
+> to **your fork** every time.
 
 ### 1. Discuss: which strategy fits your team? (breakout room)
 
@@ -151,7 +152,7 @@ its `view.json` title, and register the `/silo-detail` page in
 `page-config/config.json` so it's reachable. Run `scripts/validate.sh` (green),
 commit with a
 [Conventional Commits](https://www.conventionalcommits.org/) message, push, and open
-a PR with **base = `main`**. Drop the link in chat, tag a peer, and **leave it
+a PR with **base = `main`**. Request your reviewer on it, and **leave it
 open**: the ambush comes before you merge.
 
 > Gateway up? `scripts/scan.sh` (or `docker compose restart`), then open the project.
@@ -172,8 +173,8 @@ a customer hits the null-reading crash in v1.2, live. It can't wait for v2.0.
 3. **One PR into `main`.** That's the whole GitHub Flow ceremony: no `develop`, no
    double-merge. **Don't merge yet**: your peers review first, and the merging
    (plus the `v1.2.1` tag) happens in release order in step 3.
-4. That's **two PRs open** (feature → `main`, fix → `main`): both links in chat, a
-   peer tagged on each. **Merge order is the lesson now**: the fix must land (and
+4. That's **two PRs open** (feature → `main`, fix → `main`): your reviewer
+   requested on each. **Merge order is the lesson now**: the fix must land (and
    `v1.2.1` be tagged) *before* the feature merges — in GitHub Flow, merging is
    releasing.
 
@@ -194,10 +195,11 @@ git push -u origin fix/null-reading
 
 ### 3. Review a peer's PR, then merge yours
 
-You each have a fix PR and a feature PR open. Coordinate in chat so each PR gets
-one reviewer.
+You each have a fix PR and a feature PR open. Pair up in your room so each PR gets
+one reviewer — the collaborator invites from step 2 decide who reviews whom.
 
-1. Pick a peer's PR from the chat. The **fix** is the richest to review.
+1. Open the PR you were asked to review (it's in your GitHub notifications). The
+   **fix** is the richest to review.
 2. **Read it slowly**, at least 5 minutes before writing anything. For the fix:
    - Do valid readings still format? `format_reading(162.0, "°C")` must return
      `"162.0 °C"`, and `format_reading(0, "°C")` must return `"0.0 °C"` (zero is a
@@ -227,27 +229,11 @@ Then respond and merge, in release order:
    git tag v1.2.1 && git push origin v1.2.1
    ```
 
-   Keep the fix branch: step 4 sends it upstream.
+   Delete the fix branch once it's merged (GitHub offers a button; take it).
 3. Now finish the feature: pull the fix down into your feature branch
    (`git switch feature/...` then `git merge main`), push, then merge the
    feature PR into `main` and delete the feature branch (GitHub offers a
    button; take it).
-
-### 4. Send one PR back upstream (open source)
-
-Every PR so far had base = your fork. Now open one with **base = the upstream repo**
-(`mustry-academy/cicd-lab-02-branching-and-prs`), head = your fork's branch. GitHub
-calls this a cross-fork PR — and this once, the upstream default you've been
-switching away from is exactly right. Pick your cleanest branch (the fix is
-ideal; if you already deleted it, the merged PR's page has a **Restore branch**
-button, or just push the branch again), and write the description for a stranger:
-the maintainer has none of your context, so the What / Why / How to test is all
-they get.
-
-Fork, branch, PR back to the original repo is the entire open-source contribution
-model. Linux, Python, Ignition modules on GitHub, all of it is this loop at scale.
-We won't merge cohort PRs into the course repo; the point is *doing* the cross-fork
-PR, not landing it.
 
 ---
 
@@ -261,9 +247,8 @@ PR, not landing it.
   git switch main
   git reset --hard v1.2
   git push --force origin main       # your throwaway fork: force-push is fine here
-  # GitHub's delete button only removed the remote branch; clear the local one
-  # too (keep the fix branch — your upstream PR rides on it):
-  git branch -D feature/v2-silo-detail
+  # GitHub's delete button only removed the remote branches; clear the local ones too:
+  git branch -D feature/v2-silo-detail fix/null-reading
   # and un-release the patch, so the stretch can re-tag it:
   git tag -d v1.2.1 && git push origin --delete v1.2.1
   ```

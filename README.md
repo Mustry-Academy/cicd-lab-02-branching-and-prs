@@ -41,7 +41,9 @@ your own fork, and open PRs inside it.**
    request" banner and `gh pr create` default the base repo to the **upstream**
    course repo — switch it to your fork (or run `gh repo set-default` once and
    pick your fork).
-4. **Share each PR link in the cohort chat** so peers can find and review it.
+4. **Invite your reviewer**: add a peer or one of the tutors as a collaborator on
+   your fork (Settings → Collaborators → Add people), then request their review on
+   each PR.
 5. You own your fork, so you can merge your own PRs once they're approved.
 
 ## Quick start
