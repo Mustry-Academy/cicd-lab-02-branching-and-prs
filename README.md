@@ -16,6 +16,7 @@ file-based deploy story arrives in [Lab 04](https://github.com/mustry-academy/ci
 
 ## Prerequisites
 
+- Work in **WSL2 (Windows), Linux, or macOS** — run all lab commands there, not in PowerShell or Git Bash (see the platform notes in your welcome package)
 - Completed [Lab 01](https://github.com/mustry-academy/cicd-lab-01-git-fundamentals)
 - Pass [`cicd-preflight`](https://github.com/mustry-academy/cicd-preflight)
 - Docker (with the Compose V2 plugin) for the optional gateway — ~1.5 GB RAM is plenty for the single gateway
@@ -29,9 +30,11 @@ your own fork, and open PRs inside it.**
 
 1. **Fork + clone** (sets `origin` to your fork, `upstream` to the lab repo):
    ```bash
+   cd ~/mustry-academy                                               # the parent folder for all 8 lab repos, from Lab 01
    gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
    cd cicd-lab-02-branching-and-prs
    ```
+   > **WSL2:** keep the clone in your Linux home (`~/…`), not `/mnt/c/…` — Git and the gateway's bind mount are far slower across the Windows boundary and line endings get messy.
 2. Branch and push to **your** fork (`git push -u origin <branch>`).
 3. Open PRs **inside your fork**: base repo = your fork (the base *branch* varies
    per exercise step), compare = your branch. Watch out: GitHub's "Compare & pull

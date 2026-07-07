@@ -245,13 +245,14 @@ body{
     <div class="sechead"><span class="num warm">SETUP</span><div><div class="title">Fork, clone &amp; (optionally) boot the gateway</div><div class="lead">Five minutes now saves twenty later. The gateway is optional: every exercise works from the files alone — or from the <b>Ignition Designer</b>, if that's your preferred way of working: a Designer save writes the same project files.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix t">1</div><div class="tx"><b>Fork + clone</b> with <span class="inlinecode">gh</span>: it sets <span class="inlinecode">origin</span> to <b>your fork</b> and <span class="inlinecode">upstream</span> to the lab repo.</div></div>
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Fork + clone</b> with <span class="inlinecode">gh</span>, in the <span class="inlinecode">~/mustry-academy</span> folder from this morning: it sets <span class="inlinecode">origin</span> to <b>your fork</b> and <span class="inlinecode">upstream</span> to the lab repo.</div></div>
         <div class="step"><div class="ix t">2</div><div class="tx"><b>Optional: boot the gateway.</b> <span class="inlinecode">cp .env.example .env</span>, then <span class="inlinecode">scripts/setup.sh</span>: it waits for RUNNING and prints the URL + login.</div></div>
         <div class="step"><div class="ix t">3</div><div class="tx">A running gateway <b>doesn't auto-detect your edits</b>: reload with <span class="inlinecode">docker compose restart</span>, or <span class="inlinecode">scripts/scan.sh</span> after a one-time API key (<span class="inlinecode">.env.example</span> explains).</div></div>
         <div class="step"><div class="ix t">4</div><div class="tx">Run <span class="inlinecode">scripts/validate.sh</span> once <b>now</b>, before you've changed anything, to know what green looks like.</div></div>
       </div>
       <div>
         <div class="code"><pre><span class="cm"># once: your own fork, with merge rights</span>
+cd ~/mustry-academy       <span class="cm"># the parent folder from Lab 01</span>
 gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
 cd cicd-lab-02-branching-and-prs
 
