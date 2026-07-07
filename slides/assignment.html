@@ -330,7 +330,7 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
     <div class="stage">Part 2 · step 1 · set the stage</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 1</span><div><div class="title">Set the GitHub Flow stage</div><div class="lead">One long-lived branch and a tag marking what's in production. This is the graph the scenario runs on.</div></div></div>
+    <div class="sechead"><span class="num">STEP 1</span><div><div class="title">Mark a tag for production</div><div class="lead">One long-lived branch and a tag marking what's in production. This is the graph the scenario runs on.</div></div></div>
     <div class="cols2">
       <div class="steps">
         <div class="step"><div class="ix p">1</div><div class="tx">GitHub Flow needs just <b>one long-lived branch: <span class="inlinecode">main</span></b>. Every branch you cut starts there and returns there through a PR.</div></div>
@@ -365,7 +365,7 @@ git push origin v1.2      <span class="cm"># → "production" is v1.2</span></pr
     <div class="stage">Part 2 · step 2 · the v2.0 feature</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 2</span><div><div class="title">Ship the v2.0 feature: the silo detail view</div><div class="lead">Oatmakers' v2.0 scope starts with a <b>silo detail view</b>. A small, real Ignition change: add it so it goes live in the project. Off <span class="inlinecode">main</span>, the GitHub Flow way.</div></div></div>
+    <div class="sechead"><span class="num">STEP 2</span><div><div class="title">Create a feature branch and push it</div><div class="lead">Oatmakers' v2.0 scope starts with a <b>silo detail view</b>. A small, real Ignition change: add it so it goes live in the project. Off <span class="inlinecode">main</span>, the GitHub Flow way.</div></div></div>
     <div class="cols2">
       <div class="steps">
         <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch off <span class="inlinecode">main</span></b> — in GitHub Flow every branch starts at <span class="inlinecode">main</span> and returns to it through a PR: <span class="inlinecode">feature/v2-silo-detail-&lt;ini&gt;</span>.</div></div>
@@ -403,7 +403,7 @@ git push -u origin feature/v2-silo-detail-&lt;ini&gt;
     <div class="stage">Part 2 · step 3 · the P1 ambush</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num">STEP 3</span><div><div class="title">P1 in production: fix it the GitHub Flow way</div><div class="lead">Your feature is still open when a customer hits the null-reading crash <b>in v1.2, live</b>. It can't wait for v2.0. This is where merge order starts to matter.</div></div></div>
+    <div class="sechead"><span class="num">STEP 3</span><div><div class="title">Create a fix branch and push it</div><div class="lead">Your feature is still open when a customer hits the null-reading crash <b>in v1.2, live</b>. It can't wait for v2.0. This is where merge order starts to matter.</div></div></div>
     <div class="cols2">
       <div class="steps">
         <div class="step"><div class="ix p">1</div><div class="tx"><b>Branch the fix off <span class="inlinecode">main</span></b>: <span class="inlinecode">fix/null-reading-&lt;ini&gt;</span>. Because your feature PR is still <b>open</b>, <span class="inlinecode">main</span> <i>is</i> v1.2 — the fix carries no v2.0 work.</div></div>
