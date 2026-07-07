@@ -190,7 +190,6 @@ body{
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Share your screen</b> in your breakout room. This is a "look over your shoulder" class, so we'll drop in where it's useful.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Until Part 3·C, every PR has <b>base repo = your fork</b>, base branch = <span class="inlinecode">main</span>. Careful: GitHub's "Compare &amp; pull request" banner and <span class="inlinecode">gh pr create</span> default the base to the <b>upstream course repo</b> — switch it to your fork. That's how everyone gets real merge rights without pushing to one shared repo.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">scripts/validate.sh</span> before every PR.</b> It's this lab's green/red signal (every project file valid JSON, every script parseable) and the PR template's first checkbox.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Open PRs early, share every link</b> in the cohort chat and tag a peer as reviewer. The review step needs a peer's PR to exist, and merging needs a peer to have reviewed <i>yours</i>.</span></li>
     </ul>
     <div class="goal good-g">
       <span class="badge">Ask early</span>
@@ -236,28 +235,62 @@ body{
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Discuss → run the scenario → review → contribute</span></div>
 </section>
 
-<!-- 4 · SETUP -->
+<!-- 4 · SETUP · 1 · FORK & CLONE -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
     <div class="stage">Before you start · setup</div>
   </div>
   <div class="body">
-    <div class="sechead"><span class="num warm">SETUP</span><div><div class="title">Fork, clone &amp; (optionally) boot the gateway</div><div class="lead">Five minutes now saves twenty later. The gateway is optional: every exercise works from the files alone — or from the <b>Ignition Designer</b>, if that's your preferred way of working: a Designer save writes the same project files.</div></div></div>
+    <div class="sechead"><span class="num warm">SETUP · 1</span><div><div class="title">First: your fork, on your machine, in VS Code</div><div class="lead">Same drill as this morning, for the Lab 02 repo. Everyone works from their own fork — that's where your merge rights live.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix t">1</div><div class="tx"><b>Fork + clone</b> with <span class="inlinecode">gh</span>, in the <span class="inlinecode">~/mustry-academy</span> folder from this morning: it sets <span class="inlinecode">origin</span> to <b>your fork</b> and <span class="inlinecode">upstream</span> to the lab repo.</div></div>
-        <div class="step"><div class="ix t">2</div><div class="tx"><b>Optional: boot the gateway.</b> <span class="inlinecode">cp .env.example .env</span>, then <span class="inlinecode">scripts/setup.sh</span>: it waits for RUNNING and prints the URL + login.</div></div>
-        <div class="step"><div class="ix t">3</div><div class="tx">A running gateway <b>doesn't auto-detect your edits</b>: reload with <span class="inlinecode">docker compose restart</span>, or <span class="inlinecode">scripts/scan.sh</span> after a one-time API key (<span class="inlinecode">.env.example</span> explains).</div></div>
-        <div class="step"><div class="ix t">4</div><div class="tx">Run <span class="inlinecode">scripts/validate.sh</span> once <b>now</b>, before you've changed anything, to know what green looks like.</div></div>
+        <div class="step"><div class="ix t">1</div><div class="tx">Go back to the <b>parent folder from Lab 01</b>: <span class="inlinecode">~/mustry-academy/</span> — all 8 lab repos live side by side in here, one folder per lab.</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>Fork &amp; clone.</b> <span class="inlinecode">gh repo fork … --clone</span> forks the lab to <i>your</i> GitHub account and clones your fork, in one go. Prefer the website? Press <b>Fork</b> on github.com — but you still need to <span class="inlinecode">git clone</span> your fork afterwards.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx"><b>Check the remotes:</b> <span class="inlinecode">git remote -v</span> — <span class="inlinecode">origin</span> must show <b>your username</b>: that's where every branch and PR in this lab goes. <span class="inlinecode">gh</span> also adds <span class="inlinecode">upstream</span> → the course repo; Part 3·C sends one PR back there.</div></div>
+        <div class="step"><div class="ix t">4</div><div class="tx">From inside the repo, open VS Code with <span class="inlinecode">code .</span> — then work from its integrated terminal (<span class="inlinecode">Ctrl+`</span>), which already sits in the right folder.</div></div>
       </div>
       <div>
-        <div class="code"><pre><span class="cm"># once: your own fork, with merge rights</span>
-cd ~/mustry-academy       <span class="cm"># the parent folder from Lab 01</span>
+        <div class="code"><pre><span class="cm"># 1: the parent folder from Lab 01</span>
+cd ~/mustry-academy
+
+<span class="cm"># 2: fork to your account + clone your fork</span>
 gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
+<span class="cm">#    …or press "Fork" on github.com, then clone YOUR fork:</span>
+git clone git@github.com:&lt;your-username&gt;/cicd-lab-02-branching-and-prs.git
 cd cicd-lab-02-branching-and-prs
 
-<span class="cm"># optional: see the project run</span>
+<span class="cm"># 3: origin → YOUR username? good.</span>
+git remote -v
+
+<span class="cm"># 4: open VS Code right here</span>
+code .</pre></div>
+        <div class="goal warn-g" style="margin-top:18px">
+          <span class="badge">WSL2</span>
+          <p>Clone into your <b>Linux home</b> (<span class="inlinecode">~/…</span>), never <span class="inlinecode">/mnt/c/…</span> — Git and the gateway's bind mount are far slower across the Windows boundary and line endings get messy. <span class="inlinecode">code .</span> from WSL opens a window <b>connected to WSL</b> automatically.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Setup 1 · fork &amp; clone → gateway next</span></div>
+</section>
+
+<!-- 5 · SETUP · 2 · GATEWAY & VALIDATOR -->
+<section class="slide">
+  <div class="topbar">
+    <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
+    <div class="stage">Before you start · setup</div>
+  </div>
+  <div class="body">
+    <div class="sechead"><span class="num warm">SETUP · 2</span><div><div class="title">Boot the gateway (optionally) &amp; meet the validator</div><div class="lead">Five minutes now saves twenty later. The gateway is optional: every exercise works from the files alone — or from the <b>Ignition Designer</b>, if that's your preferred way of working: a Designer save writes the same project files.</div></div></div>
+    <div class="cols2">
+      <div class="steps">
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Optional: boot the gateway.</b> <span class="inlinecode">cp .env.example .env</span>, then <span class="inlinecode">scripts/setup.sh</span>: it waits for RUNNING and prints the URL + login.</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx">A running gateway <b>doesn't auto-detect your edits</b>: reload with <span class="inlinecode">docker compose restart</span>, or <span class="inlinecode">scripts/scan.sh</span> after a one-time API key (<span class="inlinecode">.env.example</span> explains).</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx">Run <span class="inlinecode">scripts/validate.sh</span> once <b>now</b>, before you've changed anything, to know what green looks like.</div></div>
+      </div>
+      <div>
+        <div class="code"><pre><span class="cm"># optional: see the project run</span>
 cp .env.example .env
 scripts/setup.sh          <span class="cm"># boots the gateway → RUNNING</span>
 <span class="cm"># open http://localhost:8088</span>
@@ -271,10 +304,10 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
       </div>
     </div>
   </div>
-  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Setup → Part 1</span></div>
+  <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Setup 2 · gateway → Part 1</span></div>
 </section>
 
-<!-- 5 · PART 1 · DISCUSS THE STRATEGY (breakout room) -->
+<!-- 6 · PART 1 · DISCUSS THE STRATEGY (breakout room) -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -304,7 +337,7 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 1 · the argument → now live GitHub Flow</span></div>
 </section>
 
-<!-- 6 · PART 2 DIVIDER · THE SCENARIO -->
+<!-- 7 · PART 2 DIVIDER · THE SCENARIO -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -323,7 +356,7 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Part 2 · steps 1 → 3</span></div>
 </section>
 
-<!-- 7 · PART 2 · STEP 1 · SET THE STAGE -->
+<!-- 8 · PART 2 · STEP 1 · SET THE STAGE -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -358,7 +391,7 @@ git push origin v1.2      <span class="cm"># → "production" is v1.2</span></pr
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Stage set → ship the v2.0 feature</span></div>
 </section>
 
-<!-- 8 · PART 2 · STEP 2 · THE V2.0 FEATURE -->
+<!-- 9 · PART 2 · STEP 2 · THE V2.0 FEATURE -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -396,7 +429,7 @@ git push -u origin feature/v2-silo-detail-&lt;ini&gt;
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Feature open → then the P1 hits</span></div>
 </section>
 
-<!-- 9 · PART 2 · STEP 3 · THE P1 AMBUSH -->
+<!-- 10 · PART 2 · STEP 3 · THE P1 AMBUSH -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -434,7 +467,7 @@ git push -u origin fix/null-reading-&lt;ini&gt;
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Two branches, two PRs → now review peers'</span></div>
 </section>
 
-<!-- 10 · PART 3A · REVIEW A PEER'S PR -->
+<!-- 11 · PART 3A · REVIEW A PEER'S PR -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -470,7 +503,7 @@ issue: format_reading(0, "°C") now returns
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Review submitted → respond &amp; merge next</span></div>
 </section>
 
-<!-- 11 · PART 3B · RESPOND & MERGE -->
+<!-- 12 · PART 3B · RESPOND & MERGE -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -510,7 +543,7 @@ git push</pre></div>
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Merged → now contribute upstream</span></div>
 </section>
 
-<!-- 12 · PART 3C · THE UPSTREAM PR (open source) -->
+<!-- 13 · PART 3C · THE UPSTREAM PR (open source) -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -539,7 +572,7 @@ git push</pre></div>
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Contributed upstream → stretch or debrief</span></div>
 </section>
 
-<!-- 13 · STRETCH 1 -->
+<!-- 14 · STRETCH 1 -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -581,7 +614,7 @@ git push -u origin develop
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Stretch 1 of 2 · feel the difference</span></div>
 </section>
 
-<!-- 14 · STRETCH 2 -->
+<!-- 15 · STRETCH 2 -->
 <section class="slide">
   <div class="topbar">
     <div class="brandrow"><img class="logo-img" src="logos/OriginalDark.png" alt="Mustry Solutions"></div>
@@ -614,7 +647,7 @@ git push -u origin develop
   <div class="foot"><span>Mustry Academy · CI/CD for Ignition</span><span>Stretch 2 of 2 · optional</span></div>
 </section>
 
-<!-- 15 · DONE -->
+<!-- 16 · DONE -->
 <section class="slide dark">
   <div class="topbar">
     <div class="on-dark brandrow"><img class="logo-img" src="logos/OriginalLight.png" alt="Mustry Solutions"></div>
@@ -640,7 +673,7 @@ git push -u origin develop
 </div>
 
 <div class="hud"><div class="bar" id="bar"></div></div>
-<div class="pager" id="pager">01 / 15</div>
+<div class="pager" id="pager">01 / 16</div>
 <div class="hint" id="hint">↑ ↓ / scroll to navigate</div>
 
 <script>
