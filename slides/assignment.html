@@ -189,7 +189,7 @@ body{
     <ul class="checks" style="max-width:940px">
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Share your screen</b> in your breakout room. This is a "look over your shoulder" class, so we'll drop in where it's useful.</span></li>
       <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Work in your own fork.</b> Until Part 3·C, every PR has <b>base repo = your fork</b>, base branch = <span class="inlinecode">main</span>. Careful: GitHub's "Compare &amp; pull request" banner and <span class="inlinecode">gh pr create</span> default the base to the <b>upstream course repo</b> — switch it to your fork. That's how everyone gets real merge rights without pushing to one shared repo.</span></li>
-      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">scripts/validate.sh</span> before every PR.</b> It's this lab's green/red signal (every project file valid JSON, every script parseable) and the PR template's first checkbox.</span></li>
+      <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Run <span class="inlinecode">scripts/validate.sh</span> before every PR.</b> It's this lab's green/red signal (every project file valid JSON, every script parseable) and the PR template's first checkbox. Tomorrow, <b>Lab 03</b> turns this exact script into a CI gate no one can merge past — today, <i>you</i> are the CI.</span></li>
     </ul>
     <div class="goal good-g">
       <span class="badge">Ask early</span>
@@ -285,13 +285,14 @@ code .</pre></div>
     <div class="sechead"><span class="num warm">SETUP · 2</span><div><div class="title">Boot the gateway (optionally) &amp; meet the validator</div><div class="lead">Five minutes now saves twenty later. The gateway is optional: every exercise works from the files alone — or from the <b>Ignition Designer</b>, if that's your preferred way of working: a Designer save writes the same project files.</div></div></div>
     <div class="cols2">
       <div class="steps">
-        <div class="step"><div class="ix t">1</div><div class="tx"><b>Optional: boot the gateway.</b> <span class="inlinecode">cp .env.example .env</span>, then <span class="inlinecode">scripts/setup.sh</span>: it waits for RUNNING and prints the URL + login.</div></div>
-        <div class="step"><div class="ix t">2</div><div class="tx">A running gateway <b>doesn't auto-detect your edits</b>: reload with <span class="inlinecode">docker compose restart</span>, or <span class="inlinecode">scripts/scan.sh</span> after a one-time API key (<span class="inlinecode">.env.example</span> explains).</div></div>
-        <div class="step"><div class="ix t">3</div><div class="tx">Run <span class="inlinecode">scripts/validate.sh</span> once <b>now</b>, before you've changed anything, to know what green looks like.</div></div>
+        <div class="step"><div class="ix t">1</div><div class="tx"><b>Optional: create your <span class="inlinecode">.env</span>.</b> A <span class="inlinecode">.env</span> file holds settings that belong to <i>your machine (or local setup)</i>, not the repo — here the gateway's admin login, which <span class="inlinecode">docker compose</span> reads at boot. The repo ships only the <span class="inlinecode">.env.example</span> template; <span class="inlinecode">cp .env.example .env</span> makes your own copy, and <span class="inlinecode">.env</span> is <b>gitignored</b> — settings and passwords stay out of Git. (The defaults are fine for this throwaway gateway.)</div></div>
+        <div class="step"><div class="ix t">2</div><div class="tx"><b>Boot the gateway.</b> <span class="inlinecode">scripts/setup.sh</span> is a small bash helper that lives in this repo (open it — it's readable): it checks Docker is there, runs <span class="inlinecode">docker compose up -d</span> to start the Ignition container, polls until the gateway reports <b>RUNNING</b> (cold start takes a few minutes), then prints the URL + the login from your <span class="inlinecode">.env</span>.</div></div>
+        <div class="step"><div class="ix t">3</div><div class="tx">A running gateway <b>doesn't auto-detect your edits</b>: reload with <span class="inlinecode">docker compose restart</span>, or <span class="inlinecode">scripts/scan.sh</span> — it calls the gateway's <b>scan API</b>, after a one-time API key (<span class="inlinecode">.env.example</span> explains). The third route from the teaching deck: the <b>ignition-project-scan-endpoint</b> module, one clean scan endpoint built for scripts and CI.</div></div>
+        <div class="step"><div class="ix t">4</div><div class="tx">Run <span class="inlinecode">scripts/validate.sh</span> once <b>now</b>, before you've changed anything, to know what green looks like. It's this lab's stand-in for a test suite: every <span class="inlinecode">.json</span> under <span class="inlinecode">projects/</span> must be valid JSON, every script must parse as Python — gateway-free, runs in a second, and it's the PR template's first checkbox.</div></div>
       </div>
       <div>
         <div class="code"><pre><span class="cm"># optional: see the project run</span>
-cp .env.example .env
+cp .env.example .env      <span class="cm"># template → your local settings (gitignored)</span>
 scripts/setup.sh          <span class="cm"># boots the gateway → RUNNING</span>
 <span class="cm"># open http://localhost:8088</span>
 
@@ -378,8 +379,8 @@ git switch main
 git tag v1.2
 git push origin v1.2      <span class="cm"># → "production" is v1.2</span></pre></div>
         <div class="goal" style="margin-top:18px">
-          <span class="badge">New today</span>
-          <p><b><span class="inlinecode">git tag</span></b> pins a permanent name to one exact commit; unlike a branch, it <b>never moves</b> — that's what makes it a release marker. <b><span class="inlinecode">git push</span></b> uploads your local commits and refs to a remote (<span class="inlinecode">origin</span> = your fork). Tags don't ride along with a normal push — <span class="inlinecode">git push origin v1.2</span> sends one explicitly — and a <b>new branch</b> needs <span class="inlinecode">git push -u origin &lt;branch&gt;</span> once; the <span class="inlinecode">-u</span> links it to your fork, so later pushes are plain <span class="inlinecode">git push</span>.</p>
+          <span class="badge">Refresher</span>
+          <p><b>Both named in Lab 01 — today they graduate to used.</b> <b><span class="inlinecode">git tag</span></b> pins a permanent name to one exact commit; unlike a branch, it <b>never moves</b> — that's what makes it a release marker. <b><span class="inlinecode">git push</span></b> uploads your local commits and refs to a remote (<span class="inlinecode">origin</span> = your fork). Tags don't ride along with a normal push — <span class="inlinecode">git push origin v1.2</span> sends one explicitly — and a <b>new branch</b> needs <span class="inlinecode">git push -u origin &lt;branch&gt;</span> once; the <span class="inlinecode">-u</span> links it to your fork, so later pushes are plain <span class="inlinecode">git push</span>.</p>
         </div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">The mental model</span>
