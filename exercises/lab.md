@@ -145,7 +145,7 @@ branch you cut next is short-lived: off `main`, back to `main` through a PR.
 **Step 2: ship the v2.0 feature (the silo detail view).** Oatmakers' v2.0 scope
 starts with a **silo detail view** — that's your feature. Branch off `main` — in
 GitHub Flow every branch starts at `main` and returns to it through a PR:
-`feature/v2-silo-detail-<your-initials>`. The easiest path to the view itself:
+`feature/v2-silo-detail`. The easiest path to the view itself:
 copy the `overview` resource folder to `silo-detail` under `views/pages/`, edit
 its `view.json` title, and register the `/silo-detail` page in
 `page-config/config.json` so it's reachable. Run `scripts/validate.sh` (green),
@@ -160,7 +160,7 @@ open**: the ambush comes before you merge.
 **Step 3: the P1 ambush, fixed the GitHub Flow way.** Your feature is still open when
 a customer hits the null-reading crash in v1.2, live. It can't wait for v2.0.
 
-1. Branch the fix off `main`: `fix/null-reading-<your-initials>`. Because your
+1. Branch the fix off `main`: `fix/null-reading`. Because your
    feature PR is still **open**, `main` *is* v1.2 — the fix carries no v2.0 work.
 2. The bug: `lab.display.format_reading()` in
    [`projects/lab-project/ignition/script-python/lab/display/code.py`](../projects/lab-project/ignition/script-python/lab/display/code.py)
@@ -180,11 +180,11 @@ a customer hits the null-reading crash in v1.2, live. It can't wait for v2.0.
 ```bash
 # the fix branches off main — which IS v1.2, because the feature hasn't merged yet
 git switch main
-git switch -c fix/null-reading-<ini>
+git switch -c fix/null-reading
 # fix format_reading(), then:
 scripts/validate.sh
 git commit -am "fix(display): placeholder for null readings"
-git push -u origin fix/null-reading-<ini>
+git push -u origin fix/null-reading
 # ONE PR: fix -> main   (reviewed, merged first, then tagged v1.2.1 — step 3)
 ```
 
@@ -263,7 +263,7 @@ PR, not landing it.
   git push --force origin main       # your throwaway fork: force-push is fine here
   # GitHub's delete button only removed the remote branch; clear the local one
   # too (keep the fix branch — your upstream PR rides on it):
-  git branch -D feature/v2-silo-detail-<ini>
+  git branch -D feature/v2-silo-detail
   # and un-release the patch, so the stretch can re-tag it:
   git tag -d v1.2.1 && git push origin --delete v1.2.1
   ```

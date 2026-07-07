@@ -84,8 +84,8 @@ old versions" has understood both strategies from the inside. That's the whole g
 
 Part 2 produces two branches and two PRs per participant, both based on `main`:
 
-1. `feature/v2-<view>-<ini>` off **`main`**: a new Perspective view (the v2.0 feature). PR base = `main`, left open until the fix has shipped.
-2. `fix/null-reading-<ini>` off **`main`**: the null-reading fix. **One** PR, `fix -> main` — merged first, then `v1.2.1` tagged on `main`.
+1. `feature/v2-<view>` off **`main`**: a new Perspective view (the v2.0 feature). PR base = `main`, left open until the fix has shipped.
+2. `fix/null-reading` off **`main`**: the null-reading fix. **One** PR, `fix -> main` — merged first, then `v1.2.1` tagged on `main`.
 3. The feature branch, updated from `main` after the fix lands (`git merge main`), then its PR merged.
 
 The single most important GitHub Flow check across all of it: **did the fix merge —
