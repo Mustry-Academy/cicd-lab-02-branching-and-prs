@@ -846,7 +846,7 @@ body{
       <div>
         <ul class="checks">
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>The chain:</b> Designer save → project files on the gateway → <span class="mono">git status</span> shows exactly what changed → <span class="mono">git add -p</span> → a scoped commit → a small PR.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab your editor plays the Designer</b>: same files, same diffs. The bind mount means that changes are bidirectional, make a change in the designer, and you'll see it in your files, make a change in the files, and you'll see it in the designer.</span></li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>In this lab your editor plays the Designer</b>: same files, same diffs. Ignition runs in a Docker container, and a <b>bind mount</b> links the gateway's project folder to a folder on your machine, one shared folder, not a copy. Edits flow both ways: change a view in the Designer and it lands in your files; edit the files and the Designer picks it up, no exporting, no syncing.</span></li>
           <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Read your own diff before you commit.</b> It's the cheapest review you'll ever get, and the habit that keeps Ignition PRs small.</span></li>
         </ul>
       </div>
