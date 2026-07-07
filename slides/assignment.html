@@ -142,6 +142,19 @@ body{
 /* two-column for parts */
 .cols2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
 
+/* mini strategy graphs — static echoes of the teaching deck's vizzes */
+.vizcard{background:var(--navy);border-radius:14px;padding:10px 14px 9px;box-shadow:var(--shadow)}
+.vizcard .vc-head{margin-bottom:6px}
+.vizcard .vc-head b{color:#fff;font-size:13.5px;font-weight:700;white-space:nowrap}
+.vizcard svg{width:100%;height:auto;display:block}
+.vizcard .vc-cap{color:#9fb0c6;font-size:12px;line-height:1.45;margin-top:7px}
+.vizcard .vc-cap b{color:#dbe4f0}
+.vizcard .lane{stroke:rgba(255,255,255,.08);stroke-width:1}
+.vizcard .lname{fill:#8fa5c0;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600}
+.vizcard .node{fill:var(--navy);stroke:var(--teal);stroke-width:2}
+.vizcard .edge{stroke:#fff;stroke-width:1.6;fill:none}
+.vizcard .edge.br{stroke:var(--teal)}
+
 .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:var(--txt-faint);padding-top:22px}
 .dark .foot{color:rgba(255,255,255,.45)}
 
@@ -317,20 +330,65 @@ scripts/validate.sh       <span class="cm"># → ✓ all project files valid</sp
   <div class="body">
     <div class="sechead"><span class="num">PART 1</span><div><div class="title">Which strategy fits your team?</div><div class="lead">In your room, talk it through: no writing, just the argument. The three strategies from the teaching deck meet an actual team's reality.</div></div></div>
     <div class="cols2">
-      <div class="steps">
-        <div class="step"><div class="ix t">1</div><div class="tx"><b>Go around the room.</b> Each person sketches their own team or project out loud: <b>release cadence · regulatory constraints · team size · how often production ships</b>.</div></div>
-        <div class="step"><div class="ix t">2</div><div class="tx"><b>Argue the fit.</b> For each person, the room agrees which of the three strategies fits <b>their</b> reality, and <i>why</i>. Disagreement is the point; talk it out.</div></div>
-        <div class="step"><div class="ix t">3</div><div class="tx"><b>Land on one for the room.</b> You'll run <b>Part 2 in GitHub Flow</b> regardless (it's the course's strategy), but knowing which one you'd actually pick is what makes feeling the difference land.</div></div>
-      </div>
       <div>
-        <ul class="checks">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Git Flow</b>: parallel supported versions, release + hotfix branches, every hotfix merges <i>twice</i>.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>GitHub Flow</b>: one <span class="inlinecode">main</span>, everything returns through a PR, merging is releasing.</span></li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></span><span><b>Trunk-based</b>: branches live hours, feature flags hide unfinished work, needs serious CI discipline.</span></li>
-        </ul>
+        <div class="steps">
+          <div class="step"><div class="ix t">1</div><div class="tx"><b>Go around the room.</b> Each person sketches their own team or project out loud: <b>release cadence · regulatory constraints · team size · how often production ships</b>.</div></div>
+          <div class="step"><div class="ix t">2</div><div class="tx"><b>Argue the fit.</b> For each person, the room agrees which of the three strategies fits <b>their</b> reality, and <i>why</i>. Disagreement is the point; talk it out.</div></div>
+          <div class="step"><div class="ix t">3</div><div class="tx"><b>Land on one for the room.</b> You'll run <b>Part 2 in GitHub Flow</b> regardless (it's the course's strategy), but knowing which one you'd actually pick is what makes feeling the difference land.</div></div>
+        </div>
         <div class="goal" style="margin-top:18px">
           <span class="badge">No team?</span>
           <p>Never worked on a multi-engineer team? Argue it for an <b>Ignition team you've consulted with</b>, or use the scenario in <span class="inlinecode">docs/branching-strategies.md</span> as a stand-in.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="vizcard">
+          <div class="vc-head"><b>Git Flow</b></div>
+          <svg viewBox="0 14 648 140">
+            <line class="lane" x1="118" y1="28" x2="640" y2="28"/><line class="lane" x1="118" y1="56" x2="640" y2="56"/><line class="lane" x1="118" y1="84" x2="640" y2="84"/><line class="lane" x1="118" y1="112" x2="640" y2="112"/><line class="lane" x1="118" y1="140" x2="640" y2="140"/>
+            <text class="lname" x="8" y="32">main</text><text class="lname" x="8" y="60">hotfix/*</text><text class="lname" x="8" y="88">release/*</text><text class="lname" x="8" y="116">develop</text><text class="lname" x="8" y="144">feature/*</text>
+            <line class="edge" x1="130" y1="28" x2="347" y2="28"/><line class="edge" x1="347" y1="28" x2="577" y2="28"/>
+            <line class="edge" x1="173" y1="112" x2="391" y2="112"/><line class="edge" x1="391" y1="112" x2="490" y2="112"/><line class="edge" x1="490" y1="112" x2="620" y2="112"/>
+            <line class="edge" x1="217" y1="140" x2="260" y2="140"/><line class="edge" x1="260" y1="140" x2="434" y2="140"/>
+            <line class="edge br" x1="130" y1="28" x2="173" y2="112"/><line class="edge br" x1="173" y1="112" x2="217" y2="140"/>
+            <line class="edge br" x1="130" y1="28" x2="304" y2="56"/><line class="edge br" x1="304" y1="56" x2="347" y2="28"/><line class="edge br" x1="304" y1="56" x2="391" y2="112"/>
+            <line class="edge br" x1="391" y1="112" x2="434" y2="140"/><line class="edge br" x1="434" y1="140" x2="490" y2="112"/>
+            <line class="edge br" x1="490" y1="112" x2="533" y2="84"/><line class="edge br" x1="533" y1="84" x2="577" y2="28"/><line class="edge br" x1="533" y1="84" x2="620" y2="112"/>
+            <circle class="node" cx="130" cy="28" r="6"/><circle class="node" cx="347" cy="28" r="6"/><circle class="node" cx="577" cy="28" r="6"/>
+            <circle class="node" cx="304" cy="56" r="6"/>
+            <circle class="node" cx="533" cy="84" r="6"/>
+            <circle class="node" cx="173" cy="112" r="6"/><circle class="node" cx="391" cy="112" r="6"/><circle class="node" cx="490" cy="112" r="6"/><circle class="node" cx="620" cy="112" r="6"/>
+            <circle class="node" cx="217" cy="140" r="6"/><circle class="node" cx="260" cy="140" r="6"/><circle class="node" cx="434" cy="140" r="6"/>
+          </svg>
+          <div class="vc-cap">Two long-lived branches (<b>main</b> + <b>develop</b>) with release and hotfix branches between them — every hotfix and release merges <i>twice</i>.</div>
+        </div>
+        <div class="vizcard">
+          <div class="vc-head"><b>GitHub Flow</b></div>
+          <svg viewBox="0 18 648 92">
+            <line class="lane" x1="118" y1="30" x2="640" y2="30"/><line class="lane" x1="118" y1="64" x2="640" y2="64"/><line class="lane" x1="118" y1="98" x2="640" y2="98"/>
+            <text class="lname" x="8" y="34">main</text><text class="lname" x="8" y="68">fix/*</text><text class="lname" x="8" y="102">feature/*</text>
+            <line class="edge" x1="130" y1="30" x2="410" y2="30"/><line class="edge" x1="410" y1="30" x2="566" y2="30"/>
+            <line class="edge" x1="202" y1="98" x2="266" y2="98"/><line class="edge" x1="266" y1="98" x2="498" y2="98"/>
+            <line class="edge br" x1="130" y1="30" x2="202" y2="98"/>
+            <line class="edge br" x1="130" y1="30" x2="338" y2="64"/><line class="edge br" x1="338" y1="64" x2="410" y2="30"/>
+            <line class="edge br" x1="410" y1="30" x2="498" y2="98"/><line class="edge br" x1="498" y1="98" x2="566" y2="30"/>
+            <circle class="node" cx="130" cy="30" r="6"/><circle class="node" cx="410" cy="30" r="6"/><circle class="node" cx="566" cy="30" r="6"/>
+            <circle class="node" cx="338" cy="64" r="6"/>
+            <circle class="node" cx="202" cy="98" r="6"/><circle class="node" cx="266" cy="98" r="6"/><circle class="node" cx="498" cy="98" r="6"/>
+          </svg>
+          <div class="vc-cap">One long-lived <b>main</b>; every branch is short-lived and returns through a PR — merging <i>is</i> releasing, tags mark what shipped.</div>
+        </div>
+        <div class="vizcard">
+          <div class="vc-head"><b>Trunk-based</b></div>
+          <svg viewBox="0 22 648 68">
+            <line class="lane" x1="118" y1="34" x2="640" y2="34"/><line class="lane" x1="118" y1="78" x2="640" y2="78"/>
+            <text class="lname" x="8" y="38">main</text><text class="lname" x="8" y="82">short-lived/*</text>
+            <line class="edge" x1="130" y1="34" x2="227" y2="34"/><line class="edge" x1="227" y1="34" x2="411" y2="34"/><line class="edge" x1="411" y1="34" x2="508" y2="34"/><line class="edge" x1="508" y1="34" x2="609" y2="34"/>
+            <line class="edge br" x1="227" y1="34" x2="319" y2="78"/><line class="edge br" x1="319" y1="78" x2="411" y2="34"/>
+            <circle class="node" cx="130" cy="34" r="6"/><circle class="node" cx="227" cy="34" r="6"/><circle class="node" cx="411" cy="34" r="6"/><circle class="node" cx="508" cy="34" r="6"/><circle class="node" cx="609" cy="34" r="6"/>
+            <circle class="node" cx="319" cy="78" r="6"/>
+          </svg>
+          <div class="vc-cap">Everyone commits to <b>main</b>; branches live <i>hours</i>. Feature flags ship unfinished work dark — releasing is a flag flip, and it needs serious CI discipline.</div>
         </div>
       </div>
     </div>
