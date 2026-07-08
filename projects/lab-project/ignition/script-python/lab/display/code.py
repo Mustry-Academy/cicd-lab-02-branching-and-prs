@@ -5,7 +5,7 @@ shown on the screen. No tag or database access here, so you can read and change
 this without a gateway — and the lab's validate.sh can parse it offline.
 """
 
-PLACEHOLDER = "--"
+PLACEHOLDER = "-- °C"
 
 
 def format_reading(value, units):
