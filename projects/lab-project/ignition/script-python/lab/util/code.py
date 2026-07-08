@@ -27,3 +27,9 @@ def clamp(value, low, high):
     if value > high:
         return high
     return value
+
+
+def foo():
+	pass
+	
+	
