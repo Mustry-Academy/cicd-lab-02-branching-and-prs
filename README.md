@@ -34,7 +34,11 @@ your own fork, and open PRs inside it.**
    gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
    cd cicd-lab-02-branching-and-prs
    ```
-   > **WSL2:** keep the clone in your Linux home (`~/…`), not `/mnt/c/…` — Git and the gateway's bind mount are far slower across the Windows boundary and line endings get messy.
+   > **WSL2 (Windows): keep the clone in your Linux home (`~/…`), never `/mnt/c/…`.**
+   > On the Windows filesystem your Windows user, your WSL user and the gateway's
+   > container user are three different identities, so file ownership breaks in ways
+   > `chown` cannot fix and you end up reaching for `sudo` (which makes it worse).
+   > `scripts/setup.sh` refuses to run from there. See [`docs/wsl-setup.md`](./docs/wsl-setup.md).
 2. Branch and push to **your** fork (`git push -u origin <branch>`).
 3. Open PRs **inside your fork**: base repo = your fork (the base *branch* varies
    per exercise step), compare = your branch. Watch out: GitHub's "Compare & pull
