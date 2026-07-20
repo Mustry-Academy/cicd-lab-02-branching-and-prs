@@ -1185,17 +1185,19 @@ function bindControls(slideEl,ctrl){
 /* ---------- slide 6: GITHUB FLOW ---------- */
 (function(){
   // viewBox widened left for the ENVIRONMENT + BRANCH columns (same margin as Git Flow)
-  const svg=el('svg',{viewBox:'-360 0 2060 640',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-ghflow'));
+  const svg=el('svg',{viewBox:'-360 0 2060 700',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-ghflow'));
   defsArrow(svg);
   const R=36,O={r:R};
-  const yM=230,yFix=350,yB=490;
-  laneHeader(svg,yM-80);
-  const laneM=laneLabel(svg,yM,'main',false,'Production');
+  // Production is its own lane at the top: it runs tags, not a branch. main deploys to Test.
+  const yP=150,yM=300,yFix=430,yB=560;
+  laneHeader(svg,70);
+  const laneP=laneLabel(svg,yP,'tags',false,'Production');
+  const laneM=laneLabel(svg,yM,'main',false,'Test');
   const laneX=laneLabel(svg,yFix,'fix/*',false,'Local');
   const laneF=laneLabel(svg,yB,'feature/*',false,'Local');
   // left→right = time; the v2.0 branch is ALREADY open when the P1 hits (same scenario as Git Flow)
   const node={};
-  node.A=commitNode(svg,200,yM,'A','production',O);
+  node.A=commitNode(svg,200,yM,'A',null,O);
   node.B=commitNode(svg,380,yB,'B',null,O);
   node.C=commitNode(svg,540,yB,'C',null,O);
   node.D=commitNode(svg,720,yFix,'D','P1 fix',O);
@@ -1217,12 +1219,14 @@ function bindControls(slideEl,ctrl){
   el('text',{class:'gbranch',x:460,y:yB+80},lblFeat).textContent='feature/v2-orders';
   const lblFix=el('g',{class:'vshow'},svg);
   el('text',{class:'gbranch',x:720,y:yFix+80},lblFix).textContent='fix/cart-total';
-  // what shipped (tags) + the pipeline runs that shipped it; in GitHub Flow, merging IS releasing
-  const tagA=tagBadge(svg,200,yM-88,'tag v1.2');
-  const tag1=tagBadge(svg,900,yM-88,'tag v1.2.1');
-  const chip1=ciChip(svg,900,yM-52,'⚙ CI → Production · on push to main');
-  const tag2=tagBadge(svg,1290,yM-88,'tag v2.0');
-  const chip2=ciChip(svg,1290,yM-52,'⚙ CI → Production · on push to main');
+  // release tags live in the Production lane: push to main deploys Test, pushing a tag deploys Production
+  const tagA=tagBadge(svg,200,yP,'tag v1.2');
+  const tag1=tagBadge(svg,900,yP,'tag v1.2.1');
+  const chip1=ciChip(svg,900,yM-52,'⚙ CI → Test · on push to main');
+  const chipP1=ciChip(svg,900,yP+40,'⚙ CI → Production · on tag push');
+  const tag2=tagBadge(svg,1290,yP,'tag v2.0');
+  const chip2=ciChip(svg,1290,yM-52,'⚙ CI → Test · on push to main');
+  const chipP2=ciChip(svg,1290,yP+40,'⚙ CI → Production · on tag push');
   // the v1.2 question
   const noteQ=el('g',{class:'vshow'},svg);
   el('text',{class:'note-red',x:1480,y:yM-16},noteQ).textContent='main is v2.0 now,';
@@ -1230,15 +1234,15 @@ function bindControls(slideEl,ctrl){
   el('text',{class:'gsha',x:1480,y:yM+48},noteQ).textContent='answer: the tags, git checkout v1.2';
   const lead=slides[5].querySelector('#ghflow-step');
   const steps=[
-    {on:[laneM,node.A,tagA],t:'One long-lived branch. <b>What is on main is what is in production</b>: <b>tag v1.2</b> today.'},
+    {on:[laneM,laneP,node.A,tagA],t:'One long-lived branch: <b>main</b>, wired to the <b>Test</b> environment. <b>Production runs the last tag</b>: <b>v1.2</b> today.'},
     {on:[laneF,node.B,node.C,E.AB,E.BC,lblFeat],t:'The <b>v2.0 branch is already open</b> off main: same in-flight work as Git Flow, minus the develop lane.'},
     {on:[laneX,node.D,E.AD,lblFix],t:'⚠ Mid-feature, the P1 hits. Nothing special happens: a fix branch off <b>main</b>, which is still v1.2. <b>Same moves, smaller diff.</b>'},
-    {on:[node.E,E.DE,E.AE,tag1,chip1],t:'The fix PR merges → <b>the push to main auto-deploys</b> → CI tags what shipped: <b>v1.2.1</b>. Ship today; the feature branch is untouched.'},
+    {on:[node.E,E.DE,E.AE,tag1,chip1,chipP1],t:'The fix PR merges → <b>the push to main auto-deploys to Test</b>. Then you tag <b>v1.2.1</b>: <b>the tag push deploys to Production</b>. Ship today; the feature branch is untouched.'},
     {on:[node.F,E.EF,E.CF],t:'The feature branch <b>updates from main</b>, picking up the fix: one merge, no develop to keep in sync.'},
-    {on:[node.G,E.FG,E.EG,tag2,chip2],t:'Release week: the feature PR merges → same trigger: <b>push to main → deploy → tag v2.0</b>. Merging <b>is</b> releasing.'},
+    {on:[node.G,E.FG,E.EG,tag2,chip2,chipP2],t:'Release week: the feature PR merges → <b>push to main → Test</b>, then <b>tag v2.0 → Production</b>. Same two moves as the hotfix: every release ships the same way.'},
     {on:[noteQ],t:'The catch: main <b>is</b> v2.0 now. Where does v1.2 live? <b>In the tags</b>: <span class="mono">git checkout v1.2</span> gets you back. Without tags, GitHub Flow has no answer.'}
   ];
-  const all=[laneM,laneX,laneF,...Object.values(node),...Object.values(E),lblFeat,lblFix,tagA,tag1,chip1,tag2,chip2,noteQ];
+  const all=[laneM,laneP,laneX,laneF,...Object.values(node),...Object.values(E),lblFeat,lblFix,tagA,tag1,chip1,chipP1,tag2,chip2,chipP2,noteQ];
   controllers.ghflow={max:steps.length-1,render(s){
     const onset=new Set(); for(let i=0;i<=s;i++)steps[i].on.forEach(g=>onset.add(g));
     all.forEach(g=>reveal(g,onset.has(g)));
@@ -1249,16 +1253,18 @@ function bindControls(slideEl,ctrl){
 /* ---------- slide 7: TRUNK-BASED ---------- */
 (function(){
   // viewBox widened left for the ENVIRONMENT + BRANCH columns (same margin as Git Flow)
-  const svg=el('svg',{viewBox:'-360 0 2060 560',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-trunk'));
+  const svg=el('svg',{viewBox:'-360 0 2060 620',preserveAspectRatio:'xMidYMid meet'},document.getElementById('viz-trunk'));
   defsArrow(svg);
   const R=36,O={r:R};
-  const yM=220,yB=420;
-  laneHeader(svg,yM-80);
-  const laneM=laneLabel(svg,yM,'main',false,'Production');
+  // same env split as GitHub Flow: main deploys to Test, tags (top lane) deploy to Production
+  const yP=145,yM=290,yB=480;
+  laneHeader(svg,65);
+  const laneP=laneLabel(svg,yP,'tags',false,'Production');
+  const laneM=laneLabel(svg,yM,'main',false,'Test');
   const laneB=laneLabel(svg,yB,'short-lived/*',false,'Local');
   // left→right = time; v2.0 is ALREADY landing on main (dark, flag off) when the P1 hits
   const node={};
-  node.A=commitNode(svg,200,yM,'A','prod',O);
+  node.A=commitNode(svg,200,yM,'A',null,O);
   node.B=commitNode(svg,430,yM,'B',null,O);
   el('text',{class:'gsha',x:430,y:yM-56},node.B).textContent='v2.0 wip · flag off';
   node.C=commitNode(svg,650,yB,'C','tiny fix',O);
@@ -1274,22 +1280,24 @@ function bindControls(slideEl,ctrl){
   E.EF=edge(svg,1100,yM,1340,yM,{r:R,arrow:true});
   const lblFix=el('g',{class:'vshow'},svg);
   el('text',{class:'gbranch',x:650,y:yB+82},lblFix).textContent='fix-cart-total · lives ~2 hours';
-  // tags are automated version markers here; CI stamps them as commits flow through
-  const tagA=tagBadge(svg,200,yM-88,'tag v1.2');
-  const tagFix=tagBadge(svg,870,yM-88,'tag v1.2.1');
-  const chipD=ciChip(svg,870,yM-52,'⚙ CI → Production · on every green push');
-  const tagV2=tagBadge(svg,1340,yM-88,'tag v2.0');
+  // release tags live in the Production lane: green pushes deploy Test, pushing a tag deploys Production
+  const tagA=tagBadge(svg,200,yP,'tag v1.2');
+  const tagFix=tagBadge(svg,870,yP,'tag v1.2.1');
+  const chipD=ciChip(svg,870,yM-52,'⚙ CI → Test · on every green push');
+  const chipP1=ciChip(svg,870,yP+40,'⚙ CI → Production · on tag push');
+  const tagV2=tagBadge(svg,1340,yP,'tag v2.0');
+  const chipP2=ciChip(svg,1340,yP+40,'⚙ CI → Production · on tag push');
   const lead=slides[6].querySelector('#trunk-step');
   const steps=[
-    {on:[laneM,node.A,tagA],t:'Everyone commits to <b>main</b>, the trunk. It is production, always, currently <b>tag v1.2</b>.'},
+    {on:[laneM,laneP,node.A,tagA],t:'Everyone commits to <b>main</b>, the trunk, wired to the <b>Test</b> environment. <b>Production runs the last tag</b>: <b>v1.2</b>.'},
     {on:[node.B,E.AB],t:'v2.0 work is <b>already landing on main</b>, behind a feature flag that is OFF in production. Unfinished work ships dark.'},
     {on:[laneB,node.C,E.BC,lblFix],t:'⚠ Mid-feature, the P1 hits: a fix branch born this morning…'},
-    {on:[node.D,E.CD,E.BD,tagFix,chipD],t:'…and merged before lunch: <b>every green push to main auto-deploys</b>; CI tags <b>v1.2.1</b>. Safe with v2.0-wip on main <b>because the flag is OFF</b>. Branch lifetime: hours.'},
+    {on:[node.D,E.CD,E.BD,tagFix,chipD,chipP1],t:'…and merged before lunch: <b>every green push to main auto-deploys to Test</b>; tag <b>v1.2.1</b> promotes it to <b>Production</b>. Safe with v2.0-wip on main <b>because the flag is OFF</b>. Branch lifetime: hours.'},
     {on:[node.E,E.DE],t:'v2.0 keeps landing <b>directly on main</b>, still dark. Nothing to sync: the feature was never on a stale branch.'},
-    {on:[node.F,E.EF,tagV2],t:'The release is a <b>flag flip</b>, not a merge, not even a special pipeline run: the flag commit ships like any other push. <b>tag v2.0</b> just records the moment.'},
+    {on:[node.F,E.EF,tagV2,chipP2],t:'The release is a <b>flag flip</b>, not a merge: the flag commit lands on main like any other push, and <b>tag v2.0</b> promotes it to <b>Production</b>.'},
     {on:[],t:'The price: a feature-flag system + serious CI/test discipline, because every commit to main must be safe. <b>That safety net is exactly what we start building tomorrow.</b>'}
   ];
-  const all=[laneM,laneB,...Object.values(node),...Object.values(E),lblFix,tagA,tagFix,chipD,tagV2];
+  const all=[laneM,laneP,laneB,...Object.values(node),...Object.values(E),lblFix,tagA,tagFix,chipD,chipP1,tagV2,chipP2];
   controllers.trunk={max:steps.length-1,render(s){
     const onset=new Set(); for(let i=0;i<=s;i++)steps[i].on.forEach(g=>onset.add(g));
     all.forEach(g=>reveal(g,onset.has(g)));
