@@ -33,6 +33,7 @@ your own fork, and open PRs inside it.**
    cd ~/mustry-academy                                               # the parent folder for all 8 lab repos, from Lab 01
    gh repo fork mustry-academy/cicd-lab-02-branching-and-prs --clone
    cd cicd-lab-02-branching-and-prs
+   gh repo set-default <your-username>/cicd-lab-02-branching-and-prs  # tell gh where PRs go: YOUR fork
    ```
    > **WSL2 (Windows): keep the clone in your Linux home (`~/…`), never `/mnt/c/…`.**
    > On the Windows filesystem your Windows user, your WSL user and the gateway's
@@ -42,9 +43,10 @@ your own fork, and open PRs inside it.**
 2. Branch and push to **your** fork (`git push -u origin <branch>`).
 3. Open PRs **inside your fork**: base repo = your fork (the base *branch* varies
    per exercise step), compare = your branch. Watch out: GitHub's "Compare & pull
-   request" banner and `gh pr create` default the base repo to the **upstream**
-   course repo — switch it to your fork (or run `gh repo set-default` once and
-   pick your fork).
+   request" banner defaults the base repo to the **upstream** course repo — switch
+   it to your fork every time. `gh pr create` won't guess at all: it errors with
+   "no default remote repository has been set" until the `gh repo set-default`
+   from step 1 is done.
 4. **Invite your reviewer**: add a peer or one of the tutors as a collaborator on
    your fork (Settings → Collaborators → Add people), then request their review on
    each PR.

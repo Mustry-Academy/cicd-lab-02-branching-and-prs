@@ -97,9 +97,12 @@ invite your reviewer early: add a peer from your room or one of the tutors as a
 their review on each PR. The review step needs a peer's PR to exist, and merging
 needs a peer to have reviewed yours.
 
-> Careful when opening PRs on a fork: GitHub's "Compare & pull request" banner (and
-> `gh pr create`) defaults the **base repo** to the upstream course repo — switch it
-> to **your fork** every time.
+> Careful when opening PRs on a fork: GitHub's "Compare & pull request" banner
+> defaults the **base repo** to the upstream course repo — switch it to **your
+> fork** every time. `gh pr create` won't guess: it errors with "no default remote
+> repository has been set" until you run
+> `gh repo set-default <your-username>/cicd-lab-02-branching-and-prs` once (part of
+> setup) and pick your fork.
 
 ### 1. Discuss: which strategy fits your team? (breakout room)
 
