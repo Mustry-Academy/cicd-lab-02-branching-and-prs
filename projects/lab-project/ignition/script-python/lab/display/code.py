@@ -5,7 +5,7 @@ shown on the screen. No tag or database access here, so you can read and change
 this without a gateway — and the lab's validate.sh can parse it offline.
 """
 
-PLACEHOLDER = "--"
+PLACEHOLDER = "-- °C"
 
 
 def format_reading(value, units):
@@ -14,4 +14,6 @@ def format_reading(value, units):
     Rounds to one decimal place and appends the engineering units. Used by the
     Overview screen's KPI tiles via a runScript binding.
     """
+    if value is None:
+        return PLACEHOLDER
     return "%.1f %s" % (value, units)
