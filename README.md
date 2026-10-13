@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **This repository has moved and is read-only.** The CI/CD for Ignition course now lives in one repo: [Mustry-Academy/cicd-for-ignition](https://github.com/Mustry-Academy/cicd-for-ignition), in [`labs/02-branching-and-prs/`](https://github.com/Mustry-Academy/cicd-for-ignition/tree/main/labs/02-branching-and-prs). This repo will be deleted after 14 December 2026.
+
 # Lab 02 — Branching and Pull Requests
 
 Day 1 of the [CI/CD for Ignition Masterclass](https://github.com/mustry-academy/cicd-masterclass).
